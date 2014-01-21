@@ -464,7 +464,20 @@ module SmartAnswer::Calculators
           should "give the correct rate for the period" do
             assert_equal 136.78, @calculator.statutory_rate(Date.parse('12 April 2013'))
           end
+          
+          should "calculate the paternity rate as the standard rate" do
+            @calculator.average_weekly_earnings = 500.55
+            @calculator.leave_start_date = Date.new(2014, 2, 1)
+            assert_equal 136.78, @calculator.statutory_paternity_rate
+          end
+
+          should "calculate the paternity rate as 90 percent of weekly earnings" do
+            @calculator.average_weekly_earnings = 120.55
+            @calculator.leave_start_date = Date.new(2014, 2, 1)
+            assert_equal ((120.55 * 0.9).to_f).round(2), @calculator.statutory_paternity_rate
+          end
         end
+        
         context "for 2043 rates" do
           should "give a default rate for a date in the future" do
             assert_equal 136.78, @calculator.statutory_rate(Date.parse('6 April 2043'))

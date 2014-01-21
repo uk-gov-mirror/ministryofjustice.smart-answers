@@ -598,6 +598,7 @@ class MaternityPaternityCalculatorTest < ActiveSupport::TestCase
 
       context "answer no" do
         setup { add_response :no }
+        
         ## QP1
         should "ask for the due date" do
           assert_current_node :baby_due_date_paternity?
@@ -605,47 +606,48 @@ class MaternityPaternityCalculatorTest < ActiveSupport::TestCase
 
         context "due date given as 12 June 2013" do
           setup do
-            @pat_due_date = Date.parse ("12 June 2013")
-            add_response @pat_due_date
+            add_response Date.parse("12 June 2013")
           end
-
+          
           ## QP2
-          should "ask if and what context the employee is responsible for the childs upbringing" do
-            assert_current_node :employee_responsible_for_upbringing?
+          should "ask for the birth date" do
+            assert_current_node :baby_birth_date_paternity?
           end
-
-          context "is biological father or partner and responsible for upbringing" do
-            setup { add_response :yes }
-
+          
+          context "birth date given as 12 June 2013" do
+            setup do
+              add_response Date.parse("12 June 2013") 
+            end
+          
             ## QP3
-            should "ask if employee worked for you before employment_start" do
-              assert_current_node :employee_work_before_employment_start?
+            should "ask if and what context the employee is responsible for the childs upbringing" do
+              assert_current_node :employee_responsible_for_upbringing?
             end
 
-            context "answer yes" do
+            context "is biological father or partner and responsible for upbringing" do
               setup { add_response :yes }
 
-              # QP4
-              should "ask if employee has an employee contract" do
-                assert_current_node :employee_has_contract_paternity?
+              ## QP4
+              should "ask if employee worked for you before employment_start" do
+                assert_current_node :employee_work_before_employment_start?
               end
 
               context "answer yes" do
                 setup { add_response :yes }
 
                 # QP5
-                should "be entitled to leave" do
-                  assert_phrase_list :paternity_leave_info, [:paternity_entitled_to_leave]
-                end
-
-                should "ask if employee will be employed at employment_end" do
-                  assert_current_node :employee_employed_at_employment_end_paternity?
+                should "ask if employee has an employee contract" do
+                  assert_current_node :employee_has_contract_paternity?
                 end
 
                 context "answer yes" do
                   setup { add_response :yes }
 
                   # QP6
+                  should "be entitled to leave" do
+                    assert_phrase_list :paternity_leave_info, [:paternity_entitled_to_leave]
+                  end
+
                   should "ask if employee is on payroll" do
                     assert_current_node :employee_on_payroll_paternity?
                   end
@@ -653,172 +655,255 @@ class MaternityPaternityCalculatorTest < ActiveSupport::TestCase
                   context "answer yes" do
                     setup { add_response :yes }
 
-                    #QP6.2
-                    should "ask for last normal payday before ..." do
-                      assert_current_node :last_normal_payday?
+                    #QP7
+                    should "ask if employee is still employed on birth date" do
+                      assert_state_variable :on_payroll, "yes"
+                      assert_current_node :employee_still_employed_on_birth_date?
                     end
-
-                    context "answer 1 March 2013" do
-                      setup { add_response Date.parse("1 March 2013") }
-
-                      #QP6.3
-                      should "ask for payday eight weeks before" do
-                        assert_current_node :payday_eight_weeks?
+                    
+                    context "answer yes" do
+                      setup { add_response :yes }
+                      
+                      #QP8
+                      should "ask for employee start date" do
+                        assert_current_node :employee_start_paternity?
+                        assert_state_variable :date_of_birth, Date.parse("12 June 2013")
                       end
+                      
+                      context "answer 12 June 2013" do
+                        setup { add_response Date.parse("12 June 2013") }
 
-                      context "answer 1 January 2013" do
-                        setup { add_response Date.parse("1 January 2013") }
-
-                        # QP7
-                        should "ask for average weekly earnings" do
-                          assert_current_node :employees_average_weekly_earnings_paternity?
+                        #QP9
+                        should "ask for employee paternity length" do
+                          assert_current_node :employee_paternity_length?
+                          assert_state_variable :leave_start_date, Date.parse("12 June 2013")
                         end
-
-                        context "answer 500.55" do
-                          setup do
-                            add_response 500.55
-                            @leave_notice = @pat_due_date - @pat_due_date.wday
+                        
+                        context "one week" do
+                          setup { add_response "one_week" }
+                          
+                          #QP10
+                          should "ask last normal pay day" do
+                            assert_current_node :last_normal_payday_paternity?
+                            assert_state_variable :leave_end_date, Date.parse("19 June 2013")
                           end
-
-                          should "have p_notice_leave qualify" do
-                            assert_state_variable "p_notice_leave", next_saturday(15.weeks.ago(@leave_notice))
-                          end
-
-                          should "calculate dates and pay amounts" do
-                            expected_start = @leave_notice
-                            @expected_week = expected_start .. expected_start + 6.days
-                            @notice_of_leave_deadline = qualifying_start = 15.weeks.ago(expected_start)
-                            @qualifying_week = qualifying_start .. qualifying_start + 6.days
-                            #FIXME@relevant_period = "#{8.weeks.ago(qualifying_start).to_s(:long)} and #{qualifying_start.to_s(:long)}"
-
-                            #FIXME assert_state_variable "relevant_period", @relevant_period
-                            #FIXME assert_state_variable "employment_start", 26.weeks.ago(expected_start)
-                            assert_state_variable "employment_end", @pat_due_date
-                            assert_state_variable "spp_rate", sprintf("%.2f",136.78)
-                          end
-
-                          should "display employee is entitled to pay" do
-                            assert_phrase_list :paternity_pay_info, [:paternity_entitled_to_pay]
-                            assert_current_node :paternity_leave_and_pay
-                          end
-                        end #answer 500.55
-
-                        context "answer 120.25" do
-                          setup { add_response 120.25 }
-
-                          should "calculate dates and pay amounts" do
-                            assert_state_variable "spp_rate", sprintf("%.2f",108.23)
-                            assert_current_node :paternity_leave_and_pay
-                          end
-                        end
-
-                        context "answer 102.25" do
-                          setup { add_response 102.25 }
-
-                          should "paternity not entitled to pay because earnings too low" do
-                            assert_phrase_list :paternity_pay_info, [:paternity_not_entitled_to_pay_intro, :must_earn_over_threshold, :paternity_not_entitled_to_pay_outro]
-                            assert_current_node :paternity_leave_and_pay
-                          end
-                        end
-                      end #QP6.3
-                    end #QP6.2
+                          
+                          context "answer 2 March 2013" do
+                            setup { add_response Date.parse("2 March 2013") }
+                            
+                            #QP11
+                            should "ask for payday eight weeks before" do
+                              assert_current_node :payday_eight_weeks_paternity?
+                              assert_state_variable :payday_offset, Date.parse("6 January 2013")
+                            end
+                            
+                            context "answer 1 November 2012" do
+                              setup { add_response Date.parse("1 November 2012") }
+                            
+                              # QP12
+                              should "ask for frequency of pay" do
+                                assert_current_node :pay_frequency_paternity?
+                              end
+                              
+                              context "answer monthly" do
+                                setup { add_response "monthly" }
+                                
+                                ##QP13
+                                should "ask for earnings between relevant period" do
+                                  assert_current_node :earnings_for_pay_period_paternity?
+                                end
+                                
+                                context "answer above 109 a week for 8 weeks" do  
+                                  setup { add_response "1000" }
+                                  
+                                  #QP14
+                                  should "ask weekly or usual pay dates for SPP" do
+                                    assert_current_node :how_do_you_want_the_spp_calculated?
+                                  end
+                                  
+                                  context "answer usual pay pattern monthly" do
+                                    setup { add_response "usual_paydates" }
+                                  
+                                    #QP16
+                                    should "ask when employee paid in the month" do
+                                      assert_current_node :monthly_pay_paternity?
+                                    end
+                                    
+                                    context "answer first or last day" do
+                                      should "reach the result when answering first day" do
+                                        add_response "first_day_of_the_month"
+                                        assert_state_variable "has_contract", "yes"
+                                        assert_phrase_list :paternity_info, [:paternity_entitled_to_leave, :paternity_entitled_to_pay]
+                                        assert_current_node :paternity_leave_and_pay
+                                      end
+                                      
+                                      should "reach the result when answering last day" do
+                                        add_response "last_day_of_the_month"
+                                        assert_phrase_list :paternity_info, [:paternity_entitled_to_leave, :paternity_entitled_to_pay]
+                                        assert_current_node :paternity_leave_and_pay
+                                      end
+                                    end
+                              
+                                    context "answer last working day" do
+                                      setup { add_response "last_working_day_of_the_month" }
+                                      should "ask which days of the week are worked" do
+                                        assert_current_node :days_of_the_week_paternity?
+                                      end
+                                      
+                                      should "accept the answer and go to outcome" do
+                                        add_response "2,3,5"
+                                        #assert_phrase_list :paternity_info, [:paternity_entitled_to_leave, :paternity_entitled_to_pay]
+                                        assert_current_node :paternity_leave_and_pay
+                                      end
+                                    end
+                                    
+                                    #QP17
+                                    context "answer specific date in month" do
+                                      setup { add_response "specific_date_each_month" }
+                                      should "ask which date" do
+                                        assert_current_node :specific_date_each_month_paternity?
+                                      end
+                                      should "accept an answer and go to the outcome" do
+                                        add_response "25"
+                                        assert_phrase_list :paternity_info, [:paternity_entitled_to_leave, :paternity_entitled_to_pay]
+                                        assert_current_node :paternity_leave_and_pay
+                                      end
+                                    end
+                                    
+                                    context "answer certain week day in each month" do
+                                      setup { add_response "a_certain_week_day_each_month" }
+                                      
+                                      #QP19
+                                      should "ask particular day of the month" do
+                                        assert_current_node :day_of_the_month_paternity?
+                                      end
+                                        
+                                      context "answer friday" do  
+                                        setup { add_response "friday" }   
+                                        
+                                        #QP20
+                                        should "ask employee pay day" do
+                                          assert_current_node :pay_date_options_paternity?
+                                        end
+                                        
+                                        context "answer second" do
+                                          setup { add_response "second" }
+                                          should "give the result" do
+                                            assert_current_node :paternity_leave_and_pay
+                                          end
+                                        end #QP20 end
+                                      end #QP19 end particular day of the month
+                                    end #QP16 end when employee paid in the month 
+                                  end #QP14 end usual pay dates (monthly) for SPP
+                                  
+                                  context "answer standard weekly" do
+                                    setup { add_response "weekly_starting" }
+                                    
+                                    #QP14 weekly outcome
+                                    should "go to outcome" do
+                                      assert_current_node :paternity_leave_and_pay
+                                      assert_state_variable "has_contract", "yes"
+                                      assert_phrase_list :paternity_info, [:paternity_entitled_to_leave, :paternity_entitled_to_pay]
+                                    end
+                                  end #QP14 end SPP calculated weekly
+                                end #QP13 end earings above 109 between relevant period
+                                
+                                context "answer less than 109 a week for 8 weeks" do
+                                  setup { add_response "10"}
+                                  
+                                  should "go to outcome" do
+                                    assert_current_node :paternity_leave_and_pay
+                                    assert_state_variable :has_contract, "yes"
+                                    assert_phrase_list :paternity_info, [:paternity_entitled_to_leave, :paternity_not_entitled_to_pay_intro,
+                                      :must_earn_over_threshold, :paternity_not_entitled_to_pay_outro]
+                                  end
+                                  
+                                end #QP 13 end earnings less than 109 between relevant period
+                              end  #QP12 end pay freqency
+                              
+                              context "answer weekly" do
+                                should "flow though usual pay date weekly" do
+                                  add_response "weekly"
+                                  add_response "5000"
+                                  add_response "usual_paydates"
+                                  add_response "2013-01-01"
+                                  assert_state_variable :average_weekly_earnings, 625
+                                  assert_state_variable :pay_dates_and_pay, {}
+                                  assert_current_node :paternity_leave_and_pay
+                                  assert_phrase_list :paternity_info, [:paternity_entitled_to_leave, :paternity_entitled_to_pay] 
+                                end
+                              end
+                            end #QP11 end 8 weeks before
+                          end #QP10 end last normal payday
+                        end  #QP9 end paternity length
+                      end #QP8 end paternity start date
+                    end #QP7 end still employed on birthdate
+                    
+                      context "answer no" do
+                        setup { add_response :no }
+                        
+                        should "not be entitled to leave or pay" do
+                        assert_phrase_list :paternity_info, [:paternity_not_entitled_to_leave, :paternity_not_entitled_to_pay_intro, :must_be_employed_by_you, :paternity_not_entitled_to_pay_outro]
+                        assert_current_node :paternity_leave_and_pay
+                      end
+                    end #QP7 end not employed on date of birth
                   end  # yes - QP6 on payroll
-
-                  #QP6 - not on payroll:
+                  
                   context "answer no" do
                     setup { add_response :no }
-
-                    should "state that they are not entitled for pay because not on payroll" do
-                      assert_phrase_list :paternity_pay_info, [:paternity_not_entitled_to_pay_intro, :must_be_on_payroll, :paternity_not_entitled_to_pay_outro]
-                      assert_current_node :paternity_leave_and_pay
+                    should "ask for start date of paternity leave" do
+                      assert_current_node :employee_start_paternity?
                     end
-                  end
-                end
-                #QP5 - not employed at end of relevant period
+                  end #QP 6 end employee not on payroll but has contract
+                  
+                end #QP5 end has contract
+                #QP4 - no employment contract
                 context "answer no" do
                   setup { add_response :no }
-
-                  should "state that they are not entitled to pay because not employed at end date" do
-                    assert_phrase_list :paternity_pay_info, [:paternity_not_entitled_to_pay_intro, :must_be_employed_by_you, :paternity_not_entitled_to_pay_outro]
-                    assert_current_node :paternity_leave_and_pay
-                  end
-                end
-              end
-              #QP4 - no employment contract
-              context "answer no" do
-                setup { add_response :no }
-
-                should "not be entitled to leave" do
-                  assert_phrase_list :paternity_leave_info, [:paternity_not_entitled_to_leave]
-                end
-                #QP5
-                should "ask if employee will be employed at employment_end" do
-                  assert_current_node :employee_employed_at_employment_end_paternity?
-                end
-
-                context "answer yes" do
-                  setup { add_response :yes }
-
-                  # QP6
+                  
+                  #QP6 - not on payroll
                   should "ask if employee is on payroll" do
                     assert_current_node :employee_on_payroll_paternity?
-                  end
-
-                  context "answer yes" do
-                    setup { add_response :yes }
-
-                    #QP6.2
-                    should "ask for last normal payday before ..." do
-                      assert_current_node :last_normal_payday?
+                  end  
+                  
+                  context "answer no" do
+                    setup { add_response :no }
+                    
+                    should "not be entitled to leave or pay" do
+                      assert_current_node :paternity_leave_and_pay
+                      assert_phrase_list :paternity_info, [:paternity_not_entitled_to_leave, :paternity_not_entitled_to_pay_intro, :must_be_on_payroll, :paternity_not_entitled_to_pay_outro]
+                      assert_current_node :paternity_leave_and_pay
                     end
-
-                    context "answer 1 March 2013" do
-                      setup { add_response Date.parse("1 March 2013") }
-
-                      #QP6.3
-                      should "ask for payday eight weeks before" do
-                        assert_current_node :payday_eight_weeks?
-                      end
-
-                      context "answer 1 January 2013" do
-                        setup { add_response Date.parse("1 January 2013") }
-
-                        # QP7
-                        should "ask for average weekly earnings" do
-                          assert_current_node :employees_average_weekly_earnings_paternity?
-                        end
-
-                        context "answer 107.00" do
-                          setup { add_response 107.00 }
-
-                          should "display employee is entitled to pay" do
-                            assert_phrase_list :paternity_pay_info, [:paternity_entitled_to_pay]
-                            assert_current_node :paternity_leave_and_pay
-                          end
-                        end #answer 107
-                      end
+                  end #QP6 - not on payroll
+                  
+                  context "usual weekly pay pattern no contract" do
+                    should "flow though usual pay date weekly" do
+                      add_response "yes"
+                      add_response "yes"
+                      add_response "2013-06-12"
+                      add_response "one_week"
+                      add_response "2013-01-01"
+                      add_response "2012-11-01"
+                      add_response "weekly"
+                      add_response "3000"
+                      add_response "usual_paydates"
+                      add_response "2013-03-01"
+                      assert_current_node :paternity_leave_and_pay
+                      # assert_current_node :next_pay_day_paternity?
+                      assert_phrase_list :paternity_info, [:paternity_not_entitled_to_leave, :paternity_entitled_to_pay]
                     end
                   end
-                end
-              end # no employment contract
-            end # worked for you before employment start
-            # Q3 - did not work for you
+                end #QP5 - no employment contract
+              end # worked for you before employment start
+            end #QP3 end
+            #Q2 - not a father, partner nor husband
             context "answer no" do
               setup { add_response :no }
 
-              should "state that they are not entitled to leave or pay because not worked long enough" do
-                assert_phrase_list :not_entitled_reason, [:not_worked_long_enough]
+              should "state that they are not entitled to leave or pay because they're not responsible for upbringing" do
+                assert_phrase_list :not_entitled_reason, [:paternity_not_entitled_to_leave_or_pay_intro, :not_responsible_for_upbringing, :paternity_not_entitled_to_leave_or_pay_outro]
                 assert_current_node :paternity_not_entitled_to_leave_or_pay
               end
-            end
-          end
-          #Q2 - not a father, partner nor husband
-          context "answer no" do
-            setup { add_response :no }
-
-            should "state that they are not entitled to leave or pay because they're not responsible for upbringing" do
-              assert_phrase_list :not_entitled_reason, [:not_responsible_for_upbringing]
-              assert_current_node :paternity_not_entitled_to_leave_or_pay
             end
           end
         end #due date 3 months from now
@@ -1017,7 +1102,7 @@ class MaternityPaternityCalculatorTest < ActiveSupport::TestCase
               end
             end
           end
-        end # Paternity Adoption flow
+        end #Paternity Adoption flow
 
       end #QP0 - yes
     end # Date 9th April
@@ -1238,4 +1323,27 @@ class MaternityPaternityCalculatorTest < ActiveSupport::TestCase
       end
     end
   end # adoption
+  
+  # Working test for QP9 outcomes
+  context "QP 9 outcome" do
+    setup do
+      add_response "paternity"
+      add_response "no"
+      add_response Date.parse("2013-04-09")
+      add_response Date.parse("2013-04-09")
+      add_response "yes"
+      add_response "yes"
+      add_response "yes"
+      add_response "no"
+      add_response Date.parse("2013-06-12")
+      add_response "one_week"
+    end 
+    
+    should "go to outcome" do
+      assert_current_node :paternity_leave_and_pay
+      assert_phrase_list :paternity_info, [:paternity_entitled_to_leave, :paternity_not_entitled_to_pay_intro,
+        :must_be_on_payroll, :paternity_not_entitled_to_pay_outro]
+    end
+  end
+        
 end

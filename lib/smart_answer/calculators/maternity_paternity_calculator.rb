@@ -8,9 +8,9 @@ module SmartAnswer::Calculators
       :leave_earliest_start_date, :adoption_placement_date, :ssp_stop,
       :matched_week, :a_employment_start
 
-    attr_accessor :employment_contract, :leave_start_date, :average_weekly_earnings, :a_notice_leave,
-      :last_payday, :pre_offset_payday, :pay_date, :pay_day_in_month, :pay_day_in_week,
-      :pay_method, :pay_week_in_month, :work_days
+    attr_accessor :employment_contract, :leave_start_date, :average_weekly_earnings, 
+      :a_notice_leave, :last_payday, :pre_offset_payday, :pay_date, 
+        :pay_day_in_month, :pay_day_in_week, :pay_method, :pay_week_in_month, :work_days, :date_of_birth, :awe
 
     LEAVE_TYPE_BIRTH = "birth"
     LEAVE_TYPE_ADOPTION = "adoption"
@@ -54,11 +54,11 @@ module SmartAnswer::Calculators
     end
 
     def leave_end_date
-      52.weeks.since(@leave_start_date) - 1
+      52.weeks.since(leave_start_date) - 1
     end
 
     def pay_start_date
-      @leave_start_date
+      leave_start_date
     end
 
     def pay_end_date
@@ -140,6 +140,11 @@ module SmartAnswer::Calculators
       awe = (@average_weekly_earnings.to_f * 0.9).round(2)
       [current_statutory_rate, awe].min
     end
+    
+    def test(earnings)
+      awe = (earnings.to_f / 8).round(2)
+    end
+    
 
     ## Adoption
     ##
@@ -171,7 +176,6 @@ module SmartAnswer::Calculators
 
     def paydates_and_pay
       paydates = send(:"paydates_#{pay_method}")
-
       [].tap do |ary|
         paydates.each_with_index do |paydate, index|
           # Pay period includes the date of payment hence the range starts the day after.
@@ -222,6 +226,7 @@ module SmartAnswer::Calculators
     end
 
     def paydates_monthly
+puts "pay_end_date : #{pay_end_date}, pay_day_in_month: #{pay_day_in_month}"
       end_date = Date.civil(pay_end_date.year, pay_end_date.month, pay_day_in_month)
       end_date = 1.month.since(end_date) if pay_end_date.day > pay_day_in_month
       [].tap do |ary|
@@ -234,6 +239,7 @@ module SmartAnswer::Calculators
     alias paydates_specific_date_each_month paydates_monthly
 
     def paydates_weekly
+puts "pay_date: #{pay_date}"
       [].tap do |ary|
         pay_start_date.step(pay_end_date + 7) do |d|
           ary << d if d.wday == pay_date.wday
@@ -250,6 +256,7 @@ module SmartAnswer::Calculators
     end
 
     def paydates_a_certain_week_day_each_month
+      puts "Pay week: #{pay_week_in_month} + #{pay_day_in_week}"
       [].tap do |ary|
         months_between_dates(pay_start_date, pay_end_date).each do |date|
           weekdays = weekdays_for_month(date, pay_day_in_week)

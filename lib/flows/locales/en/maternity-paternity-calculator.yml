@@ -11,6 +11,9 @@ en-GB:
         "maternity": "Maternity"
         "paternity": "Paternity"
         "adoption": "Adoption"
+        "one_week": "One Week"
+        "two_weeks": "Two Weeks"
+        "weekly": "Weekly"
       body: |
         Calculate your employee’s:
 
@@ -105,9 +108,15 @@ en-GB:
         paternity_entitled_to_leave: |
           ##Statutory Paternity Leave
 
-          The employee is entitled to either 1 or 2 weeks Statutory Paternity leave. Notice should be given by %{p_notice_leave}.
+          The employee is entitled to Statutory Paternity Leave.
 
-          The leave can’t start before the birth and should be taken within 56 days of the birth (or the due date if the baby is born early).
+          |Leave                         | Key dates                    |
+          |------------------------------|------------------------------|
+          |Start                         | %{leave_start_date}          |
+          |End                           | %{leave_end_date}            |
+          |Latest date to [claim leave](/employers-paternity-pay-leave/notice-period)     | %{notice_of_leave_deadline}  |
+
+          ^Leave must finish within 56 days of the birth (or due date if the baby is early).^
 
         paternity_not_entitled_to_leave: |
           ##Statutory Paternity Leave
@@ -117,16 +126,24 @@ en-GB:
           Write to them within 28 days of their leave request confirming this.
 
         paternity_entitled_to_pay: |
-          ##Statutory Paternity Pay
+          ##Statutory Paternity Pay (SPP)
+          
+          The employee is entitled to SPP.
+          
+          Their average weekly earnings are: £%{average_weekly_earnings}
+          
+          The latest date for them to [claim SPP](/employers-paternity-pay-leave/notice-period) is usually 28 days before they want it to start.
 
-          If the employee is still employed by you on the date of birth, they’re entitled to Statutory Paternity Pay - £%{spp_rate} a week.
+        paternity_not_entitled_to_leave_or_pay_intro: |
+          ##Not entitled to Statutory Paternity Pay or Leave
 
-          They should request this using form SC3 (or your own version) usually 28 days before it is due to start.
+          The employee is not entitled to Statutory Paternity Leave or Pay because: 
 
+        paternity_not_entitled_to_leave_or_pay_outro: |
+        
+          You must write confirming this. Also, send them form OSP1 confirming they’re not entitled to pay within 28 days of their pay request. 
 
-          $D
-            [Download Form SC3, notice for Statutory Paternity Pay and or Leave (PDF, 100KB)](http://www.hmrc.gov.uk/forms/sc3.pdf "Download Form SC3, notice for Statutory Paternity Pay and or Leave (PDF, 100KB)")
-          $D
+          $D [Download Form OSPP1, refusing Statutory Paternity Pay (PDF, 100KB)](http://www.hmrc.gov.uk/forms/spp1.pdf) $D
 
         paternity_not_entitled_to_pay_intro: |
           ##Statutory Paternity Pay
@@ -260,8 +277,10 @@ en-GB:
         title: How often do you pay the employee?
         hint: If they’re paid irregularly choose ‘weekly’. 
         options:
-          "every_2_weeks": "every 2 weeks"
-          "every_4_weeks": "every 4 weeks"
+          "weekly": "Weekly"
+          "every_2_weeks": "Every 2 weeks"
+          "every_4_weeks": "Every 4 weeks"
+          "monthly": "Monthly"
       ## QM5.5
       earnings_for_pay_period?:
         title: What were the employee’s total earnings between %{relevant_period}?
@@ -287,7 +306,7 @@ en-GB:
       ## QM10
       what_specific_date_each_month_is_the_employee_paid?:
         title: What specific date each month is the employee paid?
-        hint: If they’re paid on the 25th enter "25". The calculator will treat an employee as paid on the last day of the month if you enter 29, 30 or 31. 
+        hint: If they’re paid on the 25th enter "25". The calculator will treat an employee as paid on the last day of the month if you enter 29, 30 or 31.
         error_message: Enter a date between 1 and 31.
       ## QM11
       what_days_does_the_employee_work?:
@@ -330,38 +349,120 @@ en-GB:
       baby_due_date_paternity?:
         title: What is the baby’s due date?
       ## QP2
+      baby_birth_date_paternity?:
+        title: What is the actual birth date?
+        hint: If unknown enter the due date.
+      ## QP3
       employee_responsible_for_upbringing?:
         title: Is the employee responsible for the child’s upbringing and either the biological father or the mother’s husband or partner?
-      ## QP3
+      ## QP4
       employee_work_before_employment_start?:
         title: Did the employee work for you on or before %{employment_start}?
-      ## QP4
+      ## QP5
       employee_has_contract_paternity?:
         title: Does the employee have an employment contract with you?
-      ## QP5
-      employee_employed_at_employment_end_paternity?:
-        title: Will the employee be employed by you on %{employment_end}?
       ## QP6
       employee_on_payroll_paternity?:
         title: Is the employee on your payroll?
       ## QP7
-      employees_average_weekly_earnings_paternity?:
-        title: What were the employee’s average weekly earnings between %{relevant_period}?
-        hint: Enter the average weekly amount. The dates are the 8 week 'relevant period'.
-        suffix_label: per week
-        error_message: Please enter a number greater than 0
+      employee_still_employed_on_birth_date?:
+        title: Will the employee still be employed by you on %{date_of_birth}?
+      ## QP8
+      employee_start_paternity?:
+        title: When does the employee want to start their paternity leave?
+        hint: Leave cannot start before %{date_of_birth}.
+      ## QP9
+      employee_paternity_length?:
+        title: How long is the employee's paternity leave?
+        options:
+          "one_week": "One week"
+          "two_weeks": "Two weeks"
+      ## QP10
+      last_normal_payday_paternity?:
+        title: What was the last normal payday on or before %{to_saturday}
+        error_message: You must enter a date on or before %{to_saturday}
+      ## QP11
+      payday_eight_weeks_paternity?:
+        title: What was the last normal payday before %{payday_offset}
+        error_message: You must enter a date before %{payday_offset}
+      ## QP12
+      pay_frequency_paternity?:
+        title: How often do you pay the employee?
+        hint: If they are paid irregularly choose 'weekly'.
+        options:
+          "weekly": "Weekly"
+          "every_2_weeks": "Every 2 weeks"
+          "every_4_weeks": "Every 4 weeks"
+          "monthly": "Monthly"
+      ## QP13
+      earnings_for_pay_period_paternity?:
+        title: What were the employee's total earnings between %{relevant_period}?
+        hint: This is the earnings before deductions like PAYE, pendion or National Insurance contributions.
+      ## QP14
+      how_do_you_want_the_spp_calculated?:
+      title: How do you want the paternity pay calculated?
+      options:
+          "weekly_starting": "Weekly starting %{leave_start_date}"
+          "usual_paydates": "Based on their usual paydates"
+      ## QP15
+      next_pay_day_paternity?:
+        title: When is your employee's next pay day on or after %{leave_start_date}
+      ## QP16
+      monthly_pay_paternity?:
+        title: When in the month is the employee paid?
+        hint: If the pay date is the 29th, 30th or 31st choose 'Last working day of the month'.
+        options:
+          "first_day": "First day of the month"
+          "last_day": "Last day of the month"
+          "specific_date": "Specific date each month"
+          "last_working_day": "Last working day of the month"
+          "certain_week_day": "A certain week day each month"
+      ## QP17
+      specific_date_each_month_paternity?:
+        title: What specific date each month is the employee paid?
+        hint: If they are paid on the 25th enter '25'. The calculator will treat an employee as paid on the last day of the month if you enter '29', '30' or '31'.
+        error_message: Enter a date between 1 and 31.
+      ## QP18
+      days_of_the_week_paternity?:
+        title: What days does the employee work?
+        options:
+          "0": "Sunday"
+          "1": "Monday"
+          "2": "Tuesday"
+          "3": "Wednesday"
+          "4": "Thursday"
+          "5": "Friday"
+          "6": "Saturday"
+      ## QP19
+      day_of_the_month_paternity?:
+        title: What particular day of the month is the employee paid?
+        options:
+          "0": "Sunday"
+          "1": "Monday"
+          "2": "Tuesday"
+          "3": "Wednesday"
+          "4": "Thursday"
+          "5": "Friday"
+          "6": "Saturday"
+      ## QP20
+      pay_date_options_paternity?:
+        title: Is the employee paid on the 1st, 2nd, 3rd, 4th of last %{pay_day_in_week}?
+        options:
+          "first": "1st"
+          "second": "2nd"
+          "third": "3rd"
+          "fourth": "4th"
+          "last": "last"
       ## Paternity Results:
       paternity_leave_and_pay:
         next_steps: |
-          Read the [guide to Statutory Paternity Pay and Leave](/paternity-leave-pay-employees "Paternity leave and pay")
+          Read the [guide to Statutory Paternity Pay and Leave](/employers-paternity-pay-leave "Paternity leave and pay")
         body: |
-          %{paternity_leave_info}
-
-          %{paternity_pay_info}
+          %{paternity_info}
 
       paternity_not_entitled_to_leave_or_pay:
         next_steps: |
-          Read the [guide to Statutory Paternity Pay and Leave](/paternity-leave-pay-employees "Paternity leave and pay")
+          Read the [guide to Statutory Paternity Pay and Leave](/employers-paternity-pay-leave "Paternity leave and pay")
         body: |
           ##Not entitled to paternity leave or pay
 
