@@ -1,4 +1,4 @@
-require "data/state_pension_topup_data"
+require "data/state_pension_top_up_query"
 
 module SmartAnswer::Calculators
   class StatePensionTopUpCalculator
@@ -71,7 +71,7 @@ module SmartAnswer::Calculators
     end
 
     def state_pension_date(sp_gender = gender)
-      StatePensionQueryV2.find(dob, sp_gender)
+      StatePensionTopUpQuery.find(dob, sp_gender)
     end
 
     def state_pension_age
