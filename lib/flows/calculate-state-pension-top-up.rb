@@ -46,7 +46,7 @@ date_question :dob? do
     calc = Calculators::StatePensionTopUpCalculator.new(dob: response)
     
     if calc.over_100_years_old?
-      :outcome_age_limit_reached
+      :outcome_age_limit_reached_now
     elsif (response < ('1951-04-06') and gender == "male") or (response < ('1953-04-06') and gender == "female")
       :outcome_pension_age_not_reached
     else
@@ -107,4 +107,4 @@ end
 outcome :outcome_pension_age_not_reached
 
 #A3
-outcome :outcome_age_limit_reached
+outcome :outcome_age_limit_reached_now

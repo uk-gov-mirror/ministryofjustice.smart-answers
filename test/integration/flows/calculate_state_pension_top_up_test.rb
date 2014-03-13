@@ -63,7 +63,7 @@ class CalculateStatePensionTopUpTest < ActiveSupport::TestCase
       end
 
       should "go to age limit reached outcome" do
-        assert_current_node :outcome_age_limit_reached
+        assert_current_node :outcome_age_limit_reached_now
       end
     end
   end

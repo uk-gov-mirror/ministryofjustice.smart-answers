@@ -58,8 +58,13 @@ en-GB:
           You come under the [new State Pension](/new-state-pension) scheme. 
 
       # Outcome 3
-      outcome_age_limit_reached:
+      outcome_age_limit_reached_now:
         title: | 
         body: |
           ##You must be 100 years old or younger to use State Pension top up
         
+      # Outcome 4
+      outcome_age_limit_reached_now:
+        title: | 
+        body: |
+          ##TO BE CHANGED
