@@ -22,10 +22,10 @@ en-GB:
       # Q2:Age
       dob?:
         title: What is your date of birth?
-        error_message: Enter your date of birth
+        error_message: you're over 100 
       #Q3
       how_much_per_week?:
-        title: What is your date of birth?
+        title: How much would you like to get per week?
         hint: Enter a number between 1 and 25
         error_message: Enter an amount in whole
 
@@ -33,7 +33,7 @@ en-GB:
       date_of_lump_sum_payment?:
         title: When will you pay your lump sum?
         hint:  This must be between 1 October 2015 and 1 April 2017
-        error_message: Estimate when you’ll make your lump sum payment
+        # error_message: Estimate when you’ll make your lump sum payment
 
       phrases:
 
@@ -47,6 +47,7 @@ en-GB:
           You’ll be able to do this from October 2015.
 
           Find out more about [topping up your State Pension](/voluntary-national-insurance-contributions/class-3a).
+          
 
       # Outcome 2
       outcome_pension_age_not_reached:

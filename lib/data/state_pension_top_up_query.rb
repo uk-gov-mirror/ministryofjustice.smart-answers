@@ -24,7 +24,7 @@ class StatePensionTopUpQuery < Struct.new(:dob, :gender)
     result = state_pension_query.run
     state_pension_query.account_for_leap_year(result.pension_date)
   end
-#NO IDEA ABOUT THIS
+#we need to think about 
   def run
     state_pension_dates.find{|p| p.match?(dob, gender)}
   end

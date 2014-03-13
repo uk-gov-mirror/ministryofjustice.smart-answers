@@ -270,9 +270,9 @@ en-GB:
         title: What is your date of birth?
         error_message: Enter your date of birth
       ## Q3:Amount
-      dob_amount?:
-        title: What is your date of birth?
-        error_message: Enter your date of birth
+      how_much_per_week?:
+        title: How much would you like to get per week?
+        error_message: Enter a number between 1 and 25
       ## Q4
       years_paid_ni?:
         title: How many years have you worked and paid National Insurance contributions from the age of 19?
