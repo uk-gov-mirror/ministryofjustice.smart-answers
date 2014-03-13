@@ -2,7 +2,7 @@
 status :draft
 satisfies_need ""
 
-pension_top_up_calc = SmartAnswer::Calculators::StatePensionTopUpCalculator.new
+# calc = SmartAnswer::Calculators::StatePensionTopUpCalculator.new
 
 # Q1
 multiple_choice :gender? do
@@ -42,9 +42,12 @@ date_question :dob? do
     # date_today = Date.today
     # raise InvalidResponse if response < (date_today - 100)
     #IF THIS IS ACTIVE, IT DOES NOT LET YOU LEAVE THE QUESTION 
-
- 
-    if (response < ('1951-04-06') and gender == "male") or (response < ('1953-04-06') and gender == "female")
+    
+    calc = Calculators::StatePensionTopUpCalculator.new(dob: response)
+    
+    if calc.over_100_years_old?
+      :outcome_age_limit_reached
+    elsif (response < ('1951-04-06') and gender == "male") or (response < ('1953-04-06') and gender == "female")
       :outcome_pension_age_not_reached
     else
       :how_much_per_week?
@@ -70,19 +73,19 @@ date_question :date_of_lump_sum_payment? do
   # calculate :age_at_date_of_payment do 
   #   (responses.last - dob)
   # end
-  
-  next_node do |response|
-    a = response.year - dob.year
-    if (dob.month > response.month) or (dob.month >= response.month and dob.day > response.day)
-      a = a - 1 
-    end
+  next_node :outcome_result
+  # next_node do |response|
+  #   a = response.year - dob.year
+  #   if (dob.month > response.month) or (dob.month >= response.month and dob.day > response.day)
+  #     a = a - 1 
+  #   end
     
-    if a > 100 ### implement month and day
-      :outcome_age_limit_reached
-    else
-      :outcome_result
-    end
-  end
+  #   if a > '0101-00-00' ### implement month and day
+  #     :outcome_age_limit_reached
+  #   else
+      # :outcome_result
+  #   end
+  # end
 end
 
 ## Outcomes

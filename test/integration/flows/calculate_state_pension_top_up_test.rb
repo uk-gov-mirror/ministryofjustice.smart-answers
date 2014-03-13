@@ -43,7 +43,7 @@ class CalculateStatePensionTopUpTest < ActiveSupport::TestCase
           
         context "go to final outcome with calculations" do
           setup do 
-            add_response Date.parse('2016-10-01')
+            add_response Date.parse('2015-10-01')
           end
             
           should "show final outcome" do
@@ -62,9 +62,8 @@ class CalculateStatePensionTopUpTest < ActiveSupport::TestCase
         add_response Date.parse('1900-02-02')
       end
 
-      should "show error message" do
-        # assert_state_variable :error_message, true
-        assert_current_node :outcome_pension_age_not_reached
+      should "go to age limit reached outcome" do
+        assert_current_node :outcome_age_limit_reached
       end
     end
   end
