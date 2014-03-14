@@ -1,77 +1,40 @@
 ___
-age_63:
-  age_rate: 934
-age_64:
-  age_rate: 913
-age_65:
-  age_rate: 890
-age_66:
-  age_rate: 871
-age_67:
-  age_rate: 847
-age_68:
-  age_rate: 827
-age_69:
-  age_rate: 801
-age_70:
-  age_rate: 779
-age_71:
-  age_rate: 761
-age_72:
-  age_rate: 738
-age_73:
-  age_rate: 719
-age_74:
-  age_rate: 694
-age_75:
-  age_rate: 674
-age_76:
-  age_rate: 646
-age_77:
-  age_rate: 625
-age_78:
-  age_rate: 596
-age_79:
-  age_rate: 574
-age_80:
-  age_rate: 544
-age_81:
-  age_rate: 514
-age_82:
-  age_rate: 484
-age_83:
-  age_rate: 454
-age_84:
-  age_rate: 424
-age_85:
-  age_rate: 394
-age_86:
-  age_rate: 366
-age_87:
-  age_rate: 339
-age_88:
-  age_rate: 314
-age_89:
-  age_rate: 291
-age_90:
-  age_rate: 270
-age_91:
-  age_rate: 251
-age_92:
-  age_rate: 232
-age_93:
-  age_rate: 216
-age_94:
-  age_rate: 200
-age_95:
-  age_rate: 185
-age_96:
-  age_rate: 172
-age_97:
-  age_rate: 159
-age_98:
-  age_rate: 148
-age_99:
-  age_rate: 137
-age_100:
-  age_rate: 127
+age_rates: 
+  63: 934
+  64: 913
+  65: 890
+  66: 871
+  67: 847
+  68: 827
+  69: 801
+  70: 779
+  71: 761
+  72: 738
+  73: 719
+  74: 694
+  75: 674
+  76: 646
+  77: 625
+  78: 596
+  79: 574
+  80: 544
+  81: 514
+  82: 484
+  83: 454
+  84: 424
+  85: 394
+  86: 366
+  87: 339
+  88: 314
+  89: 291
+  90: 270
+  91: 251
+  92: 232
+  93: 216
+  94: 200
+  95: 185
+  96: 172
+  97: 159
+  98: 148
+  99: 137
+  100: 127

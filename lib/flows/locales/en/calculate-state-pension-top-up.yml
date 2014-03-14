@@ -64,7 +64,7 @@ en-GB:
           ##You must be 100 years old or younger to use State Pension top up
         
       # Outcome 4
-      outcome_age_limit_reached_now:
+      outcome_age_limit_reached_at_payment:
         title: | 
         body: |
           ##TO BE CHANGED
