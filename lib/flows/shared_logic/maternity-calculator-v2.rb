@@ -126,18 +126,9 @@ date_question :payday_eight_weeks? do
     calculator.formatted_relevant_period
   end
 
-  next_node do |response|
-    case payday_exit
-    when 'maternity'
-      :pay_frequency?
-    when 'paternity'
-      :pay_frequency?
-    when 'paternity_adoption'
-      :padoption_employee_avg_weekly_earnings?
-    when 'adoption'
-      :adoption_employees_average_weekly_earnings?
-    end
-  end
+  next_node_if(:pay_frequency?, ->{ %w{maternity paternity}.include?(payday_exit) })
+  next_node_if(:padoption_employee_avg_weekly_earnings?, ->{ payday_exit == 'paternity_adoption' })
+  next_node_if(:adoption_employees_average_weekly_earnings?, ->{ payday_exit == 'adoption' })
 end
 
 ## QM5.4
