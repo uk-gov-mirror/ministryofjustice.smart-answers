@@ -22,8 +22,9 @@ module SmartAnswer
         end
       end
 
-      def next_node_if(next_node, callable = nil, &block)
-        @next_node_function_chain << [next_node, callable || block]
+      def next_node_if(next_node, *predicates, &block)
+        predicates << block if block_given?
+        @next_node_function_chain << [next_node, *predicates]
         @permitted_next_nodes << next_node
       end
 
@@ -92,8 +93,10 @@ module SmartAnswer
       end
 
       def next_node_from_function_chain(current_state, input)
-        found = @next_node_function_chain.find do |(_, predicate)|
-          current_state.instance_exec(input, &predicate)
+        found = @next_node_function_chain.find do |(_, *predicates)|
+          predicates.all? do |predicate|
+            current_state.instance_exec(input, &predicate)
+          end
         end
         found && found.first
       end

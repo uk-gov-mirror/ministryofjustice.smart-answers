@@ -150,12 +150,21 @@ class QuestionBaseTest < ActiveSupport::TestCase
     assert_equal :bar, q.next_node_for(initial_state, :red)
   end
 
-  test "conditional next node can be specified using next_node_if passing a callable" do
+  test "conditional next node can be specified using next_node_if passing a predicate" do
     q = SmartAnswer::Question::Base.new(:example) {
       next_node_if(:bar, ->(_) {true})
     }
     initial_state = SmartAnswer::State.new(q.name)
     assert_equal :bar, q.next_node_for(initial_state, :red)
+  end
+
+  test "conditional next node can be specified using next_node_if passing a list of predicates all of which must be true" do
+    q = SmartAnswer::Question::Base.new(:example) {
+      next_node_if(:bar, ->(_) {true}, ->(_) {false})
+      next_node_if(:baz, ->(_) {true})
+    }
+    initial_state = SmartAnswer::State.new(q.name)
+    assert_equal :baz, q.next_node_for(initial_state, :red)
   end
 
   test "conditional next nodes are evaluated in order" do
