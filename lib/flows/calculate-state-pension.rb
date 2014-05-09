@@ -28,9 +28,8 @@ multiple_choice :gender? do
     end
   end
 
-  next_node do
-    calculate_age_or_amount == "age" ? :dob_age? : :dob_amount?
-  end
+  next_node_if(:dob_age?) { calculate_age_or_amount == "age" }
+  next_node(:dob_amount?)
 end
 
 
@@ -95,24 +94,17 @@ date_question :dob_age? do
     end
   end
 
-  next_node do |response|
-    raise InvalidResponse if Date.parse(response) > Date.today
+  validate { |dob| Date.parse(dob) <= Date.today }
 
-    calc = Calculators::StatePensionAmountCalculator.new(
-      gender: gender, dob: response)
-
-
-    near_pension_date = (calc.before_state_pension_date? and
-                         calc.within_four_months_one_day_from_state_pension?)
-
-    if calc.under_20_years_old?
-      :too_young
-    elsif near_pension_date
-      :near_state_pension_age
-    else
-      :age_result
-    end
+  next_node_calculation(:calc) do |response|
+    Calculators::StatePensionAmountCalculator.new(gender: gender, dob: response)
   end
+
+  next_node_if(:too_young) { calc.under_20_years_old? }
+  next_node_if(:near_state_pension_age) {
+    calc.before_state_pension_date? and calc.within_four_months_one_day_from_state_pension?
+  }
+  next_node(:age_result)
 end
 
 # Q3:Amount
@@ -146,22 +138,13 @@ date_question :dob_amount? do
     calculator.available_years
   end
 
-
-  next_node do |response|
-    raise InvalidResponse if Date.parse(response) > Date.today
-
-    calc = Calculators::StatePensionAmountCalculator.new(
-      gender: gender, dob: response)
-    if calc.before_state_pension_date?
-      if calc.under_20_years_old?
-        :too_young
-      else
-        :years_paid_ni?
-      end
-    else
-      :reached_state_pension_age
-    end
+  validate { |dob| Date.parse(dob) <= Date.today }
+  next_node_calculation(:calculator) do |response|
+    Calculators::StatePensionAmountCalculator.new(gender: gender, dob: response)
   end
+  next_node_if(:too_young) { calculator.before_state_pension_date? && calculator.under_20_years_old? }
+  next_node_if(:years_paid_ni?) { calculator.before_state_pension_date? }
+  next_node(:reached_state_pension_age)
 end
 
 # Q4
@@ -195,20 +178,10 @@ value_question :years_paid_ni? do
     calculator.available_years_sum(Integer(responses.last))
   end
 
-  next_node do |response|
-    ni = Integer(response)
-    if calculator.enough_qualifying_years_and_credits?(ni)
-      :amount_result
-    elsif calculator.no_more_available_years?(ni)
-      if calculator.three_year_credit_age?
-        :amount_result
-      else
-        :years_of_work? # Q10
-      end
-    else
-      :years_of_jsa? # Q5
-    end
-  end
+  next_node_if(:amount_result) { |ni| calculator.enough_qualifying_years_and_credits?(Integer(ni)) }
+  next_node_if(:amount_result) { |ni| calculator.no_more_available_years?(Integer(ni)) && calculator.three_year_credit_age? }
+  next_node_if(:years_of_work?) { |ni| calculator.no_more_available_years?(Integer(ni)) } # Q10
+  next_node(:years_of_jsa?) # Q5
 end
 
 # Q5
@@ -224,25 +197,12 @@ value_question :years_of_jsa? do
     calculator.available_years_sum(qualifying_years)
   end
 
-  calculate :calc do
-    calc = Calculators::StatePensionAmountCalculator.new(
-    gender: gender, dob: dob, qualifying_years: qualifying_years )
-  end
+  next_node_calculation(:ni) { |response| Integer(response) + qualifying_years }
 
-  next_node do |response|
-    ni = Integer(response) + qualifying_years
-    if calculator.enough_qualifying_years_and_credits?(ni)
-      :amount_result
-    elsif calculator.no_more_available_years?(ni)
-      if calculator.three_year_credit_age?
-        :amount_result
-      else
-        :years_of_work? # Q10
-      end
-    else
-      :received_child_benefit? # Q6
-    end
-  end
+  next_node_if(:amount_result) { calculator.enough_qualifying_years_and_credits?(ni) }
+  next_node_if(:amount_result) { calculator.no_more_available_years?(ni) && calculator.three_year_credit_age? }
+  next_node_if(:years_of_work?) { calculator.no_more_available_years?(ni) } # Q10
+  next_node(:received_child_benefit?) # Q6
 end
 
 
@@ -251,13 +211,9 @@ multiple_choice :received_child_benefit? do
   option :yes
   option :no
 
-  next_node do |response|
-    if response == "yes"
-      :years_of_benefit?
-    else
-      (calculator.three_year_credit_age? ? :amount_result : :years_of_work?)
-    end
-  end
+  next_node_if(:years_of_benefit?) { |r| r == 'yes' }
+  next_node_if(:amount_result) { |r| calculator.three_year_credit_age? }
+  next_node(:years_of_work?)
 end
 
 ## Q7
@@ -282,21 +238,11 @@ value_question :years_of_benefit? do
     calculator.available_years_sum(qualifying_years)
   end
 
-  next_node do |response|
-    benefit_years = Integer(response)
-    ni = (qualifying_years + benefit_years)
-    if calculator.enough_qualifying_years_and_credits?(ni)
-      :amount_result
-    elsif calculator.no_more_available_years?(ni)
-      if calculator.three_year_credit_age?
-        :amount_result
-      else
-        :years_of_work? # Q10
-      end
-    else
-      :years_of_caring? # Q8
-    end
-  end
+  next_node_calculation(:ni) { |benefit_years| qualifying_years + Integer(benefit_years) }
+  next_node_if(:amount_result) {calculator.enough_qualifying_years_and_credits?(ni)}
+  next_node_if(:amount_result) { calculator.no_more_available_years?(ni) && calculator.three_year_credit_age? }
+  next_node_if(:years_of_work?) { calculator.no_more_available_years?(ni) } # Q10
+  next_node(:years_of_caring?) # Q8
 end
 
 ## Q8
@@ -324,21 +270,11 @@ value_question :years_of_caring? do
     calculator.available_years_sum(qualifying_years)
   end
 
-  next_node do |response|
-    caring_years = Integer(response)
-    ni = (qualifying_years + caring_years)
-    if calculator.enough_qualifying_years_and_credits?(ni)
-      :amount_result
-    elsif calculator.no_more_available_years?(ni)
-      if calculator.three_year_credit_age?
-        :amount_result
-      else
-        :years_of_work? # Q10
-      end
-    else
-      :years_of_carers_allowance? # Q9
-    end
-  end
+  next_node_calculation(:ni) {|caring_years| qualifying_years + Integer(caring_years)}
+  next_node_if(:amount_result) {calculator.enough_qualifying_years_and_credits?(ni)}
+  next_node_if(:amount_result) { calculator.no_more_available_years?(ni) && calculator.three_year_credit_age? }
+  next_node_if(:years_of_work?) { calculator.no_more_available_years?(ni) } # Q10
+  next_node(:years_of_carers_allowance?) # Q9
 end
 
 ## Q9
@@ -350,15 +286,9 @@ value_question :years_of_carers_allowance? do
     qy
   end
 
-  next_node do |response|
-    caring_years = Integer(response)
-    ni = (qualifying_years + caring_years)
-    if calculator.enough_qualifying_years_and_credits?(ni) or calculator.three_year_credit_age?
-      :amount_result
-    else
-      :years_of_work?
-    end
-  end
+  next_node_calculation(:ni) { |caring_years| qualifying_years + Integer(caring_years) }
+  next_node_if(:amount_result) { calculator.enough_qualifying_years_and_credits?(ni) or calculator.three_year_credit_age? }
+  next_node(:years_of_work?)
 end
 
 
