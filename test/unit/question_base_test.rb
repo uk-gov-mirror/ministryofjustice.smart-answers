@@ -142,9 +142,17 @@ class QuestionBaseTest < ActiveSupport::TestCase
     assert_equal :done, new_state.current_node
   end
 
-  test "conditional next node can be specified using next_node_if" do
+  test "conditional next node can be specified using next_node_if passing a block" do
     q = SmartAnswer::Question::Base.new(:example) {
       next_node_if(:bar) { true }
+    }
+    initial_state = SmartAnswer::State.new(q.name)
+    assert_equal :bar, q.next_node_for(initial_state, :red)
+  end
+
+  test "conditional next node can be specified using next_node_if passing a callable" do
+    q = SmartAnswer::Question::Base.new(:example) {
+      next_node_if(:bar, ->(_) {true})
     }
     initial_state = SmartAnswer::State.new(q.name)
     assert_equal :bar, q.next_node_for(initial_state, :red)

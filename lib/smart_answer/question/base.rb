@@ -22,8 +22,8 @@ module SmartAnswer
         end
       end
 
-      def next_node_if(next_node, &block)
-        @next_node_function_chain << [next_node, block]
+      def next_node_if(next_node, callable = nil, &block)
+        @next_node_function_chain << [next_node, callable || block]
         @permitted_next_nodes << next_node
       end
 
