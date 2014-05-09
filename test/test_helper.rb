@@ -1,10 +1,11 @@
 # encoding: UTF-8
+unless ENV['DISABLE_RCOV']
+  require 'simplecov'
+  require 'simplecov-rcov'
 
-require 'simplecov'
-require 'simplecov-rcov'
-
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-SimpleCov.start 'rails'
+  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+  SimpleCov.start 'rails'
+end
 
 ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
