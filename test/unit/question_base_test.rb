@@ -122,6 +122,26 @@ class QuestionBaseTest < ActiveSupport::TestCase
     assert new_state.frozen?
   end
 
+  test "Can calculate intermediary values used when computing next node" do
+    q = SmartAnswer::Question::Base.new(:favourite_colour?) do
+      next_node_calculation :complementary_colour do |response|
+        response == :red ? :green : :red
+      end
+      next_node_calculation :blah do
+        "blah"
+      end
+      next_node_if(:done) {
+        complementary_colour == :green
+      }
+      next_node(:shouldnt_go_here)
+    end
+    initial_state = SmartAnswer::State.new(q.name)
+    new_state = q.transition(initial_state, :red)
+    assert_equal :green, new_state.complementary_colour
+    assert_equal "blah", new_state.blah
+    assert_equal :done, new_state.current_node
+  end
+
   test "conditional next node can be specified using next_node_if" do
     q = SmartAnswer::Question::Base.new(:example) {
       next_node_if(:bar) { true }
