@@ -198,4 +198,15 @@ class QuestionBaseTest < ActiveSupport::TestCase
     end
   end
 
+  test "can validate response" do
+    q = SmartAnswer::Question::Base.new(:example) {
+      validate { |response| response == :red }
+      next_node(:next)
+    }
+    initial_state = SmartAnswer::State.new(q.name)
+    assert_raises SmartAnswer::InvalidResponse do
+      q.next_node_for(initial_state, :blue)
+    end
+    assert_equal :next, q.next_node_for(initial_state, :red)
+  end
 end
