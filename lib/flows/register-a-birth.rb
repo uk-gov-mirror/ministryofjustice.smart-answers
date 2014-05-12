@@ -38,15 +38,9 @@ country_select :country_of_birth?, :exclude_countries => exclude_countries do
     end
   end
 
-  next_node do |response|
-    if no_embassies.include?(response)
-      :no_embassy_result
-    elsif reg_data_query.commonwealth_country?(response)
-      :commonwealth_result
-    else
-      :who_has_british_nationality?
-    end
-  end
+  next_node_if(:no_embassy_result) { |response| no_embassies.include?(response) }
+  next_node_if(:commonwealth_result) { |response| reg_data_query.commonwealth_country?(response) }
+  next_node(:who_has_british_nationality?)
 end
 # Q2
 multiple_choice :who_has_british_nationality? do
@@ -73,49 +67,32 @@ multiple_choice :married_couple_or_civil_partnership? do
     responses.last == 'no'
   end
 
-  next_node do |response|
-    if response == 'no' and british_national_parent == 'father'
-      :childs_date_of_birth?
-    else
-      :where_are_you_now?
-    end
+  next_node_if(:childs_date_of_birth?) do |response|
+    response == 'no' and british_national_parent == 'father'
   end
+  next_node(:where_are_you_now?)
 end
 # Q4
 date_question :childs_date_of_birth? do
   from { Date.today }
   to { 50.years.ago(Date.today) }
-  next_node do |response|
-    if Date.new(2006,07,01) > Date.parse(response)
-      :homeoffice_result
-    else
-      :where_are_you_now?
-    end
-  end
+  next_node_if(:homeoffice_result) { |response| Date.new(2006,07,01) > Date.parse(response) }
+  next_node(:where_are_you_now?)
 end
 # Q5
 multiple_choice :where_are_you_now? do
-  option :same_country
-  option :another_country
+  option :same_country => :embassy_result
+  option :another_country => :which_country?
   option :in_the_uk
 
   calculate :another_country do
     responses.last == 'another_country'
   end
 
-  next_node do |response|
-    case response
-    when 'same_country' then :embassy_result
-    when 'another_country' then :which_country?
-    else
-      if %w(niger pakistan).include?(country_of_birth)
-        :embassy_result
-      else
-        :fco_result
-      end
-    end
-  end
+  next_node_if(:embassy_result) { %w(niger pakistan).include?(country_of_birth) }
+  next_node(:fco_result)
 end
+
 # Q6
 country_select :which_country?, :exclude_countries => exclude_countries do
   calculate :registration_country do
@@ -132,13 +109,8 @@ country_select :which_country?, :exclude_countries => exclude_countries do
     end
   end
 
-  next_node do |response|
-    if no_embassies.include?(response)
-      :no_embassy_result
-    else
-      :embassy_result
-    end
-  end
+  next_node_if(:no_embassy_result) { |response| no_embassies.include?(response) }
+  next_node(:embassy_result)
 end
 # Outcomes
 outcome :embassy_result do
@@ -213,7 +185,7 @@ outcome :embassy_result do
   precalculate :postal do
     if reg_data_query.modified_card_only_countries?(registration_country)
       PhraseList.new(:post_only_pay_by_card_countries)
-    elsif reg_data_query.post_only_countries?(registration_country) 
+    elsif reg_data_query.post_only_countries?(registration_country)
       PhraseList.new(:"post_only_#{registration_country}")
     elsif postal_form_url
       PhraseList.new(:postal_form)
