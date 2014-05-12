@@ -36,7 +36,7 @@ multiple_choice :was_death_expected? do
   calculate :death_expected do
     responses.last == 'yes'
   end
-  
+
   next_node :uk_result
 end
 
@@ -50,7 +50,7 @@ country_select :which_country?, :exclude_countries => exclude_countries do
   calculate :current_location_name do
     WorldLocation.all.find { |c| c.slug == current_location }.name
   end
-  
+
   calculate :current_location_name_lowercase_prefix do
     if data_query.countries_with_definitive_articles?(country)
       "the #{current_location_name}"
@@ -66,20 +66,14 @@ country_select :which_country?, :exclude_countries => exclude_countries do
       current_location_name
     end
   end
-  
+
   calculate :oru_country do
     reg_data_query.class::ORU_TRANSITIONED_COUNTRIES.include?(responses.last)
   end
 
-  next_node do |response|
-    if reg_data_query.commonwealth_country?(response)
-      :commonwealth_result
-    elsif no_embassies.include?(response)
-      :no_embassy_result
-    else
-      :where_are_you_now?
-    end
-  end
+  next_node_if(:commonwealth_result) { |response| reg_data_query.commonwealth_country?(response) }
+  next_node_if(:no_embassy_result) { |response| no_embassies.include?(response) }
+  next_node(:where_are_you_now?)
 end
 # Q5
 multiple_choice :where_are_you_now? do
@@ -90,20 +84,14 @@ multiple_choice :where_are_you_now? do
   calculate :another_country do
     responses.last == 'another_country'
   end
-  
+
   calculate :in_the_uk do
     responses.last == 'in_the_uk'
   end
-  
-  next_node do |response|
-    if oru_country || response == 'in_the_uk'
-      :oru_result
-    elsif response == 'same_country'
-      :embassy_result
-    else
-      :which_country_are_you_in_now?
-    end
-  end
+
+  next_node_if(:oru_result) { |response| oru_country || response == 'in_the_uk' }
+  next_node_if(:embassy_result) { |response| response == 'same_country' }
+  next_node(:which_country_are_you_in_now?)
 end
 # Q6
 country_select :which_country_are_you_in_now?, :exclude_countries => exclude_countries do
@@ -113,7 +101,7 @@ country_select :which_country_are_you_in_now?, :exclude_countries => exclude_cou
   calculate :current_location_name do
     WorldLocation.all.find { |c| c.slug == current_location }.name
   end
-  
+
   calculate :current_location_name_lowercase_prefix do
     if data_query.countries_with_definitive_articles?(country)
       "the #{current_location_name}"
@@ -148,7 +136,7 @@ outcome :oru_result do
   precalculate :button_data do
     {:text => "Pay now", :url => "https://pay-register-death-abroad.service.gov.uk/start?country=#{country}"}
   end
-  
+
   precalculate :oru_address do
     if in_the_uk
       PhraseList.new(:oru_address_uk)
