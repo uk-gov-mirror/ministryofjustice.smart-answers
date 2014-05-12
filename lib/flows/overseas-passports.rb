@@ -20,17 +20,10 @@ country_select :which_country_are_you_in?, :exclude_countries => exclude_countri
     loc
   end
 
-  next_node do |response|
-    if Calculators::PassportAndEmbassyDataQuery::NO_APPLICATION_REGEXP.match(response)
-      :cannot_apply
-    elsif %w(the-occupied-palestinian-territories).include?(response)
-      :which_opt?
-    elsif apply_in_neighbouring_country_countries.include?(response)
-      :apply_in_neighbouring_country
-    else
-      :renewing_replacing_applying?
-    end
-  end
+  next_node_if(:cannot_apply) { |response| Calculators::PassportAndEmbassyDataQuery::NO_APPLICATION_REGEXP.match(response)}
+  next_node_if(:which_opt?) { |response| %w(the-occupied-palestinian-territories).include?(response)}
+  next_node_if(:apply_in_neighbouring_country) { |response| apply_in_neighbouring_country_countries.include?(response)}
+  next_node(:renewing_replacing_applying?)
 end
 
 # Q1a
@@ -127,16 +120,13 @@ multiple_choice :child_or_adult_passport? do
     end
   end
 
-  next_node do |response|
-    case application_type
-    when Calculators::PassportAndEmbassyDataQuery::IPS_APPLICATIONS_REGEXP
-      %Q(applying renewing_old).include?(application_action) ? :country_of_birth? : ips_result_type
-    when Calculators::PassportAndEmbassyDataQuery::FCO_APPLICATIONS_REGEXP
-      :fco_result
-    else
-      :result
-    end
+  on_condition(->(_) { application_type =~ Calculators::PassportAndEmbassyDataQuery::IPS_APPLICATIONS_REGEXP}) do
+    next_node_if(:country_of_birth?) { %Q(applying renewing_old).include?(application_action) }
+    next_node_if(:ips_application_result_online) { ips_result_type == :ips_application_result_online }
+    next_node(:ips_application_result)
   end
+  next_node_if(:fco_result) { application_type =~ Calculators::PassportAndEmbassyDataQuery::FCO_APPLICATIONS_REGEXP }
+  next_node(:result)
 end
 
 # Q4
@@ -155,16 +145,12 @@ country_select :country_of_birth?, :include_uk => true, :exclude_countries => ex
     supporting_documents.split("_")[3]
   end
 
-  next_node do |response|
-    case application_type
-    when Calculators::PassportAndEmbassyDataQuery::IPS_APPLICATIONS_REGEXP
-      ips_result_type
-    when Calculators::PassportAndEmbassyDataQuery::FCO_APPLICATIONS_REGEXP
-      :fco_result
-    else
-      :result
-    end
+  on_condition(->(_) { application_type =~ Calculators::PassportAndEmbassyDataQuery::IPS_APPLICATIONS_REGEXP}) do
+    next_node_if(:ips_application_result_online) { ips_result_type == :ips_application_result_online }
+    next_node(:ips_application_result)
   end
+  next_node_if(:fco_result) { application_type =~ Calculators::PassportAndEmbassyDataQuery::FCO_APPLICATIONS_REGEXP }
+  next_node(:result)
 end
 
 ## Online IPS Application Result
@@ -421,7 +407,7 @@ outcome :fco_result do
     cost_type = 'fco_europe' if application_type =~ /^(dublin_ireland|madrid_spain|paris_france)$/
 
     payment_methods = :"passport_costs_#{application_type}"
-    
+
 
     phrases = PhraseList.new(:"passport_courier_costs_#{cost_type}",
                              :"#{child_or_adult}_passport_costs_#{cost_type}",
