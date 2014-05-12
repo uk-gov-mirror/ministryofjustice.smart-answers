@@ -36,11 +36,15 @@ module SmartAnswer
       # returns a boolean indicating whether the response was one
       # of the accepted responses.
       def response_is_one_of(accepted_responses)
-        ->(response) { (response.split(",") & accepted_responses).any? }
+        ->(response) { (response.split(",") & [*accepted_responses]).any? }
       end
 
       def response_has_all_of(required_responses)
         ->(response) { (response.split(",") & required_responses).size == required_responses.size }
+      end
+
+      def response_is_only(accepted_response)
+        ->(response) { response.split(",") == [accepted_response] }
       end
     end
   end
