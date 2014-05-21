@@ -1,6 +1,7 @@
 class GraphPresenter
   def initialize(flow)
     @flow = flow
+    @simulation_data = TransitionSimulator.simulate(flow)
   end
 
   def labels
@@ -13,7 +14,13 @@ class GraphPresenter
       @flow.questions.each do |node|
         adjacency_list[node.name] = []
         node.next_node_function_chain.each do |(nextnode, predicates)|
-          adjacency_list[node.name] << [nextnode, predicates.map(&:label).compact.join(" AND\n")]
+          pair = [node.name, nextnode]
+          edge_label = ""
+          if @simulation_data[pair]
+            edge_label << "*#{@simulation_data[pair]}*\n"
+          end
+          edge_label << predicates.map(&:label).compact.join(" AND\n")
+          adjacency_list[node.name] << [nextnode, edge_label]
         end
       end
       @flow.outcomes.each do |node|
