@@ -4,8 +4,8 @@ To apply, use one of the DSA1 forms. If you’ve applied for student finance use
 
 Academic Year | Form
 - | -
-2014 to 2015 | [DSA1 - slim form (PDF, 141KB)](http://www.sfengland.slc.co.uk/media/682901/sfe_dsa_slim_form_1415_d.pdf)
-2014 to 2015 | [DSA1 - full form (PDF, 654KB)](http://www.sfengland.slc.co.uk/media/682898/sfe_dsa1_form_1415_d.pdf)
-2014 to 2015 | [DSA1 - guidance notes (PDF, 85KB)](http://www.sfengland.slc.co.uk/media/682922/sfe_dsa1_notes_1415_d.pdf)
+2014 to 2015 | [DSA1 - slim form (PDF, 490KB)](http://www.sfengland.slc.co.uk/media/682901/sfe_dsa_slim_form_1415_d.pdf)
+2014 to 2015 | [DSA1 - full form (PDF, 653KB)](http://www.sfengland.slc.co.uk/media/682898/sfe_dsa1_form_1415_d.pdf)
+2014 to 2015 | [DSA1 - guidance notes (PDF, 90KB)](http://www.sfengland.slc.co.uk/media/682922/sfe_dsa1_notes_1415_d.pdf)
 
 %{form_destination}

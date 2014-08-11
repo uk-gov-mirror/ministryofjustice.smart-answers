@@ -5,9 +5,11 @@ module Smartdown
       !!hint
     end
 
-    # Usage TBC, most hints should actually be `body`s, semi-deprecated
-    # As we transition content we should better define it, or remove it
+    # This only works for Multiple Choice for now
+    # To be implemented properly once we have another question type and some kind of supertype?
     def hint
+      question = elements.find{|element| element.is_a? Smartdown::Model::Element::MultipleChoice}
+      question.hint
     end
 
     def prefix

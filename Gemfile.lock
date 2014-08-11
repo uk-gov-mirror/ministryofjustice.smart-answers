@@ -1,3 +1,9 @@
+PATH
+  remote: ../smartdown
+  specs:
+    smartdown (0.0.4)
+      parslet (~> 1.6.1)
+
 GEM
   remote: http://rubygems.org/
   remote: https://BnrJb6FZyzspBboNJzYZ@gem.fury.io/govuk/
@@ -202,8 +208,6 @@ GEM
       rack (>= 1.3.5)
       rest-client
     slop (3.4.5)
-    smartdown (0.0.3)
-      parslet (~> 1.6.1)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -264,7 +268,7 @@ DEPENDENCIES
   simplecov (~> 0.6.4)
   simplecov-rcov (~> 0.2.3)
   slimmer (= 4.1.0)
-  smartdown
+  smartdown!
   therubyracer (~> 0.12.1)
   timecop
   uglifier

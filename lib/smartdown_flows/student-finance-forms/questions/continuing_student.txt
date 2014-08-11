@@ -1,6 +1,7 @@
 # Are you a continuing student?
 
 [choice: continuing_student]
+[hint: You’re usually a continuing student if you got student finance last year.]
 * continuing-student: Yes
 * new-student: No
 

@@ -25,6 +25,6 @@
     * what_year is 'year-1314' => outcome_proof_identity_1314
     * what_year is 'year-1415' => outcome_proof_identity_1415
   * form_needed_for_2 is 'apply-dsa'
-    * what_year is 'year-1314' => outcome_dsa_1314
-    * what_year is 'year-1415' => outcome_dsa_1415
+    * what_year is 'year-1314' => outcome_dsa_1314_pt
+    * what_year is 'year-1415' => outcome_dsa_1415_pt
   * form_needed_for_2 is 'apply-loans-grants' => continuing_student
