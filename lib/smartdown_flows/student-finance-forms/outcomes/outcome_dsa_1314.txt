@@ -1,3 +1,5 @@
+# Disabled Students' Allowances
+
 To apply, use one of the DSA1 forms. If you’ve applied for student finance use form 'DSA1 slim'. If you’re only applying for DSAs use form 'DSA1 full'.
 
 Academic Year | Form
@@ -8,7 +10,14 @@ Academic Year | Form
 
 ^Open University (OU) students apply to the OU for Disabled Students’ Allowances.^
 
-%{form_destination}
+##Where to send your form(s)
+
+$A
+Student Finance England
+PO Box 210
+Darlington
+DL1 9HJ
+$A
 
 [next_steps]
 [Disabled Student's Allowances](/disabled-students-allowances-dsas)
