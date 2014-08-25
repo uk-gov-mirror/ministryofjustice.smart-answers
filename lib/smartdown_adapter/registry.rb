@@ -11,6 +11,12 @@ module SmartdownAdapter
       }
     end
 
+    def self.smartdown_transition_questions
+      smartdown_questions.select{ |smartdown_question|
+        check_transition_question(smartdown_question)
+      }
+    end
+
     def self.build_flow(name)
       coversheet_path = Rails.root.join('lib', 'smartdown_flows', name, "#{name}.txt")
       input = Smartdown::Api::DirectoryInput.new(coversheet_path)
