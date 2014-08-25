@@ -4,6 +4,10 @@ class QuestionPresenter < NodePresenter
     question_page_index + question_index
   end
 
+  def index_of_question_in_flow
+    number
+  end
+
   def response_label(value)
     value
   end

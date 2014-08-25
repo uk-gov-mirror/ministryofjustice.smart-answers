@@ -30,7 +30,14 @@ module SmartdownAdapter
       end
     end
 
+    def index_of_question_in_flow
+      flow.question_pages.map(&:questions).flatten.each_with_index do |question, index|
+        return index if question.title == smartdown_previous_question.title
+      end
+    end
+
   private
+
     attr_reader :flow, :smartdown_previous_question, :smartdown_previous_question_pages
 
     def multiple_questions_per_page
