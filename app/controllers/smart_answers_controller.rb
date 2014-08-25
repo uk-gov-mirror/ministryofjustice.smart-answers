@@ -53,10 +53,7 @@ class SmartAnswersController < ApplicationController
         if smartdown_question(@name)
           render text: SmartdownAdapter::GraphvizPresenter.new(@name.to_s).to_gv
         elsif (@name.to_s.end_with? "-transition") && smartdown_transition_question(@name.to_s.chomp("-transition"))
-<<<<<<< HEAD
           @transition = true
-=======
->>>>>>> Transition URLs
           render text: SmartdownAdapter::GraphvizPresenter.new(@name.to_s.chomp("-transition")).to_gv
         else
           render text: GraphvizPresenter.new(@smart_answer).to_gv
@@ -85,7 +82,7 @@ private
       @presenter = SmartdownAdapter::Presenter.new(name, request)
     elsif (name.end_with? "-transition") && smartdown_transition_question(name.chomp("-transition"))
       @transition = true
-      @presenter = SmartdownAdapter::Presenter.new(name.chomp("-transition"), request)
+      @presenter = SmartdownAdapter::Presenter.new(name.chomp("-transition"), request, true)
     else
       @smart_answer = flow_registry.find(name)
       @presenter = SmartAnswerPresenter.new(request, @smart_answer)

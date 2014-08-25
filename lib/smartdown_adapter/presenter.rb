@@ -21,8 +21,9 @@ module SmartdownAdapter
     # The current node in the flow
     def_delegators :current_node, :body, :has_body?, :devolved_body, :has_devolved_body?
 
-    def initialize(name, request)
+    def initialize(name, request, transition=false)
       @name = name
+      @name = name + "-transition" if transition
       @started = request[:started]
       @responses = responses_from_request(request)
       @smartdown_flow = SmartdownAdapter::Registry.build_flow(name)
@@ -118,7 +119,7 @@ module SmartdownAdapter
       smartdown_node = smartdown_state.current_node
       case smartdown_node
         when Smartdown::Api::QuestionPage
-          QuestionPagePresenter.new(smartdown_flow, smartdown_node)
+          QuestionPagePresenter.new(smartdown_flow, smartdown_state.previous_question_pages(@responses), smartdown_node)
         else
           NodePresenter.new(smartdown_node)
       end
@@ -126,9 +127,12 @@ module SmartdownAdapter
     end
 
     def presenters_for_previous_nodes
-      smartdown_state.previous_question_pages(@responses).map do |smartdown_previous_question_page|
-        PreviousQuestionPagePresenter.new(smartdown_previous_question_page)
+      previous_question_pages = smartdown_state.previous_question_pages(@responses)
+      result = []
+      for i in (1..previous_question_pages.count)
+        result << PreviousQuestionPagePresenter.new(smartdown_flow, previous_question_pages[0...i])
       end
+      result
     end
 
   end
