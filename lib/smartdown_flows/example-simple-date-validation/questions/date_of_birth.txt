@@ -1,0 +1,5 @@
+# What is your birthday?
+
+[date: date_of_birth, must be: before now]
+
+* otherwise => outcome_date_of_birth

@@ -1,0 +1,22 @@
+meta_description: Date of birth
+satisfies_need: 999999
+status: draft
+
+# An example of validating dates in smartdown
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat.
+
+## Before you start, you will need
+
+* To be alive
+* To have had no time travel or other temporal anomolies in your future
+
+
+[start: date_of_birth]
+
+## Time travellers
+
+If you are or will be a time traveller or victim of temporal anomoly you cannot use this online service. Please contact the Office of Linear Time (OLT) for assistance.

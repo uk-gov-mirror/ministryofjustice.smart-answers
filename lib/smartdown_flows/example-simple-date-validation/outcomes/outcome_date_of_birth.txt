@@ -1,0 +1,3 @@
+# Your birthdate
+
+You were born on %{date_of_birth}.
