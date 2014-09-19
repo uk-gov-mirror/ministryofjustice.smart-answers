@@ -2,17 +2,17 @@
   <% response_prefix = number ? "response_#{number}" : "response" %>
   <% unless question.defaulted_day? %>
     <label for="<%=response_prefix%>_day">Day
-      <%= select_day default_for_date(prefill_value_for(question, number, :day)) || question.default, prefix: response_prefix, :prompt => '' %>
+      <%= text_field_tag "#{response_prefix}[day]", default_for_date(prefill_value_for(question, number, :day)), :id => "#{response_prefix}_day" %>
     </label>
   <% end %>
   <% unless question.defaulted_month? %>
     <label for="<%=response_prefix%>_month">Month
-      <%= select_month default_for_date(prefill_value_for(question, number, :month)) || question.default, prefix: response_prefix, prompt: '' %>
+      <%= text_field_tag "#{response_prefix}[month]", default_for_date(prefill_value_for(question, number, :month)), :id => "#{response_prefix}_month" %>
     </label>
   <% end %>
   <% unless question.defaulted_year? %>
     <label for="<%=response_prefix%>_year">Year
-      <%= select_year default_for_date(prefill_value_for(question, number, :year)) || question.default, prefix: response_prefix, prompt: '', :start_year => question.start_date.year, :end_year => question.end_date.year %>
+      <%= text_field_tag "#{response_prefix}[year]", default_for_date(prefill_value_for(question, number, :year)), :id => "#{response_prefix}_year" %>
     </label>
   <% end %>
 </fieldset>
