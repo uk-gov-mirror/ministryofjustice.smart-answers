@@ -1,0 +1,9 @@
+# Who has british nationality?
+
+[choice: person_combination]
+* mother:            Mother
+* father:            Father
+* mother_and_father: Mother and Father
+* neither:           Neither
+
+* person_combination is 'neither' => cant_register_result

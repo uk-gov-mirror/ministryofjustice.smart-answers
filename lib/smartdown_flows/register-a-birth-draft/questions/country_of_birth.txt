@@ -11,3 +11,4 @@
 
 * country_of_birth in {iran syria yemen} => no_embassy_result
 * country_of_birth in {anguilla australia bermuda british-indian-ocean-territory british-virgin-islands cayman-islands canada falkland-islands gibraltar ireland montserrat new-zealand pitcairn south-africa south-georgia-and-south-sandwich-islands st-helena-ascension-and-tristan-da-cunha turks-and-caicos-islands} => commonwealth_result
+* otherwise => who_has_british_nationality
