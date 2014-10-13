@@ -1,0 +1,10 @@
+# Which country?
+
+[choice: parent_country]
+* iran: Iran
+* australia: Australia
+* england: England
+* ukraine: Ukraine
+* usa: USA
+
+* parent_country in {iran syria yemen} => no_embassy_result

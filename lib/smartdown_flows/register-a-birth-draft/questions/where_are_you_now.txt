@@ -5,3 +5,5 @@
 * another_country: In another country
 * in_uk: In the UK
 
+* where_are_you_now is 'in_uk' => embassy_result
+* where_are_you_now is 'another_country' => parent_country

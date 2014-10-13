@@ -8,6 +8,5 @@
 * married_at_time_of_birth is 'no'
   * person_combination is 'father' => childs_date_of_birth
   * otherwise => where_are_you_now
-
 * otherwise => where_are_you_now
 

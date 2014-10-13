@@ -22,3 +22,12 @@ To be functionally the same as
 
 
 - Date defaults to Time.now in smartdown but is unselected by default on originals
+
+
+- This didnt format the ## correctly
+
+s4. Post your documents and the form.
+
+##1. Check your documents
+
+- Next Comment
