@@ -1,1 +1,3 @@
 * Interpolation of choice fields uses the key not the value, ie * united-kingdom - United Kingdom will produce 'united-kingdom' when interpolated.
+* Helper method to detect if a country is the commonwealth.
+* Commonwealth countries are different in different calculators.

@@ -1,5 +1,3 @@
-# Register a birth abroad
-
 You must register the birth according to the regulations in %{country_of_birth}
 You can’t currently register the birth with the UK authorities.
 

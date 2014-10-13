@@ -4,8 +4,10 @@
 
 [choice: country_of_birth]
 * iran: Iran
+* australia: Australia
 * england: England
 * ukraine: Ukraine
 * usa: USA
 
 * country_of_birth in {iran syria yemen} => no_embassy_result
+* country_of_birth in {anguilla australia bermuda british-indian-ocean-territory british-virgin-islands cayman-islands canada falkland-islands gibraltar ireland montserrat new-zealand pitcairn south-africa south-georgia-and-south-sandwich-islands st-helena-ascension-and-tristan-da-cunha turks-and-caicos-islands} => commonwealth_result
