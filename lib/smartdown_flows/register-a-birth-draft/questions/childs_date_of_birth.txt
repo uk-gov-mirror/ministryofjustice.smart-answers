@@ -1,1 +1,5 @@
 # What is your child’s date of birth?
+
+[date: date_of_birth]
+
+* date_of_birth >= '2006-7-1' => must_register_the_birth

@@ -4,9 +4,10 @@
 * yes: Yes
 * no:  No
 
-* married_at_time_of_birth is 'yes'
+* country_of_birth is 'sweden' => childs_date_of_birth
+* married_at_time_of_birth is 'no'
   * person_combination is 'father' => childs_date_of_birth
-  * country_of_birth is 'sweden' => childs_date_of_birth
   * otherwise => where_are_you_now
+
 * otherwise => where_are_you_now
 
