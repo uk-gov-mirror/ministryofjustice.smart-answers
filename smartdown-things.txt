@@ -1,0 +1,1 @@
+* Interpolation of choice fields uses the key not the value, ie * united-kingdom - United Kingdom will produce 'united-kingdom' when interpolated.

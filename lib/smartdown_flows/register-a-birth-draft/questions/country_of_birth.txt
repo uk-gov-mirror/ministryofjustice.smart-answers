@@ -1,0 +1,11 @@
+# Register a birth abroad
+
+# What country was your child born in?
+
+[choice: country_of_birth]
+* iran: Iran
+* england: England
+* ukraine: Ukraine
+* usa: USA
+
+* country_of_birth in {iran syria yemen} => no_embassy_result
