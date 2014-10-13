@@ -7,3 +7,4 @@
 * neither:           Neither
 
 * person_combination is 'neither' => cant_register_result
+* otherwise => married_couple_or_civil_partnership

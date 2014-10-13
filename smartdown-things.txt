@@ -1,3 +1,21 @@
 * Interpolation of choice fields uses the key not the value, ie * united-kingdom - United Kingdom will produce 'united-kingdom' when interpolated.
 * Helper method to detect if a country is the commonwealth.
 * Commonwealth countries are different in different calculators.
+* Country select: it would be nice to have except / only
+* Exception notification / error messages like "Parse Error" are not very helpful ie. 'other' instead of 'otherwise'
+* If matching a predecate it doesnt continue if a conclusion cant be found within the current conditional
+
+Basically I expected
+
+* married_at_time_of_birth is 'yes'
+  * person_combination is 'father' => childs_date_of_birth
+  * country_of_birth is 'sweden' => childs_date_of_birth
+  * otherwise => where_are_you_now
+* otherwise => where_are_you_now
+
+To be functionally the same as
+
+* married_at_time_of_birth is 'yes'
+  * person_combination is 'father' => childs_date_of_birth
+  * country_of_birth is 'sweden' => childs_date_of_birth
+* otherwise => where_are_you_now
