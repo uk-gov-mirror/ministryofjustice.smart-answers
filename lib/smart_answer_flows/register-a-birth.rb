@@ -90,7 +90,7 @@ multiple_choice :where_are_you_now? do
     responses.last == 'in_the_uk'
   end
 
-  on_condition(->(_) { reg_data_query.class::ORU_TRANSITION_EXCEPTIONS.include?(country_of_birth) }) do
+  on_condition(-> { reg_data_query.class::ORU_TRANSITION_EXCEPTIONS.include?(country_of_birth) }) do
     next_node_if(:embassy_result, responded_with('same_country'))
   end
 

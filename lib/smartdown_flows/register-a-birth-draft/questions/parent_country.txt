@@ -4,6 +4,7 @@
 * iran: Iran
 * australia: Australia
 * england: England
+* north-korea: North Korea
 * ukraine: Ukraine
 * usa: USA
 

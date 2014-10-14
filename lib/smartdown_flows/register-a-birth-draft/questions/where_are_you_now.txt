@@ -1,9 +1,13 @@
 # Where are you now?
 
 [choice: where_are_you_now]
-* country_child_born: In the country where the child was born
+* same_country: In the country where the child was born
 * another_country: In another country
 * in_uk: In the UK
 
-* where_are_you_now is 'in_uk' => embassy_result
+* parent_country is 'north-korea' => embassy_result
+  * where_are_you_now is 'same_country' => embassy_result
+  * otherwise => which_country
+* where_are_you_now is 'in_uk' => oru_result
 * where_are_you_now is 'another_country' => parent_country
+
