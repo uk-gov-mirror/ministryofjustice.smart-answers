@@ -40,11 +40,15 @@ namespace :usageanalysis do
     `git log -10 --follow --pretty=format:"%h %ad" --date=short #{file} | grep -v "#{ignorable_commits.join('\|')}" | head -1 | cut -d" " -f2`.strip
   end
 
+  def num_changes_for_files(files)
+    `git log --since='AUG 14 2013' --pretty=format:'%h %ad' --date=short #{files.join(' ')} | grep -v '#{ignorable_commits.join('\|')}' | wc -l`.strip
+  end
+
   desc "list flows"
   task :list_flows => :environment do
     flow_registry = SmartAnswer::FlowRegistry.new(FLOW_REGISTRY_OPTIONS)
 
-    headings = %w[slug, status, num_questions, num_outcomes, num_phrases, last_logic_update, last_content_update]
+    headings = %w[slug, status, num_questions, num_outcomes, num_phrases, last_logic_update, last_content_update, num_updates]
     results = [headings]
 
     flow_registry.flows.each do |flow|
@@ -56,6 +60,7 @@ namespace :usageanalysis do
         strings_for_flow(flow.name).fetch("phrases", []).length,
         last_change_for_file(path_for_flow_rb(flow.name)),
         last_change_for_file(path_for_flow_yml(flow.name)),
+        num_changes_for_files([path_for_flow_rb(flow.name), path_for_flow_yml(flow.name)])
       ] unless flow.name.ends_with?("-v2")
     end
     puts results.map { |r| r.join("\t") }.join("\n")
