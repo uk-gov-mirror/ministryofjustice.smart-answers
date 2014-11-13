@@ -145,6 +145,7 @@ en-GB:
           %{pay_dates_and_pay}
            | **Total SPP: £%{total_spp}**
 
+          *[SPP]: Statutory Paternity Pay
 
         paternity_not_entitled_to_leave_or_pay_intro: |
           ##Not entitled to Statutory Paternity Pay or Leave
@@ -471,7 +472,7 @@ en-GB:
       ## QA6
       adoption_date_leave_starts?:
         title: When does the employee want to start their leave?
-        hint: Leave can't start before %{a_leave_earliest_start} or within 28 days of the child arriving in the UK (overseas adoptions only).
+        hint: Leave can't start before %{a_leave_earliest_start}. For overseas adoptions, leave must start no later than 28 days after the child has entered the UK.
         error_message: Please enter a valid date
       ## QA7
       last_normal_payday_adoption?:
