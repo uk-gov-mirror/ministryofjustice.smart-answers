@@ -45,7 +45,7 @@ module SmartAnswer::Calculators
     end
 
     def relevant_period
-      [pre_offset_payday, last_payday]
+      [pre_offset_payday + 1, last_payday]
     end
 
     def formatted_relevant_period
