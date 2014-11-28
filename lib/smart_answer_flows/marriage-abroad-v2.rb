@@ -65,12 +65,7 @@ country_select :country_of_ceremony?, exclude_countries: exclude_countries do
       "National of #{country_name_lowercase_prefix}"
     end
   end
-  calculate :clickbook_data do
-    reg_data_query.clickbook(ceremony_country)
-  end
-  calculate :multiple_clickbooks do
-    clickbook_data and clickbook_data.class == Hash
-  end
+
   calculate :embassy_or_consulate_ceremony_country do
     if reg_data_query.has_consulate?(ceremony_country) or reg_data_query.has_consulate_general?(ceremony_country)
       "consulate"
@@ -126,7 +121,7 @@ end
 # Q3b
 country_select :residency_nonuk?, exclude_countries: exclude_countries do
   save_input_as :residency_country
-  countries_that_show_their_embassies_data = %w(belarus brazil cambodia colombia dominican-republic egypt el-salvador ethiopia finland germany honduras hungary indonesia south-korea latvia lebanon mongolia morocco nepal oman panama peru philippines qatar slovakia thailand united-arab-emirates vietnam portugal)
+  countries_that_show_their_embassies_data = %w(belarus bolivia brazil cambodia chile colombia costa-rica dominican-republic egypt el-salvador ethiopia finland germany honduras hungary indonesia mongolia montenegro peru south-korea latvia lebanon mongolia morocco nepal oman panama peru philippines portugal qatar russia serbia slovakia thailand united-arab-emirates vietnam portugal)
   calculate :location do
     if countries_that_show_their_embassies_data.include?(ceremony_country) and resident_of == 'other'
       loc = WorldLocation.find(ceremony_country)
@@ -571,22 +566,16 @@ outcome :outcome_os_consular_cni do
           phrases << :consular_cni_os_local_resident_table
         elsif %w(germany italy kazakhstan russia).exclude?(ceremony_country)
           phrases << :consular_cni_os_foreign_resident_ceremony_not_germany_italy << :check_with_embassy_or_consulate
+          if ceremony_country == residency_country and ceremony_country == 'japan'
+            phrases << :embassies_data
+          end
         end
       end
       phrases << :"#{ceremony_country}_os_local_resident" if %w(kazakhstan russia).include?(ceremony_country)
       unless %w(germany italy japan russia spain).include?(ceremony_country)
-        if reg_data_query.clickbook(ceremony_country)
-          if ceremony_country == 'vietnam'
-            phrases << :consular_cni_os_vietnam_clickbook
-          else
-            multiple_clickbooks ? phrases << :clickbook_links : phrases << :clickbook_link
-          end
-        end
-        if ceremony_country == 'croatia'
-          phrases << :make_appointment_online_croatia
-        elsif ceremony_country == 'macedonia'
+        if ceremony_country == 'macedonia'
           phrases << :consular_cni_os_foreign_resident_3_days_macedonia
-        elsif not reg_data_query.clickbook(ceremony_country)
+        else
           phrases << :embassies_data
         end
       end
@@ -773,7 +762,7 @@ outcome :outcome_os_consular_cni do
     if ceremony_country == 'belgium'
       phrases << :consular_cni_os_ceremony_belgium
       if ceremony_country != residency_country
-        phrases << :consular_cni_os_belgium_clickbook
+        phrases << :embassies_data
       end
     end
     if ceremony_country == 'spain'
@@ -874,8 +863,6 @@ outcome :outcome_os_affirmation do
     end
     if ceremony_country == 'turkey' and resident_of == 'uk'
       phrases << :appointment_for_affidavit_notary
-    elsif residency_country == 'portugal'
-      phrases << :book_online_portugal
     elsif ceremony_country == 'philippines'
       phrases << :contact_for_affidavit << :make_appointment_online_philippines
     else
@@ -885,15 +872,12 @@ outcome :outcome_os_affirmation do
         phrases << :appointment_for_affidavit
       end
       if ceremony_country == 'turkey'
-        phrases << :affirmation_appointment_book_at_following
+        phrases << :embassies_data
       end
-    end
-    if ceremony_country == 'finland'
-      multiple_clickbooks ? phrases << :clickbook_links : phrases << :clickbook_link
     end
     if ceremony_country == 'china'
       prelude = "book_online_china_#{partner_nationality != 'partner_local' ? 'non_' : ''}local_prelude".to_sym
-      phrases << prelude << :book_online_china_affirmation_affidavit
+      phrases << prelude << :book_online_china_affirmation_affidavit << :embassies_data
     end
     unless (ceremony_country == 'turkey' or residency_country == 'portugal')
       if ceremony_country == 'egypt'
@@ -1249,11 +1233,8 @@ outcome :outcome_cp_consular do
       phrases << :consular_cp_japan
     else
       phrases << :consular_cp_all_contact
-      if reg_data_query.clickbook(ceremony_country)
-        multiple_clickbooks ? phrases << :clickbook_links : phrases << :clickbook_link
-      end
     end
-    phrases << :embassies_data unless reg_data_query.clickbook(ceremony_country)
+    phrases << :embassies_data
     unless ceremony_country == 'japan'
       if data_query.ss_21_days_residency_required_countries?(ceremony_country)
         phrases << :documents_needed_21_days_residency
@@ -1299,8 +1280,6 @@ outcome :outcome_ss_marriage do
     phrases << :"able_to_#{marriage_and_partnership_phrases}"
     if ceremony_country == 'japan'
       phrases << :consular_cp_japan
-    elsif data_query.ss_clickbook_countries?(ceremony_country)
-      phrases << :"book_online_#{ceremony_country}"
     elsif ceremony_country == 'germany'
       phrases << :contact_british_embassy_or_consulate_berlin << :embassies_data
     else
