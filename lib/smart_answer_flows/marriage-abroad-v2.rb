@@ -563,12 +563,6 @@ outcome :outcome_os_consular_cni do
         phrases << :consular_cni_os_uk_legalisation_check_with_authorities
       end
       phrases << :consular_cni_os_uk_resident_not_italy_or_portugal if %w(italy portugal).exclude?(ceremony_country)
-      if ceremony_country == 'portugal'
-        phrases << :consular_cni_os_uk_resident_ceremony_portugal
-        if reg_data_query.clickbook(ceremony_country)
-          multiple_clickbooks ? phrases << :clickbook_links : phrases << :clickbook_link
-        end
-      end
     end
 
     if ceremony_country == residency_country
@@ -849,9 +843,7 @@ outcome :outcome_os_affirmation do
     if ceremony_country == 'colombia'
       phrases << :uk_resident_os_consular_cni << :get_legal_advice
     else
-      if ceremony_country == 'portugal'
-        phrases << :contact_civil_register_office_portugal
-      elsif resident_of == 'uk'
+      if resident_of == 'uk'
         if ceremony_country == 'morocco'
           phrases << :affirmation_os_uk_resident_ceremony_in_morocco
         else
@@ -887,9 +879,7 @@ outcome :outcome_os_affirmation do
     elsif ceremony_country == 'philippines'
       phrases << :contact_for_affidavit << :make_appointment_online_philippines
     else
-      if ceremony_country == 'portugal'
-        phrases << :book_online_portugal
-      elsif ceremony_country == 'egypt'
+      if ceremony_country == 'egypt'
         phrases << :make_an_appointment
       elsif ceremony_country != 'china'
         phrases << :appointment_for_affidavit
@@ -906,9 +896,7 @@ outcome :outcome_os_affirmation do
       phrases << prelude << :book_online_china_affirmation_affidavit
     end
     unless (ceremony_country == 'turkey' or residency_country == 'portugal')
-      if ceremony_country == 'portugal'
-        phrases << :affirmation_os_translation_in_local_language_portugal
-      elsif ceremony_country == 'egypt'
+      if ceremony_country == 'egypt'
         phrases << :embassies_data
       elsif ceremony_country == 'finland' and partner_nationality == 'partner_irish' and resident_of == 'uk'
         phrases << :affidavit_os_translation_in_local_language
