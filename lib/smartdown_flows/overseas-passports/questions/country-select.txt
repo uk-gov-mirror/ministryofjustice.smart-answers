@@ -6,3 +6,4 @@
 * country_user_located is 'iran' => ineligible-iran
 * country_user_located is 'libya' => ineligible-libya
 * country_user_located is 'syria' => ineligible-syria
+* country_user_located in {south-georgia-and-south-sandwich-islands north-korea british-indian-ocean-territory} => apply-in-neighbouring-countries
