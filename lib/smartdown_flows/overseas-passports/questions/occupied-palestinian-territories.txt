@@ -1,5 +1,7 @@
-#Where are you?
+# Where are you?
 
-[choice: occupied_palestinian_territory_user_located]
-* Gaza: gaza
-* Jerusalem and the West Bank: jerusalem_and_west_bank
+[choice: country_user_located]
+* gaza: Gaza
+* jerusalem_and_west_bank: Jerusalem and the West Bank
+
+* otherwise => renewing_replacing_applying
