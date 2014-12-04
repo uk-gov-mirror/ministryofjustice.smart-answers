@@ -1,0 +1,5 @@
+# Which country or territory are you in?
+
+[country: country_user_located, countries: world_locations]
+
+* country_user_located is 'the-occupied-palestinian-territories' => occupied-palestinian-territories

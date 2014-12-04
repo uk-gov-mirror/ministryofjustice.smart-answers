@@ -1,0 +1,5 @@
+#Where are you?
+
+[choice: occupied_palestinian_territory_user_located]
+* Gaza: gaza
+* Jerusalem and the West Bank: jerusalem_and_west_bank
