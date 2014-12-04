@@ -3,6 +3,7 @@ module SmartdownPlugins
 
     EXCLUDED_COUNTRIES = %w(holy-see british-antarctic-territory)
 
+    ### taken from smartdown_version_of_register_a_birth
     def self.world_locations
       country_select = SmartAnswer::Question::CountrySelect.new(
         'overseas-passports',
