@@ -1,0 +1,17 @@
+meta_description: Renew, replace or apply for an adult or child British passport if you’re living abroad or working overseas - forms, prices, how long it takes
+status: draft
+satisfies_need: 100131
+
+# Overseas British passport applications
+
+Get the forms, prices and application details you need if you’re a British national and you want to renew or apply for a British passport from overseas.
+
+%If you can’t wait for a new passport, you can get details on how to apply for a 12-month extension to your British passport.%
+
+## Dual nationals
+
+You must send a colour photocopy of your non-British passport (every page including blank pages) as part of your application.
+
+You may be asked to show your non-British passport at a later date.
+
+[start: country_select]
