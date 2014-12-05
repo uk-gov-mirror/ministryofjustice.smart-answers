@@ -1,0 +1,20 @@
+Things that would improve the process 
+
+1) Nested outcomes (like snippets) for better organisation
+
+2) We'd like to be able to use smartdown plugins to evaluate next node rules that can take arugments like.
+
+* passport_type(country_user_located) in {ips_application_1 ips_application_2 ips_application_3} => question_2
+
+Right now we have to do
+
+* ips_application?(country_user_located) => question_2
+
+It would also be nice to be able to push predicates into state, then we could call passport_type and have it return (as if the user had answered a question)
+
+3) Would be very nice to have access to users answers within 
+
+module SmartdownPlugins
+  module OverseasPassports
+
+Otherwise we're passing around current_location to almost all the functions, all the time.

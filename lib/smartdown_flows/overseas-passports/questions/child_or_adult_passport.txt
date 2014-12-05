@@ -4,4 +4,9 @@
 * adult: Adult (aged 16 and over)
 * child: Child (aged 15 or under)
 
-* otherwise => renewing_replacing_applying
+* ips_application?(country_user_located)
+  * application_action in {applying renewing_old} => country_of_birth
+  * ips_application_result_online?(country_user_located) => ips_application_result_online
+  * otherwise => ips_application_result
+* fco_application?(country_user_located) => fco_result
+* otherwise => result
