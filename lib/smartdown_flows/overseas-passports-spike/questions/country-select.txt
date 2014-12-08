@@ -1,10 +1,10 @@
 # Which country or territory are you in?
 
-[country: country_user_located, countries: world_locations]
+[country: country_user_located, countries: world_locations, alias: passport_country]
 
-* country_user_located is 'the-occupied-palestinian-territories' => occupied-palestinian-territories
-* country_user_located is 'iran' => ineligible-iran
-* country_user_located is 'libya' => ineligible-libya
-* country_user_located is 'syria' => ineligible-syria
-* country_user_located in {south-georgia-and-south-sandwich-islands north-korea british-indian-ocean-territory} => apply-in-neighbouring-countries
+* passport_country is 'the-occupied-palestinian-territories' => occupied-palestinian-territories
+* passport_country is 'iran' => ineligible-iran
+* passport_country is 'libya' => ineligible-libya
+* passport_country is 'syria' => ineligible-syria
+* passport_country in {south-georgia-and-south-sandwich-islands north-korea british-indian-ocean-territory} => apply-in-neighbouring-countries
 * otherwise => renewing_replacing_applying

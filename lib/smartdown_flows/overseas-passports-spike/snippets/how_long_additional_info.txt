@@ -1,0 +1,13 @@
+$IF application_action is 'applying'
+
+You may have to attend an interview for a first adult passport.
+
+$ELSEIF application_action is 'replacing'
+
+If you haven’t already reported the loss or theft, you must include [form LS01](/government/publications/lost-or-stolen-passport-notification--2) with your declaration form.
+
+$ELSEIF application_action in {renewing_old renewing_new}
+
+You may have to attend an interview for a first adult passport.
+
+$ENDIF

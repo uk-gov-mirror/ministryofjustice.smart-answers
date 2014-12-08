@@ -1,9 +1,9 @@
 # Are you renewing, replacing or applying for a first passport?
 
 [choice: application_action]
-* renewing_a_red_passport: Renewing a red passport
-* renewing_an_old_black_or_blue_passport: Renewing an old black or blue passport
-* applying_for_a_first_passport: Applying for a first passport
-* replacing_a_lost_or_stolen_passport: Replacing a lost or stolen passport
+* renewing_new: Renewing a red passport
+* renewing_old: Renewing an old black or blue passport
+* applying: Applying for a first passport
+* replacing: Replacing a lost or stolen passport
 
 * otherwise => child_or_adult_passport

@@ -1,3 +1,8 @@
 # Which country were you born in?
 
-[country: country_user_birth, countries: world_locations]
+[country: country_user_birth, countries: world_locations, alias: passport_country]
+
+* ips_application?(passport_country)
+  * ips_application_result_online?(passport_country) => ips_application_result_online
+  * otherwise => ips_application_result
+

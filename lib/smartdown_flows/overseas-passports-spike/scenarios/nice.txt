@@ -1,0 +1,5 @@
+#User has trained with lions
+- country_user_located: germany
+- application_action: applying
+- child_or_adult: adult
+outcome_ips_application_result_online

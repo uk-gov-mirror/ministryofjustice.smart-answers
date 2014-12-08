@@ -1,0 +1,79 @@
+##Cost
+
+$IF replacing_ips_1?(passport_country, application_action)
+
+You’ll have to pay a fee for your passport and a courier fee of £9.70. The courier fee pays for your passport to be sent back to you securely.
+
+$IF child_or_adult is 'child'
+
+| Passport type | Passport fee | Total to pay (including courier fee) |
+|---------------|--------------|--------------------------------------|
+| Child passport | £53.00 | £62.70 |
+
+$ELSEIF child_or_adult is 'adult'
+
+| Passport type | Passport fee | Total to pay (including courier fee) |
+|---------------|--------------|--------------------------------------|
+| Adult standard 32-page passport | £83.00 | £92.70 |
+| Adult jumbo 48-page passport | £91.00 | £100.70 |
+
+$ENDIF
+
+$ELSEIF ips_1?(passport_country)
+
+You’ll have to pay a fee for your passport and a courier fee of £19.86. The courier fee pays for your passport and supporting documents to be sent back to you securely.
+
+$IF child_or_adult is 'child'
+
+| Passport type | Passport fee | Total to pay (including courier fee) |
+|---------------|--------------|--------------------------------------|
+| Child passport | £53.00 | £72.86 |
+
+$ELSEIF child_or_adult is 'adult'
+
+| Passport type | Passport fee | Total to pay (including courier fee) |
+|---------------|--------------|--------------------------------------|
+| Adult standard 32-page passport | £83.00 | £102.86 |
+| Adult jumbo 48-page passport | £91.00 | £110.86 |
+
+$ENDIF
+
+$ELSEIF ips_2?(passport_country)
+
+You’ll have to pay a fee for your passport and a courier fee of £24.72. The courier fee pays for your passport to be sent securely to the British embassy, high commission or consulate where you applied for you to collect.
+
+$IF child_or_adult is 'child'
+
+| Passport type | Passport fee | Total to pay (including courier fee) |
+|---------------|--------------|--------------------------------------|
+| Child passport | £53.00 | £77.72 |
+
+$ELSEIF child_or_adult is 'adult'
+
+| Passport type | Passport fee | Total to pay (including courier fee) |
+|---------------|--------------|--------------------------------------|
+| Adult standard 32-page passport | £83.00 | £107.72 |
+| Adult jumbo 48-page passport | £91.00 | £115.72 |
+
+$ENDIF
+
+$ELSEIF ips_3?(passport_country)
+
+ You’ll have to pay a fee for your passport and a courier fee of £23.01. The courier fee pays for your passport to be sent securely to the British embassy, high commission or consulate where you applied for you to collect.
+
+$IF child_or_adult is 'child'
+
+| Passport type | Passport fee | Total to pay (including courier fee) |
+|---------------|--------------|--------------------------------------|
+| Child passport | £53.00 | £76.01 |
+
+$ELSEIF child_or_adult is 'adult'
+
+| Passport type | Passport fee | Total to pay (including courier fee) |
+|---------------|--------------|--------------------------------------|
+| Adult standard 32-page passport | £83.00 | £106.01  |
+| Adult jumbo 48-page passport | £91.00 | £114.01 |
+
+$ENDIF
+
+$ENDIF

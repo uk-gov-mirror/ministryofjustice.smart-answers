@@ -1,4 +1,11 @@
-## How long it takes
 
-Your application will take **at least** %{waiting_time(country_user_located)} weeks from when it’s received by Her Majesty's Passport Office in the UK.
+{{snippet: how_long_it_takes}}
+
+{{snippet: cost}}
+
+{{snippet: how_to_apply_online}}
+
+{{snippet: getting_your_passport}}
+
+{{snippet: contact_passport_adviceline}}
 

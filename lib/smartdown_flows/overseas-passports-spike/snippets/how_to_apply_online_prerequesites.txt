@@ -1,0 +1,28 @@
+
+$IF application_action in {renewing_new renewing_old}
+
+Before you start you need:
+
+- your current passport
+- 2 identical new photos of you (or your child, if it’s a child passport application)
+- any other current passports issued by other countries
+- a MasterCard, Visa, Visa Electron, Visa Debit or Maestro (UK Domestic) card - Maestro (International) cards aren’t accepted
+
+$ELSEIF application_action is 'applying'
+
+Before you start you need:
+
+- the passport numbers of both parents and their dates and place of birth, and in some cases the same details of grandparents
+- 2 identical new photos of you (or your child, if it’s a child passport application)
+- any other current passports issued by other countries
+- a MasterCard, Visa, Visa Electron, Visa Debit or Maestro (UK Domestic) card - Maestro (International) cards aren’t accepted
+
+$ELSEIF application_action is 'replacing'
+
+Before you start you need:
+
+- 2 identical new photos of you (or your child, if it’s a child passport application)
+- any other current passports issued by other countries
+- a MasterCard, Visa, Visa Electron, Visa Debit or Maestro (UK Domestic) card - Maestro (International) cards aren’t accepted
+
+$ENDIF

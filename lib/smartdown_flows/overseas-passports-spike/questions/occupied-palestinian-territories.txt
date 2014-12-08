@@ -1,6 +1,6 @@
 # Where are you?
 
-[choice: country_user_located]
+[choice: country_user_located, alias: passport_country]
 * gaza: Gaza
 * jerusalem_and_west_bank: Jerusalem and the West Bank
 

@@ -1,0 +1,14 @@
+
+$IF ips_doc_1?(passport_country)
+
+Read the [guidance notes](/government/publications/help-completing-the-online-passport-application-from-outside-the-uk) to help you fill in your online application. Check which [supporting documents](/government/publications/overseas-passport-applications-supporting-documents-guidance) you must send with your application. Any documents that aren’t in English (including documents showing an address) must be translated by a professional translator.
+
+$ELSEIF ips_doc_2?(passport_country)
+
+Read the [guidance notes](/government/publications/help-completing-the-online-passport-application-from-outside-the-uk) to help you fill in your online application. Check which [supporting documents](/government/publications/overseas-passport-supporting-documents-group-2) you must send with your application. Any documents that aren’t in English (including documents showing an address) must be translated by a professional translator.
+
+$ELSEIF ips_doc_3?(passport_country)
+
+Read the [guidance notes](/government/publications/help-completing-the-online-passport-application-from-outside-the-uk) to help you fill in your online application. Check which [supporting documents](/government/publications/overseas-passport-supporting-documents-group-3) you must send with your application. Any documents that aren’t in English (including documents showing an address) must be translated by a professional translator.
+
+$ENDIF
