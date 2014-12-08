@@ -1,5 +1,5 @@
 module SmartdownPlugins
-  module OverseasPassports
+  module OverseasPassportsSpike
 
     EXCLUDED_COUNTRIES = %w(holy-see british-antarctic-territory)
 
