@@ -1,0 +1,30 @@
+# Your employment statuses
+
+For the rest of this series of questions, we will be referring to "adopter 1" and "adopter 2". 
+Please choose now who is adopter 1 and adopter 2 and stick to that when answering the questions. 
+TODO: Find a better way to say this
+
+# What’s the employment status of adopter 1?
+
+[choice: employment_status_1]
+* employee: Employee
+* worker: Worker or agency worker
+* self-employed: Self-employed
+* unemployed: Unemployed
+
+Read about [employment statuses](/employment-status) if you aren’t sure which one applies.
+
+# What’s the employment status of adopter 2?
+
+[choice: employment_status_2]
+* employee: Employee
+* worker: Worker or agency worker
+* self-employed: Self-employed
+* unemployed: Unemployed
+
+Read about [employment statuses](/employment-status) if you aren’t sure which one applies.
+
+* employment_status_1 in {employee worker} => adoption_employment_1
+* employment_status_1 in {self-employed unemployed}
+  * employment_status_2 in {employee worker} => adoption_employment_2
+  * employment_status_2 in {self-employed unemployed} => todo
