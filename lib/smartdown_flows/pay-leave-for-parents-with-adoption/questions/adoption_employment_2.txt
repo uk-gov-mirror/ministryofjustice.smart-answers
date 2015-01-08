@@ -1,0 +1,52 @@
+# Adopter 2's employment details
+
+# Did adopter 2 start their current or most recent job before %{minimum_start_date(match_date)}?
+
+[choice: job_before_x_2]
+* yes: Yes
+* no: No
+
+# Was adopter 2 (or will they be) still working in that job on %{minimum_end_date(match_date)}?
+
+[choice: job_after_y_2]
+* yes: Yes
+* no: No
+
+# How much does adopter 2 earn (or did they earn, if they’ve left their job)?
+
+[salary: salary_2]
+
+This is their total take-home pay before any deductions, eg tax.
+
+# Has adopter 2 earned (or will they have earned) more than £111 per week between %{lower_earnings_start(match_date)} and %{minimum_end_date(match_date)}?
+
+[choice: lel_2]
+* yes: Yes
+* no: No
+
+
+IF ADOPTER 2 IS EMPLOYEE
+	IF ADOPTER 2 HAS CONTINUITY AND LOWER EARNINGS TEST
+	  IF ADOPTER 1 IS EMPLOYEE OR WORKER
+	    IF ADOPTER 1 HAS CONTINUITY AND LOWER EARNINGS TEST
+	      IF BEFORE 5/4
+	        BOTH ARE ELIGIBLE FOR ADOPTION LEAVE AND PAY
+	      IF AFTER 5/4
+	        BOTH ARE ELIGIBLE FOR ADOPTION LEAVE, ADOPTION PAY, SHARED PARENTAL LEAVE, SHARED PARENTAL PAY
+	    IF ADOPTER 1 HAS NO CONTINUITY OR NO LOWER EARNINGS
+	      IF BEFORE 5/4
+	        ADOPTER 2 HAS ADOPTION LEAVE AND PAY
+	      IF AFTER 5/4
+	        ASK ADOPTER 1 ABOUT THEIR EARNINGS AND EMPLOYMENT
+	  IF ADOPTER 1 IS SELF-EMPLOYED OR UNEMPLOYED
+	    IF ADOPTER 1 HAS CONTINUITY AND LOWER EARNINGS TEST
+	      IF BEFORE 5/4
+	        ADOPTER 2 HAS ADOPTION LEAVE AND PAY
+	IF ADOPTER 2 HAS CONTINUITY BUT NOT LOWER EARNINGS TEST
+	IF ADOPTER 2 HAS NO CONTINUITY
+
+IF ADOPTER 2 IS WORKER
+  pretty much the same stuff but without pay...
+
+
+* otherwise => todo
