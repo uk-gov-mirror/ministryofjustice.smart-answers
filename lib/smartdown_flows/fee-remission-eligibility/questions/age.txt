@@ -1,0 +1,7 @@
+# Are you%{your_partner(relationship)} under 61 years old?
+
+[choice: under_age_threshold]
+* yes: Yes
+* no: No
+
+* otherwise => dependent_children

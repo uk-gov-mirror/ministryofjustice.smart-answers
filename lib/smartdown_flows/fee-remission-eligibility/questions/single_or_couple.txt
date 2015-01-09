@@ -1,0 +1,9 @@
+# Are you single or part of a couple?
+
+[choice: relationship]
+* single: Single
+* couple: Part of a couple
+* contrary_interest: Part of a couple – but applying for proceedings with a contrary interest
+
+* relationship is 'couple' => age
+* otherwise => age

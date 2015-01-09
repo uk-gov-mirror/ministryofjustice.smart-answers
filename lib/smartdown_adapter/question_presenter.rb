@@ -43,6 +43,8 @@ module SmartdownAdapter
         "country_question"
       when Smartdown::Api::SalaryQuestion
         "salary_question"
+      when Smartdown::Api::MoneyQuestion
+        "money_question"
       when Smartdown::Api::TextQuestion
         "text_question"
       when Smartdown::Api::PostcodeQuestion

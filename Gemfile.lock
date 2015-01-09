@@ -1,3 +1,12 @@
+GIT
+  remote: git@github.com:ministryofjustice/smartdown.git
+  revision: 271443f1a1b7d510b2725944c33c0e7619a8002e
+  branch: money-question
+  specs:
+    smartdown (0.12.0)
+      parslet (~> 1.6.2)
+      uk_postcode (~> 1.0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -217,9 +226,6 @@ GEM
       rack (>= 1.3.5)
       rest-client
     slop (3.4.5)
-    smartdown (0.12.1)
-      parslet (~> 1.6.2)
-      uk_postcode (~> 1.0.1)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
