@@ -17,6 +17,8 @@ module SmartdownAdapter
           SmartdownAdapter::DateQuestionPresenter.new(smartdown_question, smartdown_answer)
         when Smartdown::Api::SalaryQuestion
           SmartdownAdapter::SalaryQuestionPresenter.new(smartdown_question, smartdown_answer)
+        when Smartdown::Api::MoneyQuestion
+          SmartdownAdapter::MoneyQuestionPresenter.new(smartdown_question, smartdown_answer)
         when Smartdown::Api::TextQuestion
           SmartdownAdapter::TextQuestionPresenter.new(smartdown_question, smartdown_answer)
         when Smartdown::Api::PostcodeQuestion
