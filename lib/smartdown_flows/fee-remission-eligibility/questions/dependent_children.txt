@@ -1,0 +1,8 @@
+# Do you have any children who are financially dependent on you?
+
+[choice: dependent_children]
+* yes: Yes
+* no: No
+
+* otherwise => outcome_eligible
+

@@ -1,0 +1,5 @@
+# How much is the claim fee
+
+[money: claim_fee]
+
+* otherwise => receiving_benefits

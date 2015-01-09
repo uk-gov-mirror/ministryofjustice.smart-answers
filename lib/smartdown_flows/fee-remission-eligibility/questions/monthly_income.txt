@@ -1,0 +1,7 @@
+# Is your total monthly income more than £500?
+
+[choice: over_monthly_income_threshold]
+* yes: Yes
+* no: No
+
+* otherwise => outcome_eligible
