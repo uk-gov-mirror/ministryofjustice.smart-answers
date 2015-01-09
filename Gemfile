@@ -20,7 +20,7 @@ if ENV['SMARTDOWN_DEV']
   gem 'smartdown', :path => '../smartdown'
 else
   # gem 'smartdown', '0.12.1'
-  gem 'smartdown', :git => "git@github.com:ministryofjustice/smartdown.git", :branch => "money-question"
+  gem 'smartdown', :git => "https://github.com/ministryofjustice/smartdown.git", :branch => "money-question"
 end
 
 if ENV['API_DEV']
