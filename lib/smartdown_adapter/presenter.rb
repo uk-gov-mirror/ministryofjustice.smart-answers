@@ -62,7 +62,7 @@ module SmartdownAdapter
 
     #COPY/PASTE from old presenter
     def artefact
-      @artefact ||= content_api.artefact(name)
+      #@artefact ||= content_api.artefact(name)
     rescue GdsApi::HTTPErrorResponse
       {}
     end
