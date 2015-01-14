@@ -10,6 +10,11 @@ Rake::TestTask.new("test:integration:smart_answer_flows") do |t|
   t.test_files = Dir["test/integration/smart_answer_flows/**/*_test.rb"]
 end
 
+Rake::TestTask.new("test:integration:smartdown_flows") do |t|
+  t.libs << "test"
+  t.test_files = Dir["test/integration/smartdown_flows/**/*_test.rb"]
+end
+
 Rake::TestTask.new("test:unit:calculators") do |t|
   t.libs << "test"
   t.test_files = Dir["test/unit/calculators/**/*_test.rb"]

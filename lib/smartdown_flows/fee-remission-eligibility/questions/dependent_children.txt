@@ -4,5 +4,4 @@
 * yes: Yes
 * no: No
 
-* otherwise => outcome_eligible
-
+* otherwise => disposable_capital

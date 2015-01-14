@@ -1,4 +1,4 @@
-# Do you%{your_partner(relationship)} have savings and investments of £%{disposable_capital(under_age_threshold claim_fee)} or more?
+# Do you%{your_partner(relationship)} have savings and investments of £%{disposable_capital_threshold(under_age_threshold claim_fee)} or more?
 
 [choice: over_savings_threshold]
 * yes: Yes

@@ -10,7 +10,7 @@ module SmartdownPlugins
       end
     end
 
-    def self.disposable_capital(under_age_threshold, claim_fee=nil)
+    def self.disposable_capital_threshold(under_age_threshold, claim_fee=nil)
       if under_age_threshold
         fee = claim_fee.to_f
         if fee <= 1000
