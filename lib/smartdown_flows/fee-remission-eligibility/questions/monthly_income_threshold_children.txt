@@ -1,0 +1,7 @@
+# Is your%{your_partner(relationship)} total monthly income more than %{monthly_income_threshold(relationship dependent_children)}?
+
+[choice: over_monthly_income_threshold]
+* yes: Yes
+* no: No
+
+* otherwise => outcome_eligible

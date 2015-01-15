@@ -11,5 +11,5 @@
 * yes: Yes
 * no: No
 
-* receiving_benefits is 'yes' => outcome_eligible
+* receiving_benefits is 'yes' => disposable_capital_on_benefits
 * receiving_benefits is 'no' => single_or_couple

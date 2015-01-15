@@ -1,7 +1,5 @@
-# Do you have any children who are financially dependent on you?
+# How many children are financially dependent on you%{your_partner(relationship)}?
 
-[choice: dependent_children]
-* yes: Yes
-* no: No
+[text: dependent_children]
 
-* otherwise => disposable_capital
+* otherwise => monthly_income_threshold_children
