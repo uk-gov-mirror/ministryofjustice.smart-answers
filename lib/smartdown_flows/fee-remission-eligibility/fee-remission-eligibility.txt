@@ -8,7 +8,7 @@ status: published
 
 If you are on low income or benefits, you may be eligible to not pay your court fee. Check your eligibility here:
 
-[start: claim_fee?]
+[start: receiving_benefits]
 
 ##Before you start
 
@@ -21,4 +21,3 @@ $C
 <brailleandlargefonts@slc.co.uk>
 $C
 
-* otherwise => receiving_benefits
