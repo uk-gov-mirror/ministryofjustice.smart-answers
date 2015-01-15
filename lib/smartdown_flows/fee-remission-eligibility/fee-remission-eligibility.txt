@@ -23,4 +23,4 @@ $C
 <brailleandlargefonts@slc.co.uk>
 $C
 
-* otherwise => claim_fee
+* otherwise => receiving_benefits

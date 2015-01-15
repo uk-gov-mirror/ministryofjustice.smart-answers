@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ministryofjustice/smartdown.git
-  revision: 2517529ba9ac6bbe1b8bd4c86587691ace9c32b3
+  revision: b6a44279af981be998c250810c18352a857fa082
   branch: money-question
   specs:
     smartdown (0.12.1)

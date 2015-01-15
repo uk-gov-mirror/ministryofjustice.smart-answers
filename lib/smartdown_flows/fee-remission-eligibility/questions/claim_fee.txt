@@ -2,4 +2,4 @@
 
 [money: claim_fee]
 
-* otherwise => receiving_benefits
+* otherwise => disposable_capital

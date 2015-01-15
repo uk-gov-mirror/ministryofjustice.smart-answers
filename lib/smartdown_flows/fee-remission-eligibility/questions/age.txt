@@ -4,4 +4,5 @@
 * yes: Yes
 * no: No
 
-* otherwise => dependent_children
+* under_age_threshold is 'yes' => claim_fee
+* otherwise => disposable_capital_over_61

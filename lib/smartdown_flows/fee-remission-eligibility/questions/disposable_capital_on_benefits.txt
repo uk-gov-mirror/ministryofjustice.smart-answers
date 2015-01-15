@@ -1,0 +1,9 @@
+# Do you have more than £3,000 in savings?
+
+[choice: over_minimum_savings_threshold]
+* yes: Yes
+* no: No
+
+* over_minimum_savings_threshold is 'yes' => single_or_couple
+* over_minimum_savings_threshold is 'no' => outcome_eligible
+
