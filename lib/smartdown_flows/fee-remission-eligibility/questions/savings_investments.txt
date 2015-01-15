@@ -1,7 +1,0 @@
-# Do you have savings and investments of more than £5000?
-
-[choice: over_savings_threshold]
-* yes: Yes
-* no: No
-
-* otherwise => monthly_income
