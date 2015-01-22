@@ -21,7 +21,7 @@ module SmartdownPlugins
 
       def disposable_capital_threshold(under_age_threshold, fee=nil)
 
-        threshold = if under_age_threshold == 'no'
+        threshold = if under_age_threshold == 'over_age_threshold'
                       16000
                     else
                       if fee <= 1000

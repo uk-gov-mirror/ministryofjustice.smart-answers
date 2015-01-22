@@ -8,8 +8,8 @@
 - Scottish Civil Legal Aid
 
 [choice: receiving_benefits]
-* yes: Yes
-* no: No
+* benefits: Yes
+* no_benefits: No
 
 * otherwise => relationship_question
 

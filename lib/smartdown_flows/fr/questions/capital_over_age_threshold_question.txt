@@ -5,5 +5,5 @@
 * no: No
 
 * over_savings_threshold is 'yes' => outcome_not_eligible
-* receiving_benefits is 'no' => outcome_not_eligible
+* receiving_benefits is 'no_benefits' => outcome_not_eligible
 * otherwise => outcome_eligible
