@@ -1,9 +1,9 @@
-# Is your%{your_partners(relationship)} gross monthly income more than %{monthly_income_threshold(relationship dependent_children)}?
+# Is your%{your_partners(relationship)} gross monthly income more than %{monthly_income_threshold(relationship dependent_children_count)}?
 
 [choice: over_monthly_income_threshold]
-* yes: Yes
-* no: No
+* above_monthly_income_threshold: Yes
+* below_monthly_income_threshold: No
 
-* over_monthly_income_threshold is 'no' => capital_over_minimum_threshold_question
+* over_monthly_income_threshold is 'below_monthly_income_threshold' => capital_over_minimum_threshold_question
 * otherwise => outcome_not_eligible
 

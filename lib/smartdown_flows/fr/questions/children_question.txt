@@ -1,9 +1,9 @@
 # Do you%{your_partner(relationship)} have any children?
 
 [choice: children]
-* yes: Yes
-* no: No
+* dependent_children: Yes
+* no_dependent_children: No
 
-* children is 'yes' => how_many_children_question
+* children is 'dependent_children' => how_many_children_question
 * otherwise => income_threshold_question
 
