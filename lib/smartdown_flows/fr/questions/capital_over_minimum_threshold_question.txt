@@ -1,0 +1,8 @@
+# Do you%{your_partner(relationship)} have more than £3,000 in savings?
+
+[choice: over_minimum_savings_threshold]
+* yes: Yes
+* no: No
+
+* over_minimum_savings_threshold is 'yes' => age_threshold_question
+* otherwise => outcome_eligible

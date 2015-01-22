@@ -1,0 +1,6 @@
+# How many children are financially dependent on you%{your_partner(relationship)}?
+
+[text: dependent_children]
+
+* otherwise => income_threshold_with_children_question
+

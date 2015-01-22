@@ -1,0 +1,15 @@
+# Are you receiving any of the following benefits?
+
+- Income-based Jobseeker's Allowance
+- Income-related Employment and Support Allowance
+- Income Support
+- Univeral Credit
+- State Pension
+- Scottish Civil Legal Aid
+
+[choice: receiving_benefits]
+* yes: Yes
+* no: No
+
+* otherwise => relationship_question
+

@@ -1,0 +1,9 @@
+# Are you single or part of a couple?
+
+[choice: relationship]
+* single: Single
+* couple: Part of a couple
+
+* receiving_benefits is 'yes' => age_threshold_question
+* receiving_benefits is 'no' => children_question
+
