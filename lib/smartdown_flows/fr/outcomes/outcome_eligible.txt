@@ -2,3 +2,4 @@
 
 You can now [apply for fee remission](http://hmctsformfinder.justice.gov.uk/courtfinder/forms/ex160a-from-07-october-eng.pdf).
 
+You can now [apply online for fee remission](http://localhost:3001/fee_remissions/new_one).
