@@ -4,5 +4,6 @@
 
 * receiving_benefits is 'no_benefits'
   * fee_under_capital_minimum?(claim_fee) => outcome_not_eligible
+  * otherwise => capital_under_age_threshold_question
 * otherwise => capital_under_age_threshold_question
 
