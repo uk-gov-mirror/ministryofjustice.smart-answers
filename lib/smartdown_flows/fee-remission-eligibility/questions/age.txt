@@ -1,8 +1,0 @@
-# Are you%{your_partner(relationship)} under 61 years old?
-
-[choice: under_age_threshold]
-* yes: Yes
-* no: No
-
-* under_age_threshold is 'yes' => claim_fee
-* otherwise => disposable_capital_over_61

@@ -1,5 +1,0 @@
-# How many children are financially dependent on you%{your_partner(relationship)}?
-
-[text: dependent_children]
-
-* otherwise => monthly_income_threshold_children

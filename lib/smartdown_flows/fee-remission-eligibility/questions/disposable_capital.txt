@@ -1,9 +1,0 @@
-# Do you%{your_partner(relationship)} have more than %{disposable_capital_threshold(under_age_threshold claim_fee)} in savings?
-
-[choice: over_savings_threshold]
-* yes: Yes
-* no: No
-
-* over_savings_threshold is 'yes' => outcome_not_eligible
-* receiving_benefits is 'no' => children
-* otherwise => outcome_eligible

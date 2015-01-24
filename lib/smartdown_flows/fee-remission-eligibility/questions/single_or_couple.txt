@@ -1,8 +1,0 @@
-# Are you single or part of a couple?
-
-[choice: relationship]
-* single: Single
-* couple: Part of a couple
-
-* relationship is 'couple' => age
-* otherwise => age

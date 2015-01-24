@@ -1,8 +1,0 @@
-# Do you%{your_partner(relationship)} have any children?
-
-[choice: children]
-* yes: Yes
-* no: No
-
-* children is 'yes' => dependent_children
-* otherwise => monthly_income_threshold
