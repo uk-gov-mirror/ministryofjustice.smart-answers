@@ -1,5 +1,10 @@
 # You are eligible for fee remission
 
-You can now [apply for fee remission](http://hmctsformfinder.justice.gov.uk/courtfinder/forms/ex160a-from-07-october-eng.pdf).
+### You can now [apply online for fee remission](http://fr-data-input.herokuapp.com/fee_remissions/new_one)
 
-You can now [apply online for fee remission](http://localhost:3001/fee_remissions/new_one).
+OR
+
+
+$D
+[Download the 'Fee remission application form and guide EX160A' (PDF, 408KB)](http://hmctsformfinder.justice.gov.uk/courtfinder/forms/ex160a-from-07-october-eng.pdf "Example form")
+$D
