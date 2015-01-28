@@ -1,7 +1,7 @@
 # Are you receiving any of the following benefits?
 
-- Income-based Jobseeker's Allowance
-- Income-related Employment and Support Allowance
+- Income-based Jobseeker's Allowance (JSA)
+- Income-related Employment and Support Allowance (ESA)
 - Income Support
 - Univeral Credit
 - State Pension
