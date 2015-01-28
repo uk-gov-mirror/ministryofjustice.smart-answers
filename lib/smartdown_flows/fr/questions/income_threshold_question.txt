@@ -1,9 +1,9 @@
 # Is your%{and_your_partners(relationship)} gross monthly income more than %{monthly_income_threshold(relationship)}?
 
-[choice: over_monthly_income_threshold]
+[choice: monthly_income_threshold_response]
 * above_monthly_income_threshold: Yes
 * below_monthly_income_threshold: No
 
-* over_monthly_income_threshold is 'below_monthly_income_threshold' => capital_over_minimum_threshold_question
+* monthly_income_threshold_response is 'below_monthly_income_threshold' => capital_over_minimum_threshold_question
 * otherwise => outcome_not_eligible
 
