@@ -13,6 +13,12 @@ module SmartdownPlugins
         end
       end
 
+      def or_your_partner(relationship)
+        if relationship == 'couple'
+          ' or your partner'
+        end
+      end
+
       def your_partners(relationship)
         if relationship == 'couple'
           " and your partner's"
@@ -52,9 +58,9 @@ module SmartdownPlugins
 
       def monthly_income_threshold(relationship, dependent_children=nil)
         threshold = if relationship == 'couple'
-                      1245
+                      5245
                     else
-                      1085
+                      5085
                     end
 
         if dependent_children
