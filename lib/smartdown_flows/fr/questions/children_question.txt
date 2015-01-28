@@ -1,4 +1,4 @@
-# Do you%{your_partner(relationship)} have any children?
+# Do you%{and_your_partner(relationship)} have any children?
 
 [choice: children]
 * dependent_children: Yes

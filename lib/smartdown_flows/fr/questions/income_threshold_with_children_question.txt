@@ -1,4 +1,4 @@
-# Is your%{your_partners(relationship)} gross monthly income more than %{monthly_income_threshold(relationship dependent_children_count)}?
+# Is your%{and_your_partners(relationship)} gross monthly income more than %{monthly_income_threshold(relationship dependent_children_count)}?
 
 [choice: over_monthly_income_threshold]
 * above_monthly_income_threshold: Yes

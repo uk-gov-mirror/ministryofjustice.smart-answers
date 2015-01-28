@@ -7,7 +7,7 @@ module SmartdownPlugins
         fee <= 1000
       end
 
-      def your_partner(relationship)
+      def and_your_partner(relationship)
         if relationship == 'couple'
           ' and your partner'
         end
@@ -19,7 +19,7 @@ module SmartdownPlugins
         end
       end
 
-      def your_partners(relationship)
+      def and_your_partners(relationship)
         if relationship == 'couple'
           " and your partner's"
         end

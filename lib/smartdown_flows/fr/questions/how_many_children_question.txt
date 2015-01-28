@@ -1,4 +1,4 @@
-# How many children are financially dependent on you%{your_partner(relationship)}?
+# How many children are financially dependent on you%{and_your_partner(relationship)}?
 
 [text: dependent_children_count]
 

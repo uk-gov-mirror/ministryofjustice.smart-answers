@@ -1,4 +1,4 @@
-# Do you%{your_partner(relationship)} have more than £3,000 in savings and investments?
+# Do you%{and_your_partner(relationship)} have more than £3,000 in savings and investments?
 
 [choice: over_minimum_savings_threshold]
 * above_minimum_savings_threshold: Yes

@@ -1,4 +1,4 @@
-# Is your%{your_partners(relationship)} gross monthly income more than %{monthly_income_threshold(relationship)}?
+# Is your%{and_your_partners(relationship)} gross monthly income more than %{monthly_income_threshold(relationship)}?
 
 [choice: over_monthly_income_threshold]
 * above_monthly_income_threshold: Yes
