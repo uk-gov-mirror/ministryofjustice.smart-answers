@@ -1,6 +1,6 @@
-# You are eligible for fee remission
+# You are eligible for a court fee exemption
 
-### You can now [apply online for fee remission](http://fr-data-input.herokuapp.com/fee_remissions/new_one)
+### You can now [apply online for a court fee exemption](http://fr-data-input.herokuapp.com/fee_remissions/new_one)
 
 OR
 

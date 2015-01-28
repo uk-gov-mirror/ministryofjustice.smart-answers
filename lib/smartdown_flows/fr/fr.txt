@@ -1,23 +1,12 @@
 ---
-meta_description: Check you are eligible for fee remission
+meta_description: Are you eligible for a court fee exemption
 satisfies_need: 999999
 status: draft
 ---
 
-# Check you are eligible for fee remission
+# Are you eligible for a court fee exemption
 
-If you are on low income or benefits, you may be eligible to not pay your court fee. Check your eligibility here:
+You may not have to pay a court fee, or you may get some money off.
 
 [start: benefits_question]
-
-##Before you start
-
-You may need to have details of income or savings and investments available to check your eligibility.
-
-$C
-**Helpline - alternative formats only**
-
-0141 243 3686<br />
-<brailleandlargefonts@slc.co.uk>
-$C
 

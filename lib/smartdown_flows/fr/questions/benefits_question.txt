@@ -1,11 +1,11 @@
-# Are you receiving any of the following benefits?
+# Are you receiving any of these benefits?
 
 - Income-based Jobseeker's Allowance (JSA)
 - Income-related Employment and Support Allowance (ESA)
 - Income Support
-- Univeral Credit
-- State Pension
-- Scottish Civil Legal Aid
+- Univeral Credit (and you're earning less than £6,000)
+- State Pension (Guarantee Credit)
+- Scottish Legal Aid
 
 [choice: receiving_benefits]
 * benefits: Yes

@@ -1,8 +1,8 @@
-# Are you%{your_partner(relationship)} under 61 years old?
+# Are you%{or_your_partner(relationship)} 61 years old or over?
 
 [choice: under_age_threshold]
-* below_age_threshold: Yes
-* over_age_threshold: No
+* over_age_threshold: Yes
+* below_age_threshold: No
 
 * under_age_threshold is 'below_age_threshold' => fee_question
 * otherwise => capital_over_age_threshold_question
