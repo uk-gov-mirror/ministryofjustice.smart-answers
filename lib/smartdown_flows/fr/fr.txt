@@ -1,12 +1,15 @@
 ---
-meta_description: Are you eligible for a court fee exemption
+meta_description: Help with court fees
 satisfies_need: 999999
 status: draft
 ---
 
-# Are you eligible for a court fee exemption
+# Help with court fees
 
 You may not have to pay a court fee, or you may get some money off.
 
+Check whether you’re likely to get a court fee exemption and apply online.
+
 [start: benefits_question]
+
 

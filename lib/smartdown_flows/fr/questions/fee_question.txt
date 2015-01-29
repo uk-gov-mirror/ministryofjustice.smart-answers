@@ -1,4 +1,4 @@
-# How much is the fee to be paid?
+# How much is the fee you’d like help with?
 
 [money: claim_fee]
 

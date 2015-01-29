@@ -1,10 +1,7 @@
-# You are eligible for a court fee exemption
+# You are likely to get a court fee exemption
 
-### You can now [apply online for a court fee exemption](http://fr-data-input.herokuapp.com/fee_remissions/new_one)
+This is based on what you've told us about your situation.
 
-OR
+### Complete your [application online](http://fr-data-input.herokuapp.com/fee_remissions/new_one)
 
 
-$D
-[Download the 'Fee remission application form and guide EX160A' (PDF, 408KB)](http://hmctsformfinder.justice.gov.uk/courtfinder/forms/ex160a-from-07-october-eng.pdf "Example form")
-$D

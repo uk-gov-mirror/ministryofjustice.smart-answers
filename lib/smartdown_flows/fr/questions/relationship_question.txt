@@ -1,4 +1,4 @@
-# Are you single or part of a couple?
+# What best describes your status?
 
 [choice: relationship]
 * single: Single
