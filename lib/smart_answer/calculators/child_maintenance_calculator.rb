@@ -35,7 +35,8 @@ module SmartAnswer::Calculators
       widows_pension: "Widow’s pension",
       universal_credit_no_earned_income: "Universal Credit with no earned income",
       skillseekers_training: "Skillseekers training",
-      war_partner_pension: "War Widow’s, Widower’s or Surviving Civil Partner’s Pension"
+      war_partner_pension: "War Widow’s, Widower’s or Surviving Civil Partner’s Pension",
+      none_of_the_above: "None of the above"
     }.freeze
     private_constant :STATE_BENEFITS
 

@@ -2,7 +2,7 @@ Do you get any of these benefits or state pensions?
 
 
 
-If you do not receive any of these click 'Next step'.
+
 
   * income_support: Income Support
   * ib_jobseekers_allowance: income-based Jobseeker’s Allowance
@@ -25,6 +25,7 @@ If you do not receive any of these click 'Next step'.
   * universal_credit_no_earned_income: Universal Credit with no earned income
   * skillseekers_training: Skillseekers training
   * war_partner_pension: War Widow’s, Widower’s or Surviving Civil Partner’s Pension
+  * none_of_the_above: None of the above
 
 
 
