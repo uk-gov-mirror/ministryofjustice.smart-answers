@@ -1,9 +1,18 @@
 <% content_for :body do %>
-  <%= render partial: 'disclaimer.govspeak.erb' %>
 
   <% if course_studied == 'dental-medical-healthcare' %>
+    Your result is an estimate. If you’re studying a Foundation Degree or DipHE in dental hygiene and dental therapy or operating department practice, you will get student finance.
+
+    Usually, you only get student finance if you’re doing your first higher education qualification - [check if you qualify](/student-finance/who-qualifies).
+
     To qualify for a Maintenance Loan you must be studying a Diploma of Higher Education (DipHE) in dental hygiene and dental therapy or operating department, or a Foundation Degree in dental hygiene and dental therapy.
+  <% elsif course_studied == 'teacher-training' %>
+    Your result is an estimate. If you’re studying an initial Teacher Training course (if it’s degree level or above) you qualify for student finance.
+
+    Usually, you only get student finance if you’re doing your first higher education qualification - [check if you qualify](/student-finance/who-qualifies).
   <% elsif course_studied == 'none-of-the-above' %>
+    <%= render partial: 'disclaimer.govspeak.erb' %>
+
     To qualify for a Maintenance Loan, you must be studying one of the following courses:
 
     - a first degree, for example BA, BSc or BEd
@@ -11,6 +20,8 @@
     - a Diploma of Higher Education (DipHe) in dental hygiene and dental therapy or operating department practice
     - an integrated master's degree
     - a Graduate Certificate or Graduate Diploma
+  <% else %>
+    <%= render partial: 'disclaimer.govspeak.erb' %>
   <% end %>
 
   ##Student finance
