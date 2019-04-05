@@ -19,9 +19,8 @@ class MarriageAbroadTest < ActiveSupport::TestCase
   end
 
   setup do
-    @location_slugs = FLATTEN_COUNTRIES
-    stub_world_locations(@location_slugs)
-    setup_for_testing_flow SmartAnswer::MarriageAbroadFlow
+    setup_for_testing_flow(SmartAnswer::MarriageAbroadFlow)
+    stub_world_locations(FLATTEN_COUNTRIES)
   end
 
   should "which country you want the ceremony to take place in" do

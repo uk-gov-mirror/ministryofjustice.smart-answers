@@ -1,6 +1,12 @@
 module FlowTestHelper
+  def self.included(test)
+    def test.flows
+      @flows ||= {}
+    end
+  end
+
   def setup_for_testing_flow(klass)
-    @flow = klass.build
+    @flow = (self.class.flows[klass] ||= klass.build)
     reset_responses
   end
 
