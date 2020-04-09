@@ -14,10 +14,7 @@
 
     <article role="article" data-debug-template-path="<%= start_node.relative_erb_template_path %>">
       <section class="app-o-spacing">
-        <%= render "govuk_publishing_components/components/govspeak", {
-        } do %>
-          <%= start_node.body %>
-        <% end %>
+        <%= start_node.body %>
 
         <%= render "govuk_publishing_components/components/button", {
           text: start_node.start_button_text,
@@ -29,8 +26,6 @@
 
       <% unless start_node.post_body.blank? %>
         <section>
-          <%= render "govuk_publishing_components/components/govspeak", {
-          } do %>
           <div id="before-you-start">
             <%= render "govuk_publishing_components/components/heading", {
               text: "Before you start",
@@ -40,7 +35,6 @@
           </div>
           <% end %>
         </section>
-      <% end %>
     </article>
   </div>
 </div>
