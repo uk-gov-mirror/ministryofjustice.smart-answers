@@ -15,10 +15,5 @@ Naming/FileName:
 Style/CommentedKeyword:
   Enabled: false
 
-Metrics/BlockLength:
-  Exclude:
-    - 'lib/tasks/**/*.rake'
-    - 'lib/smart_answer_flows/**/*.rb'
-
 Rails/OutputSafety:
   Enabled: false
