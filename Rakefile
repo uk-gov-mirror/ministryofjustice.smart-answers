@@ -6,7 +6,5 @@ require File.expand_path("config/application", __dir__)
 
 SmartAnswers::Application.load_tasks
 
-# Delete the current "default" rake task and redefine it. This allow us to use:
-# - `rake test` to only run minitest tests
 Rake::Task["default"].clear
-task default: %i[test]
+task default: %i[test lint]
