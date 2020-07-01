@@ -13,5 +13,12 @@
     If your salary is reduced because of these changes, [check if you’re eligible for Universal Credit](https://www.gov.uk/universal-credit/eligibility).
   $CTA
 
+
+  <% if calculator.workplace_should_be_closed? %>
+    ### Your workplace should be closed
+
+    If there is still work to do despite your workplace being closed, your employer might ask you to work from home or come into work.
+  <% end %>
+
   <%= render "come_back" %>
 <% end %>

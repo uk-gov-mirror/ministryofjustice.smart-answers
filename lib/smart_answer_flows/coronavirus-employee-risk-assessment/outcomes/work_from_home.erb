@@ -1,4 +1,10 @@
 <% govspeak_for :body do %>
+  <% if calculator.workplace_should_be_closed? %>
+    ### Your workplace should be closed
+
+    If there is still work to do despite your workplace being closed, your employer might ask you to work from home or come into work.
+  <% end %>
+
   $CTA
     ## You should work from home
 
@@ -9,5 +15,6 @@
     - including you in all necessary communications
     - looking after your physical and mental wellbeing
   $CTA
+
   <%= render "come_back" %>
 <% end %>

@@ -1,4 +1,10 @@
 <% govspeak_for :body do %>
+  <% if calculator.workplace_should_be_closed? %>
+    ### Your workplace should be closed
+
+    If there is still work to do despite your workplace being closed, your employer might ask you to work from home or come into work.
+  <% end %>
+
   $CTA
     ## Get help to work from home
     Your employer should help you work from home by:
@@ -12,5 +18,6 @@
 
     If your employer is not taking all practical steps to promote social distancing, you can report this to your local authority, or the [Health and Safety Executive](https://www.hse.gov.uk/) who can take a range of actions, including requiring your employer to take additional steps where appropriate.
   $CTA
+
   <%= render "come_back" %>
 <% end %>

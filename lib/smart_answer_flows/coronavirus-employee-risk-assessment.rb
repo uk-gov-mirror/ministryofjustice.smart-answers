@@ -47,24 +47,10 @@ module SmartAnswer
             "indoor_attraction",
             "outdoor_recreation",
             "museums_or_galleries",
-            "cinema"
+            "cinema",
+            "auction_house"
             question :is_your_workplace_an_exception?
-          when "auction_house"
-            question :is_your_workplace_an_auction_house?
           when "other"
-            question :can_work_from_home?
-          else
-            question :is_your_employer_asking_you_to_work?
-          end
-        end
-      end
-
-      multiple_choice :is_your_workplace_an_auction_house? do
-        option :yes
-        option :no
-
-        next_node do |response|
-          if response == "yes"
             question :can_work_from_home?
           else
             question :is_your_employer_asking_you_to_work?
@@ -75,6 +61,10 @@ module SmartAnswer
       multiple_choice :is_your_workplace_an_exception? do
         option :yes
         option :no
+
+        on_response do |response|
+          calculator.workplace_is_exception = response
+        end
 
         next_node do |response|
           work_in_retail = calculator.where_do_you_work == "retail"
@@ -92,6 +82,10 @@ module SmartAnswer
       multiple_choice :is_your_employer_asking_you_to_work? do
         option :yes
         option :no
+
+        on_response do |response|
+          calculator.return_after_4th = response
+        end
 
         next_node do |response|
           if response == "yes"
