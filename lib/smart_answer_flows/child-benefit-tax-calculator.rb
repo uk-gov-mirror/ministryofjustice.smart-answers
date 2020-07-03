@@ -61,6 +61,26 @@ module SmartAnswer
         end
       end
 
+      # Q3a
+      multiple_choice :how_many_children_part_year? do
+        option :"1"
+        option :"2"
+        option :"3"
+        option :"4"
+        option :"5"
+        option :"6"
+        option :"7"
+        option :"8"
+        option :"9"
+        option :"10"
+
+        save_input_as :part_year_children_count
+
+        next_node do |response|
+          question :starting_children
+        end
+      end
+
       # outcome :outcome_1
     end
   end
