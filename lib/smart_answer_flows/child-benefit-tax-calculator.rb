@@ -45,6 +45,22 @@ module SmartAnswer
         end
       end
 
+      # Q3
+      multiple_choice :claim_part_year? do
+        option :"yes"
+        option :"no"
+
+        save_input_as :claim_part_year
+
+        next_node do |response|
+          if response == "yes"
+            question :how_many_children_part_year?
+          else
+            question :income_details
+          end
+        end
+      end
+
       # outcome :outcome_1
     end
   end
