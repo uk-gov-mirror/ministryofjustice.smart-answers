@@ -61,7 +61,7 @@ module SmartAnswer
         end
       end
 
-      # Q3a
+      # Q3a/Q3b (part time children start/stop dates)
       multiple_choice :how_many_children_part_year? do
         option :"1"
         option :"2"
@@ -77,9 +77,38 @@ module SmartAnswer
         save_input_as :part_year_children_count
 
         next_node do |response|
-          question :starting_children
+          question :starting_children_0
         end
       end
+
+      (0..2).each_with_index do |child_number, index|
+        date_question "starting_children_#{child_number}".to_sym do
+          from { Date.new(2011, 1, 1) }
+          to { Date.new(2021, 4, 5) }
+
+          save_input_as "starting_children_#{child_number}".to_sym
+
+          next_node do |response|
+            question "stopping_children_#{child_number}".to_sym
+          end
+        end
+
+        date_question "stopping_children_#{child_number}".to_sym do
+          from { Date.new(2011, 1, 1) }
+          to { Date.new(2021, 4, 5) }
+
+          save_input_as "stopping_children_#{child_number}".to_sym
+
+          next_node do |response|
+            if index < part_year_children_count.to_i - 1
+              question "starting_children_#{index+1}".to_sym
+            else
+              question :income_details
+            end
+          end
+        end
+      end
+
 
       # outcome :outcome_1
     end
