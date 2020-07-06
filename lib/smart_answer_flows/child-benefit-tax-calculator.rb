@@ -43,19 +43,19 @@ module SmartAnswer
         end
 
         next_node do
-          question :claim_part_year?
+          question :is_part_year_claim?
         end
       end
 
       # Q3
-      multiple_choice :claim_part_year? do
+      multiple_choice :is_part_year_claim? do
         option :"yes"
         option :"no"
 
-        # save_input_as :claim_part_year
+        # save_input_as :is_part_year_claim
 
         on_response do |response|
-          calculator.claim_part_year = response
+          calculator.is_part_year_claim = response
         end
 
         next_node do |response|
