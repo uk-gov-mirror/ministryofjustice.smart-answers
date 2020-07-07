@@ -6,8 +6,6 @@ module SmartAnswer
       flow_content_id "26f5df1d-2d73-4abc-85f7-c09c73332693"
       status :draft
 
-      calculator = Calculators::ChildBenefitTaxCalculator.new
-      # Q1
       multiple_choice :how_many_children? do
         (1..10).each do | children |
           option :"#{children}"
@@ -16,7 +14,9 @@ module SmartAnswer
         # save_input_as :children_count
 
         on_response do |response|
+          self.calculator = Calculators::ChildBenefitTaxCalculator.new
           calculator.children_count = response
+          @children_count = response
         end
 
         next_node do
@@ -26,7 +26,13 @@ module SmartAnswer
 
       # Q2
       multiple_choice :which_tax_year? do
-        option :"2012"
+        binding.pry
+        # (0..@calculator.children_count).each do |child|
+        #   option :"1"
+        # end
+        if @children_count.to_i >= 0
+          option :"#{@calculator.to_i}"
+        end
         option :"2013"
         option :"2014"
         option :"2015"
@@ -43,7 +49,9 @@ module SmartAnswer
         end
 
         next_node do
-          question :is_part_year_claim?
+          # if calculator.children_count.to_i >= 0
+            question :is_part_year_claim?
+          # end
         end
       end
 
@@ -69,10 +77,12 @@ module SmartAnswer
 
       # Q3a/Q3b (part time children start/stop dates)
       multiple_choice :how_many_children_part_year? do
-        children_count = calculator.children_count.to_i+1
-        (0..children_count).each do | children |
+        # children_count = calculator.children_count.to_i+1
+        (0..3).each do | children |
           option :"#{children+1}"
         end
+        # option :"#{1}"
+        # option @children_count
 
         on_response do |response|
           calculator.part_year_children_count = response
@@ -85,34 +95,34 @@ module SmartAnswer
         end
       end
 
-      part_year_children_count = calculator.part_year_children_count.to_i+1
-      (0..part_year_children_count).each_with_index do |child_number, index|
-        date_question "starting_children_#{child_number}".to_sym do
-          from { Date.new(2011, 1, 1) }
-          to { Date.new(2021, 4, 5) }
-
-          save_input_as "starting_children_#{child_number}".to_sym
-
-          next_node do |response|
-            question "stopping_children_#{child_number}".to_sym
-          end
-        end
-
-        date_question "stopping_children_#{child_number}".to_sym do
-          from { Date.new(2011, 1, 1) }
-          to { Date.new(2021, 4, 5) }
-
-          save_input_as "stopping_children_#{child_number}".to_sym
-
-          next_node do |response|
-            if index < part_year_children_count.to_i - 1
-              question "starting_children_#{index+1}".to_sym
-            else
-              question :income_details
-            end
-          end
-        end
-      end
+      # part_year_children_count = calculator.part_year_children_count.to_i+1
+      # (0..5).each_with_index do |child_number, index|
+      #   date_question "starting_children_#{child_number}".to_sym do
+      #     from { Date.new(2011, 1, 1) }
+      #     to { Date.new(2021, 4, 5) }
+      #
+      #     save_input_as "starting_children_#{child_number}".to_sym
+      #
+      #     next_node do |response|
+      #       question "stopping_children_#{child_number}".to_sym
+      #     end
+      #   end
+      #
+      #   date_question "stopping_children_#{child_number}".to_sym do
+      #     from { Date.new(2011, 1, 1) }
+      #     to { Date.new(2021, 4, 5) }
+      #
+      #     save_input_as "stopping_children_#{child_number}".to_sym
+      #
+      #     next_node do |response|
+      #       if index < part_year_children_count.to_i - 1
+      #         question "starting_children_#{index+1}".to_sym
+      #       else
+      #         question :income_details
+      #       end
+      #     end
+      #   end
+      # end
 
       value_question :income_details do
         save_input_as :income_details
