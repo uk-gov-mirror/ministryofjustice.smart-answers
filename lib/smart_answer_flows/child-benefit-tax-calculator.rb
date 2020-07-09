@@ -19,6 +19,25 @@ module SmartAnswer
         end
       end
 
+      # Q2
+      multiple_choice :which_tax_year? do
+        option :"2012"
+        option :"2013"
+        option :"2014"
+        option :"2015"
+        option :"2016"
+        option :"2017"
+        option :"2018"
+        option :"2019"
+        option :"2020"
+
+        save_input_as :tax_year
+
+        next_node do
+          question :is_part_year_claim?
+        end
+      end
+
       outcome :outcome_1
     end
   end
