@@ -54,6 +54,15 @@ module SmartAnswer
         end
       end
 
+      # Q4
+      value_question :income_details? do
+        save_input_as :income_details
+
+        next_node do |response|
+          question :allowable_deductions?
+        end
+      end
+
       outcome :outcome_1
     end
   end
