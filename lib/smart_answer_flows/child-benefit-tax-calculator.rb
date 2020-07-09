@@ -6,9 +6,16 @@ module SmartAnswer
       flow_content_id "26f5df1d-2d73-4abc-85f7-c09c73332693"
       status :draft
 
-      value_question :question_1? do
+      # Q1
+      multiple_choice :how_many_children? do
+        (1..10).each do | children |
+          option :"#{children}"
+        end
+
+        save_input_as :children_count
+
         next_node do
-          outcome :outcome_1
+          question :which_tax_year?
         end
       end
 
