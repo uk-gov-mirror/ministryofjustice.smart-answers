@@ -32,11 +32,18 @@ module SmartAnswer::Calculators
       @income_details = income_details
       @allowable_deductions = allowable_deductions
       @other_allowable_deductions = other_allowable_deductions
+
+      @child_benefit_data = self.class.child_benefit_data
     end
 
-    def child_benefit_rates
-      @child_benefit_rates ||= YAML.load_file(Rails.root.join("config/smart_answers/rates/child_benefit_rates.yml"))
+    def tax_years
+      @child_benefit_data.each_with_object(Array.new) do |(key), tax_year|
+        tax_year << key
+      end
     end
 
+    def self.child_benefit_data
+      @child_benefit_data ||= YAML.load_file(Rails.root.join("config/smart_answers/rates/child_benefit_rates.yml"))
+    end
   end
 end

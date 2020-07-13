@@ -7,7 +7,7 @@ module SmartAnswer
       status :draft
 
       config = Calculators::ChildBenefitTaxConfiguration.new
-
+      calculator = Calculators::ChildBenefitTaxCalculator.new
       # Q1
       multiple_choice :how_many_children? do
         (1..10).each do | children |
@@ -23,15 +23,9 @@ module SmartAnswer
 
       # Q2
       multiple_choice :which_tax_year? do
-        option :"2012"
-        option :"2013"
-        option :"2014"
-        option :"2015"
-        option :"2016"
-        option :"2017"
-        option :"2018"
-        option :"2019"
-        option :"2020"
+        calculator.tax_years.each do | tax_year |
+          option :"#{tax_year}"
+        end
 
         save_input_as :tax_year
 
