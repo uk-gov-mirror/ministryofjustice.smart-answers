@@ -14,7 +14,9 @@ module SmartAnswer
           option :"#{children}"
         end
 
-        save_input_as :children_count
+        on_response do |response|
+          calculator.children_count = response.to_i
+        end
 
         next_node do
           question :which_tax_year?
@@ -27,10 +29,8 @@ module SmartAnswer
           option :"#{tax_year}"
         end
 
-        save_input_as :tax_year
-
         on_response do |response|
-          calculator.selected_tax_year(response)
+          calculator.tax_year = response
         end
 
         next_node do
@@ -56,8 +56,12 @@ module SmartAnswer
 
       # Q3a
       multiple_choice :how_many_children_part_year? do
-        (0..9).each do | children |
-          option :"#{children+1}"
+        # precalculate :children_count do
+        #   set_children_count(calculator.children_count)
+        # end
+
+        calculator.children_count.each do | children |
+          option :"#{children}"
         end
 
         on_response do |response|
@@ -110,6 +114,10 @@ module SmartAnswer
 
       outcome :outcome_1
     end
+
+    # def self.set_children_count(children_count)
+    #   [*1..children_count]
+    # end
 
     def self.next_child_start_date_question(children, part_year_children_count)
       children.fetch(part_year_children_count.shift, :income_details)
