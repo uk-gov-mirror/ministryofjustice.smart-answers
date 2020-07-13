@@ -42,6 +42,25 @@ module SmartAnswer::Calculators
       end
     end
 
+    def selected_tax_year(tax_year)
+      @child_benefit_data.fetch(tax_year)
+    end
+
+    def first_child_rate_total(no_of_weeks)
+      binding.pry
+      @child_benefit_data.fetch(tax_year)
+      # @child_benefit_data.first_child_rate * no_of_weeks
+    end
+
+    # def additional_child_rate_total(no_of_weeks, no_of_children)
+    #   @child_benefit_rates.additional_child_rate * no_of_children * no_of_weeks
+    # end
+    #
+    # def total_number_of_mondays(child_benefit_start_date, child_benefit_end_date)
+    #   (child_benefit_start_date..child_benefit_end_date).count(&:monday?)
+    # end
+
+
     def self.child_benefit_data
       @child_benefit_data ||= YAML.load_file(Rails.root.join("config/smart_answers/rates/child_benefit_rates.yml"))
     end

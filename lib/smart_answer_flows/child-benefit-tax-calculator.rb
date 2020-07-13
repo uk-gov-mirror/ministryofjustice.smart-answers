@@ -29,6 +29,10 @@ module SmartAnswer
 
         save_input_as :tax_year
 
+        on_response do |response|
+          calculator.selected_tax_year(response)
+        end
+
         next_node do
           question :is_part_year_claim?
         end
