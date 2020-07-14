@@ -6,7 +6,6 @@ module SmartAnswer
       flow_content_id "26f5df1d-2d73-4abc-85f7-c09c73332693"
       status :draft
 
-      config = Calculators::ChildBenefitTaxConfiguration.new
       # calculator = Calculators::ChildBenefitTaxCalculator.new
       # Q1
       multiple_choice :how_many_children? do
@@ -66,18 +65,22 @@ module SmartAnswer
         end
 
         next_node do
-          question ChildBenefitTaxCalculatorFlow.next_child_start_date_question(config.questions, calculator.part_year_children_count)
+          question :child_benefit_start?
         end
       end
 
       # Q3b
-      config.questions.each do |(_child, method)|
-        date_question method do
-          from { Date.new(2011, 1, 1) }
-          to { Date.new(2021, 4, 5) }
-
-          next_node do
-            question ChildBenefitTaxCalculatorFlow.next_child_start_date_question(config.questions, part_year_children_count)
+      date_question :child_benefit_start? do
+        from { Date.new(2011, 1, 1) }
+        to { Date.new(2021, 4, 5) }
+        on_response do |response|
+          calculator.child_benefit_start_dates << response
+        end
+        next_node do
+          if calculator.child_benefit_start_dates.length < calculator.part_year_children_count
+            question :child_benefit_start?
+          else
+            question :income_details?
           end
         end
       end
@@ -117,14 +120,6 @@ module SmartAnswer
       end
 
       outcome :outcome_1
-    end
-
-    # def self.set_children_count(children_count)
-    #   [*1..children_count]
-    # end
-
-    def self.next_child_start_date_question(children, part_year_children_count)
-      children.fetch(part_year_children_count.shift, :income_details)
     end
   end
 end

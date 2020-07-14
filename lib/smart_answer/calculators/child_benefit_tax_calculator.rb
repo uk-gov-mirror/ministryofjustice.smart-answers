@@ -6,7 +6,8 @@ module SmartAnswer::Calculators
                   :part_year_children_count,
                   :income_details,
                   :allowable_deductions,
-                  :other_allowable_deductions
+                  :other_allowable_deductions,
+                  :child_benefit_start_dates
 
     NET_INCOME_THRESHOLD = 50_000
     TAX_COMMENCEMENT_DATE = Date.parse("7 Jan 2013") # special case for 2012-13, only weeks from 7th Jan 2013 are taxable
@@ -34,7 +35,7 @@ module SmartAnswer::Calculators
       @other_allowable_deductions = other_allowable_deductions
 
       @child_benefit_data = self.class.child_benefit_data
-
+      @child_benefit_start_dates = []
       @tax_years = tax_year_dates
       @adjusted_net_income = calculate_adjusted_net_income
     end
@@ -64,16 +65,15 @@ module SmartAnswer::Calculators
       else
         first_child_calculated = false
       end
-
-      # if @starting_children.count.positive?
+      if @child_benefit_start_dates.count.positive?
         # first_child = 0
 
-        # @starting_children.each_with_index do |child, index|
-        #   start_date = if (child.start_date < child_benefit_start_date) || ((@tax_year == 2012) && (child.start_date < TAX_COMMENCEMENT_DATE))
-        #                  child_benefit_start_date
-        #                else
-        #                  child.start_date
-        #                end
+        @child_benefit_start_dates.each_with_index do |start_date, index|
+          start_date = if (child.start_date < child_benefit_start_date) || ((@tax_year == 2012) && (child.start_date < TAX_COMMENCEMENT_DATE))
+                         child_benefit_start_date
+                       else
+                         child.start_date
+                       end
 
         #   end_date = if child.end_date.nil? || (child.end_date > child_benefit_end_date)
         #                child_benefit_end_date
@@ -82,15 +82,15 @@ module SmartAnswer::Calculators
         #              end
 
           # no_of_weeks = total_number_of_mondays(start_date, end_date)
-          no_of_weeks = total_number_of_mondays(child_benefit_start_date, child_benefit_end_date)
+          no_of_weeks = total_number_of_mondays(start_date, child_benefit_end_date)
 
-          # total_benefit_amount = if index.equal?(first_child) && (first_child_calculated == false)
-          #                          total_benefit_amount + first_child_rate_total(no_of_weeks)
-          #                        else
-          #                          total_benefit_amount + additional_child_rate_total(no_of_weeks, 1)
-          #                        end
-        # end
-      # end
+          total_benefit_amount = if index.equal?(first_child) && (first_child_calculated == false)
+                                   total_benefit_amount + first_child_rate_total(no_of_weeks)
+                                 else
+                                   total_benefit_amount + additional_child_rate_total(no_of_weeks, 1)
+                                 end
+        end
+      end
       total_benefit_amount.to_f
     end
 
