@@ -7,7 +7,7 @@ module SmartAnswer
       status :draft
 
       config = Calculators::ChildBenefitTaxConfiguration.new
-      calculator = Calculators::ChildBenefitTaxCalculator.new
+      # calculator = Calculators::ChildBenefitTaxCalculator.new
       # Q1
       multiple_choice :how_many_children? do
         (1..10).each do | children |
@@ -15,6 +15,7 @@ module SmartAnswer
         end
 
         on_response do |response|
+          self.calculator = Calculators::ChildBenefitTaxCalculator.new
           calculator.children_count = response.to_i
         end
 
@@ -25,7 +26,7 @@ module SmartAnswer
 
       # Q2
       multiple_choice :which_tax_year? do
-        calculator.tax_years.each do | tax_year |
+        Calculators::ChildBenefitTaxCalculator.tax_years.each do | tax_year |
           option :"#{tax_year}"
         end
 
@@ -55,21 +56,17 @@ module SmartAnswer
       end
 
       # Q3a
-      multiple_choice :how_many_children_part_year? do
-        # precalculate :children_count do
-        #   set_children_count(calculator.children_count)
-        # end
-
-        calculator.children_count.each do | children |
-          option :"#{children}"
+      value_question :how_many_children_part_year?, parse: Integer do
+        on_response do |response|
+          calculator.part_year_children_count = response
         end
 
-        on_response do |response|
-          self.part_year_children_count = [*"1"..response]
+        validate(:valid_number_of_children) do
+          calculator.valid_number_of_children?
         end
 
         next_node do
-          question ChildBenefitTaxCalculatorFlow.next_child_start_date_question(config.questions, part_year_children_count)
+          question ChildBenefitTaxCalculatorFlow.next_child_start_date_question(config.questions, calculator.part_year_children_count)
         end
       end
 
@@ -87,7 +84,14 @@ module SmartAnswer
 
       # Q4
       value_question :income_details? do
-        save_input_as :income_details
+        on_response do |response|
+          calculator.income_details = response.to_i
+          calculator.format_income
+        end
+
+        validate :error_outside_range do
+          calculator.valid_income?
+        end
 
         next_node do |response|
           question :allowable_deductions?

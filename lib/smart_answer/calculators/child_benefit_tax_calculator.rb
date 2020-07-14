@@ -36,10 +36,11 @@ module SmartAnswer::Calculators
       @child_benefit_data = self.class.child_benefit_data
 
       @tax_years = tax_year_dates
+      @adjusted_net_income = calculate_adjusted_net_income
     end
 
-    def tax_years
-      @child_benefit_data.each_with_object(Array.new) do |(key), tax_year|
+    def self.tax_years
+      self.child_benefit_data.each_with_object(Array.new) do |(key), tax_year|
         tax_year << key
       end
     end
@@ -91,6 +92,43 @@ module SmartAnswer::Calculators
         # end
       # end
       total_benefit_amount.to_f
+    end
+
+    def calculate_adjusted_net_income
+      @income_details - (@allowable_deductions * 1.25) - @other_allowable_deductions
+    end
+
+    def nothing_owed?
+      @adjusted_net_income < NET_INCOME_THRESHOLD || tax_estimate.abs.zero?
+    end
+
+    def valid_income?
+      @income_details.positive?
+    end
+
+    def format_income
+      # if @income_details.present?
+      #   @income_details.gsub(/[£, -]/, "").to_i
+      # end
+    end
+
+    def valid_number_of_children?
+      binding.pry
+      @children_count > @part_year_children_count
+    end
+
+    def percent_tax_charge
+      if @adjusted_net_income >= 60_000
+        100
+      elsif (59_900..59_999).cover?(@adjusted_net_income)
+        99
+      else
+        ((@adjusted_net_income - 50_000) / 100.0).floor
+      end
+    end
+
+    def tax_estimate
+      (benefits_claimed_amount * (percent_tax_charge / 100.0)).floor
     end
 
     def first_child_rate_total(no_of_weeks)

@@ -6,15 +6,10 @@
   Number of children
 <% end %>
 
-<% options(
-  "1": "1",
-  "2": "2",
-  "3": "3",
-  "4": "4",
-  "5": "5",
-  "6": "6",
-  "7": "7",
-  "8": "8",
-  "9": "9",
-  "10": "10",
-) %>
+<% text_for :valid_number_of_children do %>
+  The number of children you're claiming a part year for can't be more than the total number of children you're claiming for
+<% end %>
+
+<% text_for :error_message do %>
+  Please enter a number
+<% end %>
