@@ -36,7 +36,7 @@ module SmartAnswer::Calculators
       @other_allowable_deductions = other_allowable_deductions
 
       @child_benefit_data = self.class.child_benefit_data
-      @child_benefit_start_dates = {}
+      @child_benefit_start_dates = HashWithIndifferentAccess.new
       @tax_years = tax_year_dates
       @adjusted_net_income = calculate_adjusted_net_income
       @child_index = 0
@@ -68,23 +68,22 @@ module SmartAnswer::Calculators
         first_child_calculated = false
       end
       if @child_benefit_start_dates.count.positive?
-        # first_child = 0
+        first_child = 0
 
-        @child_benefit_start_dates.each_with_index do |start_date, index|
-          start_date = if (child.start_date < child_benefit_start_date) || ((@tax_year == 2012) && (child.start_date < TAX_COMMENCEMENT_DATE))
+        @child_benefit_start_dates.values.each_with_index do |child, index|
+          start_date = if (child[:start_date] < child_benefit_start_date) || ((@tax_year == 2012) && (child[:start_date] < TAX_COMMENCEMENT_DATE))
                          child_benefit_start_date
                        else
-                         child.start_date
+                         child[:start_date]
                        end
 
-        #   end_date = if child.end_date.nil? || (child.end_date > child_benefit_end_date)
-        #                child_benefit_end_date
-        #              else
-        #                child.end_date
-        #              end
+          end_date = if child[:end_date].nil? || (child[:end_date] > child_benefit_end_date)
+                       child_benefit_end_date
+                     else
+                       child[:end_date]
+                     end
 
-          # no_of_weeks = total_number_of_mondays(start_date, end_date)
-          no_of_weeks = total_number_of_mondays(start_date, child_benefit_end_date)
+          no_of_weeks = total_number_of_mondays(start_date, end_date)
 
           total_benefit_amount = if index.equal?(first_child) && (first_child_calculated == false)
                                    total_benefit_amount + first_child_rate_total(no_of_weeks)
@@ -145,19 +144,19 @@ module SmartAnswer::Calculators
     end
 
     def child_benefit_start_date
-      @tax_year == 2012 ? TAX_COMMENCEMENT_DATE : selected_tax_year.first
+      @tax_year == 2012 ? TAX_COMMENCEMENT_DATE : selected_tax_year["start_date"]
     end
 
     def child_benefit_end_date
-      selected_tax_year.last
+      selected_tax_year["end_date"]
     end
 
     def selected_tax_year
-      @tax_years[@tax_year.to_s]
+      @child_benefit_data[@tax_year]
     end
 
     def self.child_benefit_data
-      @child_benefit_data ||= YAML.load_file(Rails.root.join("config/smart_answers/rates/child_benefit_rates.yml"))
+      @child_benefit_data ||= YAML.load_file(Rails.root.join("config/smart_answers/rates/child_benefit_rates.yml")).with_indifferent_access
     end
 
     def store_date(date_type, response)

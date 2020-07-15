@@ -89,7 +89,7 @@ module SmartAnswer
         to { Date.new(2021, 4, 5) }
 
         on_response do |response|
-          calculator.store_date(:stop_date, response)
+          calculator.store_date(:end_date, response)
         end
 
         next_node do
