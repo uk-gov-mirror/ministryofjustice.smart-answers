@@ -1,14 +1,14 @@
 <% text_for :title do %>
-  Enter the Child Benefit start date:
+  Enter the Child Benefit stop date:
 <% end %>
 
 <% govspeak_for :body do %>
   - you can find the start date on your Child Benefit award notice
 
-### Child 9
+### Child <%= "#{calculator.child_index+1}" %>
 
 <% end %>
 
 <% text_for :hint do %>
-  Start date
+  Stop date
 <% end %>

@@ -73,11 +73,28 @@ module SmartAnswer
       date_question :child_benefit_start? do
         from { Date.new(2011, 1, 1) }
         to { Date.new(2021, 4, 5) }
+
         on_response do |response|
-          calculator.child_benefit_start_dates << response
+          calculator.store_date(:start_date, response)
         end
+
         next_node do
-          if calculator.child_benefit_start_dates.length < calculator.part_year_children_count
+          question :child_benefit_stop?
+        end
+      end
+    
+      # Q3c
+      date_question :child_benefit_stop? do
+        from { Date.new(2011, 1, 1) }
+        to { Date.new(2021, 4, 5) }
+
+        on_response do |response|
+          calculator.store_date(:stop_date, response)
+        end
+
+        next_node do
+          calculator.child_index += 1
+          if calculator.child_index < calculator.part_year_children_count
             question :child_benefit_start?
           else
             question :income_details?

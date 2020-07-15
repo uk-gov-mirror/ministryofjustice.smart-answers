@@ -7,7 +7,8 @@ module SmartAnswer::Calculators
                   :income_details,
                   :allowable_deductions,
                   :other_allowable_deductions,
-                  :child_benefit_start_dates
+                  :child_benefit_start_dates,
+                  :child_index
 
     NET_INCOME_THRESHOLD = 50_000
     TAX_COMMENCEMENT_DATE = Date.parse("7 Jan 2013") # special case for 2012-13, only weeks from 7th Jan 2013 are taxable
@@ -35,9 +36,10 @@ module SmartAnswer::Calculators
       @other_allowable_deductions = other_allowable_deductions
 
       @child_benefit_data = self.class.child_benefit_data
-      @child_benefit_start_dates = []
+      @child_benefit_start_dates = {}
       @tax_years = tax_year_dates
       @adjusted_net_income = calculate_adjusted_net_income
+      @child_index = 0
     end
 
     def self.tax_years
@@ -113,7 +115,6 @@ module SmartAnswer::Calculators
     end
 
     def valid_number_of_children?
-      binding.pry
       @children_count > @part_year_children_count
     end
 
@@ -157,6 +158,14 @@ module SmartAnswer::Calculators
 
     def self.child_benefit_data
       @child_benefit_data ||= YAML.load_file(Rails.root.join("config/smart_answers/rates/child_benefit_rates.yml"))
+    end
+
+    def store_date(date_type, response)
+      if @child_benefit_start_dates[child_index].nil?
+        @child_benefit_start_dates[child_index] = {date_type => response}
+      else
+        @child_benefit_start_dates[child_index] = @child_benefit_start_dates[child_index].merge!({date_type => response})
+      end
     end
   end
 end
