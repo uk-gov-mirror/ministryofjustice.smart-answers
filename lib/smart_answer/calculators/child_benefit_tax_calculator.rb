@@ -144,7 +144,7 @@ module SmartAnswer::Calculators
     end
 
     def child_benefit_start_date
-      @tax_year == 2012 ? TAX_COMMENCEMENT_DATE : selected_tax_year["start_date"]
+      @tax_year.to_i == 2012 ? TAX_COMMENCEMENT_DATE : selected_tax_year["start_date"]
     end
 
     def child_benefit_end_date
