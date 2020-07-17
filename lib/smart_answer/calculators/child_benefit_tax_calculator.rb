@@ -114,6 +114,14 @@ module SmartAnswer::Calculators
       @children_count >= @part_year_children_count
     end
 
+    def valid_within_tax_year?(date_type)
+      @child_benefit_start_dates[@child_index][date_type] >= child_benefit_start_date && @child_benefit_start_dates[@child_index][date_type] <= child_benefit_end_date
+    end
+
+    def valid_end_date?
+      @child_benefit_start_dates[@child_index][:end_date] > @child_benefit_start_dates[@child_index][:start_date]
+    end
+
     def percent_tax_charge
       if @adjusted_net_income >= 60_000
         100

@@ -78,6 +78,10 @@ module SmartAnswer
           calculator.store_date(:start_date, response)
         end
 
+        validate(:valid_within_tax_year) do
+          calculator.valid_within_tax_year?(:start_date)
+        end
+
         next_node do
           question :add_child_benefit_stop?
         end
@@ -109,6 +113,14 @@ module SmartAnswer
 
         on_response do |response|
           calculator.store_date(:end_date, response)
+        end
+
+        validate(:valid_within_tax_year) do
+          calculator.valid_within_tax_year?(:end_date)
+        end
+
+        validate(:valid_end_date) do
+          calculator.valid_end_date?
         end
 
         next_node do
