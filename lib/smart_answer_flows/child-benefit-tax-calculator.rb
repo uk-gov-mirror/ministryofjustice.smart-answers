@@ -134,14 +134,9 @@ module SmartAnswer
       end
 
       # Q4
-      value_question :income_details? do
+      money_question :income_details? do
         on_response do |response|
-          calculator.income_details = response.to_i
-          calculator.format_income
-        end
-
-        validate :error_outside_range do
-          calculator.valid_income?
+          calculator.income_details = response
         end
 
         next_node do |response|

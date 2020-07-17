@@ -100,16 +100,6 @@ module SmartAnswer::Calculators
       @adjusted_net_income < NET_INCOME_THRESHOLD || tax_estimate.abs.zero?
     end
 
-    def valid_income?
-      @income_details.positive?
-    end
-
-    def format_income
-      # if @income_details.present?
-      #   @income_details.gsub(/[£, -]/, "").to_i
-      # end
-    end
-
     def valid_number_of_children?
       @children_count >= @part_year_children_count
     end
