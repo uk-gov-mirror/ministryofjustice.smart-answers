@@ -9,16 +9,11 @@ module SmartAnswer::Calculators
                   :other_allowable_deductions,
                   :child_benefit_start_dates,
                   :child_index,
-                  :adjusted_net_income
+                  :adjusted_net_income,
+                  :add_child_benefit_stop
 
     NET_INCOME_THRESHOLD = 50_000
     TAX_COMMENCEMENT_DATE = Date.parse("7 Jan 2013") # special case for 2012-13, only weeks from 7th Jan 2013 are taxable
-
-    # START_YEAR = 2012
-    # END_YEAR = 1.year.from_now.year
-    # TAX_YEARS = (START_YEAR...END_YEAR).each_with_object({}) { |year, hash|
-    # hash[year.to_s] = [Date.new(year, 4, 6), Date.new(year + 1, 4, 5)]
-    # }.freeze
 
     def initialize(children_count: 0,
                   tax_year: nil,
@@ -116,7 +111,7 @@ module SmartAnswer::Calculators
     end
 
     def valid_number_of_children?
-      @children_count > @part_year_children_count
+      @children_count >= @part_year_children_count
     end
 
     def percent_tax_charge

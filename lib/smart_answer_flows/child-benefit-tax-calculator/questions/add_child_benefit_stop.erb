@@ -1,0 +1,9 @@
+<% text_for :title do %>
+  Do you want to enter a Child Benefit stop date for
+  Child <%= "#{calculator.child_index+1}" %>?
+<% end %>
+
+<% options(
+  "yes": "Yes",
+  "no": "No",
+) %>

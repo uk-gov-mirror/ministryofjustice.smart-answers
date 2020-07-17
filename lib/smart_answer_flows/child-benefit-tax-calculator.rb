@@ -79,11 +79,30 @@ module SmartAnswer
         end
 
         next_node do
-          question :child_benefit_stop?
+          question :add_child_benefit_stop?
         end
       end
-    
+
       # Q3c
+      multiple_choice :add_child_benefit_stop? do
+        option :"yes"
+        option :"no"
+
+        next_node do |response|
+          if response == "yes"
+            question :child_benefit_stop?
+          else
+            calculator.child_index += 1
+            if calculator.child_index < calculator.part_year_children_count
+              question :child_benefit_start?
+            else
+              question :income_details?
+            end
+          end
+        end
+      end
+
+      # Q3d
       date_question :child_benefit_stop? do
         from { Date.new(2011, 1, 1) }
         to { Date.new(2021, 4, 5) }
