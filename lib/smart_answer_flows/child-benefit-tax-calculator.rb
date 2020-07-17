@@ -140,9 +140,24 @@ module SmartAnswer
         end
 
         next_node do |response|
-          question :allowable_deductions?
+          question :add_allowable_deductions?
         end
       end
+
+      # Q5
+      multiple_choice :add_allowable_deductions? do
+        option :"yes"
+        option :"no"
+
+        next_node do |response|
+          if response == "yes"
+            question :allowable_deductions?
+          else
+            outcome :outcome_1
+          end
+        end
+      end
+
 
       # Q5a
       value_question :allowable_deductions? do
