@@ -136,7 +136,7 @@ module SmartAnswer
       # Q4
       money_question :income_details? do
         on_response do |response|
-          calculator.income_details = response
+          calculator.income_details = response.value
         end
 
         next_node do |response|
@@ -160,8 +160,10 @@ module SmartAnswer
 
 
       # Q5a
-      value_question :allowable_deductions? do
-        save_input_as :allowable_deductions
+      money_question :allowable_deductions? do
+        on_response do |response|
+          calculator.allowable_deductions = response.value
+        end
 
         next_node do |response|
           question :other_allowable_deductions?
@@ -169,8 +171,14 @@ module SmartAnswer
       end
 
       # Q5b
-      value_question :other_allowable_deductions? do
-        save_input_as :other_allowable_deductions
+      money_question :other_allowable_deductions? do
+
+        on_response do |response|
+          calculator.other_allowable_deductions = response.value
+          calculator.calculate_adjusted_net_income
+          calculator.percent_tax_charge
+          calculator.tax_estimate
+        end
 
         next_node do |response|
           outcome :outcome_1

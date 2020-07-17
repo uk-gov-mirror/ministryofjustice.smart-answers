@@ -329,7 +329,43 @@ module SmartAnswer::Calculators
         end # tax year 2016
       end # starting & stopping children
 
-      context "HMRC test scenarios" do
+      context "calculating adjusted net income" do
+        should "use the adjusted_net_income parameter when none of the calculation params are used" do
+          assert_equal 50_099, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 50099,
+            other_allowable_deductions: "0",
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).adjusted_net_income
+        end
+
+        should "calculate the adjusted net income with the relevant params" do
+          assert_equal 69_950, ChildBenefitTaxCalculator.new(
+            # gross_income: "£68000",
+            # other_income: "£2000",
+            # pensions: "£2000",
+            # property: "£1000",
+            # non_employment_income: "£1000",
+            income_details: 80000,
+
+            # pension_contributions_from_pay: "£2000",
+            # gift_aid_donations: "£1000",
+            allowable_deductions: 3000,
+
+            # retirement_annuities: "£1000",
+            # cycle_scheme: "£800",
+            other_allowable_deductions: 1800,
+
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).calculate_adjusted_net_income
+        end
+
+      end # context "calculating adjusted net income"
+
+      context "HMRC test scenarios" do # Calculators test/unit/calculators/child_benefit_tax_calculator_test.rb:829
         should "calculate 3 children already in the household for 2012/2013" do
           calculator = ChildBenefitTaxCalculator.new(
             tax_year: "2012",
