@@ -100,9 +100,170 @@ module SmartAnswer
           end
 
           should "go to income_details? question" do
+            setup do
+              setup_states_for_question(
+                :is_part_year_claim?,
+                responding_with: "no",
+                initial_state: { calculator: @calculator },
+              )
+            end
             assert_equal :income_details?, @new_state.current_node
             assert_node_exists :income_details?
           end
+        end
+      end
+
+      # Q4
+      context "when answering income_details? question" do
+        setup do
+          setup_states_for_question(
+            :income_details?,
+            responding_with: "60000",
+            initial_state: { calculator: @calculator },
+          )
+        end
+
+        should "instantiate and store calculator" do
+          assert_same @calculator, @new_state.calculator
+        end
+
+        should "store parsed response on calculator as income_details" do
+          assert_equal 60000, @calculator.income_details
+        end
+
+        should "go to add_allowable_deductions? question" do
+          assert_equal :add_allowable_deductions?, @new_state.current_node
+          assert_node_exists :add_allowable_deductions?
+        end
+      end
+
+      # Q5
+      context "when answering add_allowable_deductions? question" do
+        context "responding with yes" do
+          setup do
+            setup_states_for_question(
+              :add_allowable_deductions?,
+              responding_with: "yes",
+              initial_state: { calculator: @calculator },
+            )
+          end
+
+          should "instantiate and store calculator" do
+            assert_same @calculator, @new_state.calculator
+          end
+
+          should "go to allowable_deductions? question" do
+            assert_equal :allowable_deductions?, @new_state.current_node
+            assert_node_exists :allowable_deductions?
+          end
+        end
+
+        context "responding with no" do
+          setup do
+            setup_states_for_question(
+              :add_allowable_deductions?,
+              responding_with: "no",
+              initial_state: { calculator: @calculator },
+            )
+          end
+
+          should "instantiate and store calculator" do
+            assert_same @calculator, @new_state.calculator
+          end
+
+          should "go to outcome" do
+            assert_equal :outcome_1, @new_state.current_node
+            assert_node_exists :outcome_1
+          end
+        end
+      end
+
+      # Q5a
+      context "when answering allowable_deductions? question" do
+        setup do
+          setup_states_for_question(
+            :allowable_deductions?,
+            responding_with: "8000",
+            initial_state: { calculator: @calculator },
+          )
+        end
+
+        should "instantiate and store calculator" do
+          assert_same @calculator, @new_state.calculator
+        end
+
+        should "store parsed response on calculator as allowable_deductions" do
+          assert_equal "8000", @calculator.allowable_deductions
+        end
+
+        should "go to add_other_allowable_deductions? question" do
+          assert_equal :add_other_allowable_deductions?, @new_state.current_node
+          assert_node_exists :add_other_allowable_deductions?
+        end
+      end
+
+      # Q6
+      context "when answering add_other_allowable_deductions? question" do
+        context "responding with yes" do
+          setup do
+            setup_states_for_question(
+              :add_other_allowable_deductions?,
+              responding_with: "yes",
+              initial_state: { calculator: @calculator },
+            )
+          end
+
+          should "instantiate and store calculator" do
+            assert_same @calculator, @new_state.calculator
+          end
+
+          should "go to other_allowable_deductions? question" do
+            assert_equal :other_allowable_deductions?, @new_state.current_node
+            assert_node_exists :other_allowable_deductions?
+          end
+        end
+
+        context "responding with no" do
+          setup do
+            setup_states_for_question(
+              :add_other_allowable_deductions?,
+              responding_with: "no",
+              initial_state: { calculator: @calculator },
+            )
+          end
+
+          should "instantiate and store calculator" do
+            assert_same @calculator, @new_state.calculator
+          end
+
+          should "go to outcome" do
+            assert_equal :outcome_1, @new_state.current_node
+            assert_node_exists :outcome_1
+          end
+        end
+      end
+
+      # Q6a
+      context "when answering other_allowable_deductions? question" do
+        setup do
+          setup_states_for_question(
+            :other_allowable_deductions?,
+            responding_with: "1000",
+            initial_state: { calculator: @calculator },
+          )
+        end
+
+        should "instantiate and store calculator" do
+          assert_same @calculator, @new_state.calculator
+        end
+
+        should "store parsed response on calculator as other_allowable_deductions" do
+          assert_equal "1000", @calculator.other_allowable_deductions
+        end
+
+        should "go to outcome_1" do
+          assert_equal :outcome_1, @new_state.current_node
+          assert_node_exists :outcome_1
         end
       end
     end
