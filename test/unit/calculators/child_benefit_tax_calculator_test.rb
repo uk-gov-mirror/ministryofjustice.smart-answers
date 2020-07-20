@@ -5,7 +5,6 @@ module SmartAnswer::Calculators
     context ChildBenefitTaxCalculator do
       context "full year children only" do
         context "calculating the number of weeks/Mondays" do
-        # line 247 in calculators unit/calculators/child_benefit_tax_calculator_test.rb
           context "for the full tax year 2012/2013" do
             should "calculate there are 13 Mondays" do
               calculator = ChildBenefitTaxCalculator.new(
@@ -170,7 +169,7 @@ module SmartAnswer::Calculators
               is_part_year_claim: "no",
             ).benefits_claimed_amount.round(2)
           end
-  
+
           should "give the total amount received for the full tax year for more than one child" do
             assert_equal 1788.8, ChildBenefitTaxCalculator.new(
               tax_year: "2019",
@@ -178,7 +177,7 @@ module SmartAnswer::Calculators
               is_part_year_claim: "no",
             ).benefits_claimed_amount.round(2)
           end
-  
+
           should "give the total amount for a partial tax year for one child" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2019",
@@ -194,7 +193,7 @@ module SmartAnswer::Calculators
             }
             assert_equal 269.1, calculator.benefits_claimed_amount.round(2)
           end
-  
+
           should "give the total amount for a partial tax year for more than one child" do
             calculator = ChildBenefitTaxCalculator.new(
                           tax_year: "2019",
@@ -214,7 +213,7 @@ module SmartAnswer::Calculators
             }
             assert_equal 550.7, calculator.benefits_claimed_amount.round(2)
           end
-  
+
           should "give the total amount for three children, two of which are partial tax years" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2019",
@@ -233,8 +232,156 @@ module SmartAnswer::Calculators
             }
             assert_equal 1501.1, calculator.benefits_claimed_amount.round(2)
           end
-        end  
+        end
       end
+
+      context "calculating adjusted net income" do
+        should "use the adjusted_net_income parameter when none of the calculation params are used" do
+          assert_equal 50_099, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 50099,
+            other_allowable_deductions: "0",
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).adjusted_net_income
+        end
+
+        should "calculate the adjusted net income with the relevant params" do
+          assert_equal 69_950, ChildBenefitTaxCalculator.new(
+            income_details: 75500,
+            allowable_deductions: 3000,
+            other_allowable_deductions: 1800,
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).calculate_adjusted_net_income
+        end
+
+        should "ignore the adjusted_net_income parameter when using the calculation form params" do
+          assert_equal 69_950, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 65000,
+            income_details: 75500,
+            allowable_deductions: 3000,
+            other_allowable_deductions: 1800,
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).calculate_adjusted_net_income
+        end
+      end # context "calculating adjusted net income"
+
+      context "calculating percentage tax charge" do
+        should "be 0.0 for an income of 50099" do
+          assert_equal 0.0, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 50099,
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).percent_tax_charge
+        end
+
+        should "be 1.0 for an income of 50199" do
+          assert_equal 1.0, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 50199,
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).percent_tax_charge
+        end
+
+        should "be 2.0 for an income of 50200" do
+          assert_equal 2.0, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 50200,
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).percent_tax_charge
+        end
+
+        should "be 40.0 for an income of 54013" do
+          assert_equal 40.0, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 54013,
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).percent_tax_charge
+        end
+
+        should "be 40.0 for an income of 54089" do
+          assert_equal 40.0, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 54089,
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).percent_tax_charge
+        end
+
+        should "be 99.0 for an income of 59999" do
+          assert_equal 99.0, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 59999,
+            tax_year: "2012",
+            is_part_year_claim: "no",
+            children_count: 2,
+          ).percent_tax_charge
+        end
+
+        should "be 100.0 for an income of 60000" do
+          assert_equal 100.0, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 60000,
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).percent_tax_charge
+        end
+
+        should "be 100.0 for an income of 60001" do
+          assert_equal 100.0, ChildBenefitTaxCalculator.new(
+            adjusted_net_income: 60001,
+            tax_year: "2012",
+            children_count: 2,
+            is_part_year_claim: "no",
+          ).percent_tax_charge
+        end
+      end # calculating percentage tax charge"
+
+      context "calculating the correct amount owed" do
+        context "below the income threshold" do
+          should "be true for incomes under the threshold" do
+            calculator = ChildBenefitTaxCalculator.new(
+              adjusted_net_income: 49999,
+              is_part_year_claim: "yes",
+              tax_year: "2019",
+              children_count: 1,
+              part_year_children_count: 1,
+            )
+
+            calculator.child_benefit_start_dates = {
+              "0" => {
+                start_date: Date.parse("2018-01-01"),
+              }
+            }
+            assert calculator.nothing_owed?
+          end
+
+          should "be true for incomes over the threshold" do
+            calculator = ChildBenefitTaxCalculator.new(
+              adjusted_net_income: 50100,
+              is_part_year_claim: "yes",
+              tax_year: "2019",
+              children_count: 1,
+              part_year_children_count: 1,
+            )
+
+            calculator.child_benefit_start_dates = {
+              "0" => {
+                start_date: Date.parse("2018-01-01"),
+              }
+            }
+            assert_not calculator.nothing_owed?
+          end
+        end
+      end # calculating the correct amount owed"
+
       context "starting and stopping children" do
         context "for the tax year 2012-2013" do
           should "calculate correctly with starting children" do
@@ -252,7 +399,7 @@ module SmartAnswer::Calculators
             }
             assert_equal 101, calculator.tax_estimate.round(1)
           end
-  
+
           should "not tax before Jan 7th 2013" do
             calculator = ChildBenefitTaxCalculator.new(
               adjusted_net_income: 61000,
@@ -269,7 +416,7 @@ module SmartAnswer::Calculators
             assert_equal 263, calculator.tax_estimate.round(1)
           end
         end
-  
+
         context "for the tax year 2013-2014" do
           should "calculate correctly for 60k income" do
             calculator = ChildBenefitTaxCalculator.new(
@@ -289,7 +436,7 @@ module SmartAnswer::Calculators
             assert_equal 121, calculator.tax_estimate.round(1)
           end
         end # tax year 2013-14
-  
+
         context "for the tax year 2016-2017" do
           should "calculate correctly with starting children" do
             calculator = ChildBenefitTaxCalculator.new(
@@ -308,7 +455,7 @@ module SmartAnswer::Calculators
             # child from 01/03 to 01/04 => 5 weeks * 20.7
             assert_equal 103, calculator.tax_estimate.round(1)
           end
-  
+
           should "correctly calculate weeks for a child who started & stopped in tax year" do
             calculator = ChildBenefitTaxCalculator.new(
               adjusted_net_income: 61000,
@@ -329,43 +476,7 @@ module SmartAnswer::Calculators
         end # tax year 2016
       end # starting & stopping children
 
-      context "calculating adjusted net income" do
-        should "use the adjusted_net_income parameter when none of the calculation params are used" do
-          assert_equal 50_099, ChildBenefitTaxCalculator.new(
-            adjusted_net_income: 50099,
-            other_allowable_deductions: "0",
-            tax_year: "2012",
-            children_count: 2,
-            is_part_year_claim: "no",
-          ).adjusted_net_income
-        end
-
-        should "calculate the adjusted net income with the relevant params" do
-          assert_equal 69_950, ChildBenefitTaxCalculator.new(
-            # gross_income: "£68000",
-            # other_income: "£2000",
-            # pensions: "£2000",
-            # property: "£1000",
-            # non_employment_income: "£1000",
-            income_details: 80000,
-
-            # pension_contributions_from_pay: "£2000",
-            # gift_aid_donations: "£1000",
-            allowable_deductions: 3000,
-
-            # retirement_annuities: "£1000",
-            # cycle_scheme: "£800",
-            other_allowable_deductions: 1800,
-
-            tax_year: "2012",
-            children_count: 2,
-            is_part_year_claim: "no",
-          ).calculate_adjusted_net_income
-        end
-
-      end # context "calculating adjusted net income"
-
-      context "HMRC test scenarios" do # Calculators test/unit/calculators/child_benefit_tax_calculator_test.rb:829
+      context "HMRC test scenarios" do
         should "calculate 3 children already in the household for 2012/2013" do
           calculator = ChildBenefitTaxCalculator.new(
             tax_year: "2012",
@@ -373,7 +484,7 @@ module SmartAnswer::Calculators
             is_part_year_claim: "yes",
             part_year_children_count: 3
           )
-          
+
           calculator.child_benefit_start_dates = {
             "0" => {
               start_date: Date.parse("06-01-2013"),
@@ -547,7 +658,7 @@ module SmartAnswer::Calculators
             )
             assert_equal 2549.3, calculator.benefits_claimed_amount.round(2)
           end
-  
+
           should "give the total amount of benefits received for a full tax year 2015" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2015",
@@ -556,7 +667,7 @@ module SmartAnswer::Calculators
             )
             assert_equal 1097.1, calculator.benefits_claimed_amount.round(2)
           end
-          
+
           should "give total amount of benefits one child full year one child half a year" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2015",
@@ -590,7 +701,7 @@ module SmartAnswer::Calculators
             assert_equal 641.7, calculator.benefits_claimed_amount.round(2)
           end
         end # tests for 2015 rates
-  
+
 
 
         context "tests for 2016 rates" do
@@ -602,7 +713,7 @@ module SmartAnswer::Calculators
             )
             assert_equal 2501.2, calculator.benefits_claimed_amount.round(2)
           end
-  
+
           should "give the total amount of benefits received for a full tax year 2016" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2016",
@@ -611,7 +722,7 @@ module SmartAnswer::Calculators
             )
             assert_equal 1076.4, calculator.benefits_claimed_amount.round(2)
           end
-  
+
           should "give total amount of benefits one child full year one child half a year" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2016",
@@ -627,7 +738,7 @@ module SmartAnswer::Calculators
             }
             assert_equal 1432.6, calculator.benefits_claimed_amount.round(2)
           end
-  
+
           should "give total amount of benefits for one child for half a year" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2016",
@@ -644,18 +755,18 @@ module SmartAnswer::Calculators
 
             assert_equal 621.0, calculator.benefits_claimed_amount.round(2)
           end
-  
+
           should "set the start date to start of the selected tax year" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2016",
               children_count: 1,
               is_part_year_claim: "no",
             )
-  
+
             assert_equal Date.parse("06 April 2016"), calculator.child_benefit_start_date
             assert_equal Date.parse("05 April 2017"), calculator.child_benefit_end_date
           end
-  
+
           should "set the stop date to end of the selected tax year" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2016",
@@ -671,7 +782,7 @@ module SmartAnswer::Calculators
 
             assert_equal Date.parse("05 April 2017"), calculator.child_benefit_end_date
           end
-  
+
           should "correctly calculate the benefit amount for multiple full year and part year children" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2016",
@@ -689,10 +800,10 @@ module SmartAnswer::Calculators
                 end_date: Date.parse("01-04-2017")
               }
             }
-            
+
             assert_equal 2145, calculator.benefits_claimed_amount.round(2)
           end
-        end # tests for 2016 rates      
+        end # tests for 2016 rates
       end # HMRC test scenarios
     end # ChildBenefitTaxCalculator
   end
