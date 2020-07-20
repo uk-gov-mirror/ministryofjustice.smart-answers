@@ -35,7 +35,7 @@ module SmartAnswer::Calculators
       @child_benefit_data = self.class.child_benefit_data
       @child_benefit_start_dates = HashWithIndifferentAccess.new
       @tax_years = tax_year_dates
-      @adjusted_net_income = adjusted_net_income
+      @adjusted_net_income = calculate_adjusted_net_income
       @child_index = 0
     end
 
@@ -104,7 +104,7 @@ module SmartAnswer::Calculators
       @children_count <= 30
     end
 
-    def valid_number_of_part_time_children?
+    def valid_number_of_part_year_children?
       @children_count >= @part_year_children_count
     end
 
@@ -117,12 +117,12 @@ module SmartAnswer::Calculators
     end
 
     def percent_tax_charge
-      if @adjusted_net_income >= 60_000
+      if calculate_adjusted_net_income >= 60_000
         100
-      elsif (59_900..59_999).cover?(@adjusted_net_income)
+      elsif (59_900..59_999).cover?(calculate_adjusted_net_income)
         99
       else
-        ((@adjusted_net_income - 50_000) / 100.0).floor
+        ((calculate_adjusted_net_income - 50_000) / 100.0).floor
       end
     end
 
@@ -148,6 +148,21 @@ module SmartAnswer::Calculators
 
     def child_benefit_end_date
       selected_tax_year["end_date"]
+    end
+
+    def tax_year_label
+      end_date = @child_benefit_data[@tax_year][:end_date]
+      "#{tax_year} to #{end_date.year}"
+    end
+
+    def sa_register_deadline
+      end_date = @child_benefit_data[@tax_year][:end_date]
+      "5 October #{end_date.year}"
+    end
+
+    def tax_year_incomplete?
+      end_date = @child_benefit_data[@tax_year][:end_date]
+      end_date >= Time.zone.today
     end
 
     def selected_tax_year

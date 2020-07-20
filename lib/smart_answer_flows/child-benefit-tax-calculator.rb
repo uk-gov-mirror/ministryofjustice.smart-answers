@@ -153,14 +153,14 @@ module SmartAnswer
           if response == "yes"
             question :allowable_deductions?
           else
-            outcome :outcome_1
+            outcome :results
           end
         end
       end
 
 
       # Q5a
-      value_question :allowable_deductions? do
+      money_question :allowable_deductions? do
         on_response do |response|
           calculator.allowable_deductions = response
         end
@@ -179,22 +179,22 @@ module SmartAnswer
           if response == "yes"
             question :other_allowable_deductions?
           else
-            outcome :outcome_1
+            outcome :results
           end
         end
       end
 
       # Q6a
-      value_question :other_allowable_deductions? do
+      money_question :other_allowable_deductions? do
         on_response do |response|
           calculator.other_allowable_deductions = response
         end
         next_node do |response|
-          outcome :outcome_1
+          outcome :results
         end
       end
 
-      outcome :outcome_1
+      outcome :results
     end
   end
 end
