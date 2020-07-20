@@ -13,21 +13,12 @@ module SmartAnswer
       setup do
         question = @flow.node(:how_many_children?)
         @state = SmartAnswer::State.new(question)
-        @presenter = MultipleChoiceQuestionPresenter.new(question, @state)
+        @presenter = ValueQuestionPresenter.new(question, @state)
       end
 
-      should "have options with labels" do
-        assert_equal({ "1" => "1",
-                       "2" => "2",
-                       "3" => "3",
-                       "4" => "4",
-                       "5" => "5",
-                       "6" => "6",
-                       "7" => "7",
-                       "8" => "8",
-                       "9" => "9",
-                       "10" => "10",
-        }, values_vs_labels(@presenter.options))
+      should "display a useful error message when the number entered is bigger than 30" do
+        @state.error = "valid_number_of_children"
+        assert_match "Please enter number of children you're claiming for", @presenter.error
       end
 
       should "display hint text" do
@@ -108,7 +99,7 @@ module SmartAnswer
       end
 
       should "display a useful error message when the number entered is bigger than the total number of children entered" do
-        @state.error = "valid_number_of_children"
+        @state.error = "valid_number_of_part_year_children"
         assert_match "The number of children you're claiming for part year for can't be more than the total number of children you're claiming for", @presenter.error
       end
     end

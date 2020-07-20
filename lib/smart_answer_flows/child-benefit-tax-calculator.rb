@@ -8,14 +8,14 @@ module SmartAnswer
 
       # calculator = Calculators::ChildBenefitTaxCalculator.new
       # Q1
-      multiple_choice :how_many_children? do
-        (1..10).each do | children |
-          option :"#{children}"
-        end
-
+      value_question :how_many_children?, parse: Integer do
         on_response do |response|
           self.calculator = Calculators::ChildBenefitTaxCalculator.new
           calculator.children_count = response.to_i
+        end
+
+        validate(:valid_number_of_children) do
+          calculator.valid_number_of_children?
         end
 
         next_node do
@@ -60,8 +60,8 @@ module SmartAnswer
           calculator.part_year_children_count = response
         end
 
-        validate(:valid_number_of_children) do
-          calculator.valid_number_of_children?
+        validate(:valid_number_of_part_year_children) do
+          calculator.valid_number_of_part_year_children?
         end
 
         next_node do

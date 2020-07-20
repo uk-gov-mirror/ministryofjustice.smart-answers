@@ -101,6 +101,10 @@ module SmartAnswer::Calculators
     end
 
     def valid_number_of_children?
+      @children_count <= 30
+    end
+
+    def valid_number_of_part_time_children?
       @children_count >= @part_year_children_count
     end
 
