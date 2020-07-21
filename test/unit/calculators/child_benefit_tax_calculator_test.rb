@@ -3,123 +3,231 @@ require_relative "../../test_helper"
 module SmartAnswer::Calculators
   class ChildBenefitTaxCalculatorTest < ActiveSupport::TestCase
     context ChildBenefitTaxCalculator do
-      context "full year children only" do
-        context "calculating the number of weeks/Mondays" do
-          context "for the full tax year 2012/2013" do
-            should "calculate there are 13 Mondays" do
-              calculator = ChildBenefitTaxCalculator.new(
-                tax_year: "2012",
-                children_count: "1",
-                is_part_year_claim: "no",
-              )
-              start_date = calculator.child_benefit_start_date
-              end_date = calculator.child_benefit_end_date
-              assert_equal 13, calculator.total_number_of_mondays(start_date, end_date)
-            end
+      context "validations" do
+        context "#valid_number_of_children?" do
+          should "be valid when there are less than 30 children" do
+            calculator = ChildBenefitTaxCalculator.new(
+              children_count: 2
+            )
+
+            assert calculator.valid_number_of_children?
           end
 
-          context "for the full tax year 2013/2014" do
-            should "calculate there are 52 Mondays" do
-              calculator = ChildBenefitTaxCalculator.new(
-                tax_year: "2013",
-                children_count: "1",
-                is_part_year_claim: "no",
-              )
-              start_date = calculator.child_benefit_start_date
-              end_date = calculator.child_benefit_end_date
-              assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
-            end
+          should "not be valid when there are more than 30 children" do
+            calculator = ChildBenefitTaxCalculator.new(
+              children_count: 31
+            )
+
+            assert_not calculator.valid_number_of_children?
+          end
+        end
+
+        context "#valid_number_of_part_year_children?" do
+          should "be valid when the part_year_child_count is less than the children_count" do
+            calculator = ChildBenefitTaxCalculator.new(
+              children_count: 4,
+              part_year_children_count:2
+            )
+
+            assert calculator.valid_number_of_part_year_children?
+          end
+          
+          should "not be valid when the part_year_child_count is more than the children_count" do
+            calculator = ChildBenefitTaxCalculator.new(
+              children_count: 2,
+              part_year_children_count: 4
+            )
+            assert_not calculator.valid_number_of_part_year_children?
+          end
+        end
+
+        context "#valid_within_tax_year" do 
+          should "not be valid when before the beginning of the tax year" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2014"
+            )
+            calculator.child_benefit_start_dates = {
+              0 => {
+                start_date: Date.parse("14-01-2013"),
+              }
+            }
+
+            assert_not calculator.valid_within_tax_year?(:start_date)
           end
 
-          context "for the full tax year 2014/2015" do
-            should "calculate there are 52 Mondays" do
-              calculator = ChildBenefitTaxCalculator.new(
-                tax_year: "2014",
-                children_count: "1",
-                is_part_year_claim: "no",
-              )
-              start_date = calculator.child_benefit_start_date
-              end_date = calculator.child_benefit_end_date
-              assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
-            end
+          should "not be valid when after the end of the tax year" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2014"
+            )
+            calculator.child_benefit_start_dates = {
+              0 => {
+                start_date: Date.parse("14-05-2015"),
+              }
+            }
+
+            assert_not calculator.valid_within_tax_year?(:start_date)
           end
 
-          context "for the full tax year 2015/2016" do
-            should "calculate there are 53 Mondays" do
-              calculator = ChildBenefitTaxCalculator.new(
-                tax_year: "2015",
-                children_count: "1",
-                is_part_year_claim: "no",
-              )
-              start_date = calculator.child_benefit_start_date
-              end_date = calculator.child_benefit_end_date
-              assert_equal 53, calculator.total_number_of_mondays(start_date, end_date)
-            end
+          should "be valid when within the tax year" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2014"
+            )
+            calculator.child_benefit_start_dates = {
+              0 => {
+                start_date: Date.parse("14-05-2014"),
+              }
+            }
+
+            assert calculator.valid_within_tax_year?(:start_date)
+          end
+        end
+
+        context "#valid_end_date?" do
+          should "be valid if after start date" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2014"
+            )
+            calculator.child_benefit_start_dates = {
+              0 => {
+                start_date: Date.parse("14-05-2014"),
+                end_date: Date.parse("15-05-2014")
+              }
+            }
+
+            assert calculator.valid_end_date?
           end
 
-          context "for the full tax year 2016/2017" do
-            should "calculate there are 52 Mondays" do
-              calculator = ChildBenefitTaxCalculator.new(
-                tax_year: "2016",
-                children_count: "1",
-                is_part_year_claim: "no",
-              )
-              start_date = calculator.child_benefit_start_date
-              end_date = calculator.child_benefit_end_date
-              assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
-            end
-          end
+          should "not be valid if before start date" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2014"
+            )
+            calculator.child_benefit_start_dates = {
+              0 => {
+                start_date: Date.parse("14-05-2014"),
+                end_date: Date.parse("13-05-2014")
+              }
+            }
 
-          context "for the full tax year 2017/2018" do
-            should "calculate there are 52 Mondays" do
-              calculator = ChildBenefitTaxCalculator.new(
-                tax_year: "2017",
-                children_count: "1",
-                is_part_year_claim: "no",
-              )
-              start_date = calculator.child_benefit_start_date
-              end_date = calculator.child_benefit_end_date
-              assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
-            end
+            assert_not calculator.valid_end_date?
           end
+        end
+      end
 
-          context "for the full tax year 2018/2019" do
-            should "calculate there are 52 Mondays" do
-              calculator = ChildBenefitTaxCalculator.new(
-                tax_year: "2018",
-                children_count: "1",
-                is_part_year_claim: "no",
-              )
-              start_date = calculator.child_benefit_start_date
-              end_date = calculator.child_benefit_end_date
-              assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
-            end
+      context "calculating the number of weeks/Mondays" do
+        context "for the full tax year 2012/2013" do
+          should "calculate there are 13 Mondays" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2012",
+              children_count: "1",
+              is_part_year_claim: "no",
+            )
+            start_date = calculator.child_benefit_start_date
+            end_date = calculator.child_benefit_end_date
+            assert_equal 13, calculator.total_number_of_mondays(start_date, end_date)
           end
+        end
 
-          context "for the full tax year 2019/2020" do
-            should "calculate there are 52 Mondays" do
-              calculator = ChildBenefitTaxCalculator.new(
-                tax_year: "2019",
-                children_count: "1",
-                is_part_year_claim: "no",
-              )
-              start_date = calculator.child_benefit_start_date
-              end_date = calculator.child_benefit_end_date
-              assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
-            end
+        context "for the full tax year 2013/2014" do
+          should "calculate there are 52 Mondays" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2013",
+              children_count: "1",
+              is_part_year_claim: "no",
+            )
+            start_date = calculator.child_benefit_start_date
+            end_date = calculator.child_benefit_end_date
+            assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
           end
+        end
 
-          context "for the full tax year 2020/2021" do
-            should "calculate there are 53 Mondays" do
-              calculator = ChildBenefitTaxCalculator.new(
-                tax_year: "2020",
-                children_count: "1",
-                is_part_year_claim: "no",
-              )
-              start_date = calculator.child_benefit_start_date
-              end_date = calculator.child_benefit_end_date
-              assert_equal 53, calculator.total_number_of_mondays(start_date, end_date)
-            end
+        context "for the full tax year 2014/2015" do
+          should "calculate there are 52 Mondays" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2014",
+              children_count: "1",
+              is_part_year_claim: "no",
+            )
+            start_date = calculator.child_benefit_start_date
+            end_date = calculator.child_benefit_end_date
+            assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
+          end
+        end
+
+        context "for the full tax year 2015/2016" do
+          should "calculate there are 53 Mondays" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2015",
+              children_count: "1",
+              is_part_year_claim: "no",
+            )
+            start_date = calculator.child_benefit_start_date
+            end_date = calculator.child_benefit_end_date
+            assert_equal 53, calculator.total_number_of_mondays(start_date, end_date)
+          end
+        end
+
+        context "for the full tax year 2016/2017" do
+          should "calculate there are 52 Mondays" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2016",
+              children_count: "1",
+              is_part_year_claim: "no",
+            )
+            start_date = calculator.child_benefit_start_date
+            end_date = calculator.child_benefit_end_date
+            assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
+          end
+        end
+
+        context "for the full tax year 2017/2018" do
+          should "calculate there are 52 Mondays" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2017",
+              children_count: "1",
+              is_part_year_claim: "no",
+            )
+            start_date = calculator.child_benefit_start_date
+            end_date = calculator.child_benefit_end_date
+            assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
+          end
+        end
+
+        context "for the full tax year 2018/2019" do
+          should "calculate there are 52 Mondays" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2018",
+              children_count: "1",
+              is_part_year_claim: "no",
+            )
+            start_date = calculator.child_benefit_start_date
+            end_date = calculator.child_benefit_end_date
+            assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
+          end
+        end
+
+        context "for the full tax year 2019/2020" do
+          should "calculate there are 52 Mondays" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2019",
+              children_count: "1",
+              is_part_year_claim: "no",
+            )
+            start_date = calculator.child_benefit_start_date
+            end_date = calculator.child_benefit_end_date
+            assert_equal 52, calculator.total_number_of_mondays(start_date, end_date)
+          end
+        end
+
+        context "for the full tax year 2020/2021" do
+          should "calculate there are 53 Mondays" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2020",
+              children_count: "1",
+              is_part_year_claim: "no",
+            )
+            start_date = calculator.child_benefit_start_date
+            end_date = calculator.child_benefit_end_date
+            assert_equal 53, calculator.total_number_of_mondays(start_date, end_date)
           end
         end
       end
