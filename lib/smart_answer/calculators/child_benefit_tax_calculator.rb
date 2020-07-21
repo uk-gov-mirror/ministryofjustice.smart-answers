@@ -9,7 +9,7 @@ module SmartAnswer::Calculators
                   :other_allowable_deductions,
                   :child_benefit_start_dates,
                   :child_index,
-                  :adjusted_net_income,
+                  # :adjusted_net_income,
                   :add_child_benefit_stop
 
     NET_INCOME_THRESHOLD = 50_000
@@ -21,8 +21,7 @@ module SmartAnswer::Calculators
                   part_year_children_count: 0,
                   income_details: 0,
                   allowable_deductions: 0,
-                  other_allowable_deductions: 0,
-                  adjusted_net_income: 0)
+                  other_allowable_deductions: 0)
 
       @children_count = children_count
       @tax_year = tax_year
@@ -35,7 +34,6 @@ module SmartAnswer::Calculators
       @child_benefit_data = self.class.child_benefit_data
       @child_benefit_start_dates = HashWithIndifferentAccess.new
       @tax_years = tax_year_dates
-      @adjusted_net_income = calculate_adjusted_net_income
       @child_index = 0
     end
 
@@ -97,7 +95,7 @@ module SmartAnswer::Calculators
     end
 
     def nothing_owed?
-      @adjusted_net_income < NET_INCOME_THRESHOLD || tax_estimate.abs.zero?
+      calculate_adjusted_net_income < NET_INCOME_THRESHOLD || tax_estimate.abs.zero?
     end
 
     def valid_number_of_children?
