@@ -1,0 +1,43 @@
+<% text_for :title do %>
+  Results
+<% end %>
+
+<% govspeak_for :body do %>
+  <% unless calculator.need_help_with.nil? %><br>
+
+    <% unless calculator.feel_safe == "yes" %>
+      <%= render "feeling_unsafe", calculator: calculator %>
+    <% end %>
+
+
+    <% if calculator.afford_rent_mortgage_bills == "yes" %>
+      <%= render "paying_bills", calculator: calculator %>
+    <% end %>
+
+
+    <% unless calculator.afford_food == "yes" or calculator.get_food == "yes" or calculator.able_to_go_out == "yes" %>
+      <%= render "getting_food", calculator: calculator %>
+    <% end %>
+
+
+    <% if calculator.worried_about_work == "yes" %>
+      <%= render "going_to_work", calculator: calculator %>
+    <% end %>
+
+
+    <% unless calculator.have_somewhere_to_live == "yes" or calculator.are_you_off_work_ill == "no" or calculator.have_you_been_made_unemployed == "yes_1" or calculator.have_you_been_made_unemployed == "yes_2" %>
+      <%= render "somewhere_to_live", calculator: calculator %>
+    <% end %>
+
+    <% unless calculator.mental_health_worries == "no" %>
+      <%= render "mental_health", calculator: calculator %>
+    <% end %>
+
+  <% end %>
+
+  $CTA
+    ### Help us improve
+
+    <a href="https://www.gov.uk/done/find-coronavirus-support">Give feedback on this service</a>
+  $CTA
+<% end %>

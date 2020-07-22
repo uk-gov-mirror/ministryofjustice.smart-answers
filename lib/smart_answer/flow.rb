@@ -15,6 +15,9 @@ module SmartAnswer
     def initialize(&block)
       @nodes = []
       status(:draft)
+      next_button_text("Next step")
+      show_previous_answers(true)
+      show_escape_link(false)
       instance_eval(&block) if block_given?
     end
 
@@ -38,6 +41,21 @@ module SmartAnswer
     def name(name = nil)
       @name = name unless name.nil?
       @name
+    end
+
+    def next_button_text(button_text = nil)
+      @next_button_text = button_text unless button_text.nil?
+      @next_button_text
+    end
+
+    def show_previous_answers(show_answers = nil)
+      @show_previous_answers = show_answers unless show_answers.nil?
+      @show_previous_answers
+    end
+
+    def show_escape_link(escape_link = nil)
+      @show_escape_link = escape_link unless escape_link.nil?
+      @show_escape_link
     end
 
     def satisfies_need(need_content_id)
