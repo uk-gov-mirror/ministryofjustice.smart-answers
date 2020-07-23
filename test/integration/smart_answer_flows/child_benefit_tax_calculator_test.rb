@@ -29,7 +29,7 @@ class ChildBenefitTaxCalculatorTest < ActiveSupport::TestCase
         assert_current_node :add_allowable_deductions?
         add_response "no"
 
-        assert_current_node :outcome_to_be_added
+        assert_current_node :results
       end
     end
 
@@ -40,7 +40,7 @@ class ChildBenefitTaxCalculatorTest < ActiveSupport::TestCase
         add_response "2"
         # Q2
         assert_current_node :which_tax_year?
-        add_response "2012"
+        add_response "2015"
         # Q3
         assert_current_node :is_part_year_claim?
         add_response "yes"
@@ -49,16 +49,16 @@ class ChildBenefitTaxCalculatorTest < ActiveSupport::TestCase
         add_response "2"
         # Q3b
         assert_current_node :child_benefit_start?
-        add_response "2012-06-01"
+        add_response "2015-06-01"
         # Q3c
         assert_current_node :add_child_benefit_stop?
         add_response "yes"
         # Q3d
         assert_current_node :child_benefit_stop?
-        add_response "2013-06-01"
+        add_response "2016-03-01"
         # Q3b
         assert_current_node :child_benefit_start?
-        add_response "2012-06-06"
+        add_response "2015-06-06"
         # Q3c
         assert_current_node :add_child_benefit_stop?
         add_response "no"
@@ -78,7 +78,7 @@ class ChildBenefitTaxCalculatorTest < ActiveSupport::TestCase
         assert_current_node :other_allowable_deductions?
         add_response "1000"
 
-        assert_current_node :outcome_to_be_added
+        assert_current_node :results
       end
     end
   end
