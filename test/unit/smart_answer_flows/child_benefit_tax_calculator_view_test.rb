@@ -251,6 +251,84 @@ module SmartAnswer
       end
     end
 
+    # outcome
+    context "when rendering results page" do
+      setup do
+        @outcome = @flow.node(:results)
+        @calculator = Calculators::ChildBenefitTaxCalculator.new(
+          tax_year: "2019",
+          children_count: 4
+        )
+        @state = SmartAnswer::State.new(@outcome)
+        @state.calculator = @calculator
+      end
+
+      context "when tax year is incomplete" do
+        setup do
+          TimeCop.freeze("2019-07-02")
+          @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(60000))
+          @presenter = OutcomePresenter.new(@outcome, @state)
+          @body = @presenter.body  
+        end
+
+        should "say that it is an estimate" do
+          assert_match "This is an estimate based on your adjusted net income of £60,000", @body
+        end
+      end
+
+      context "when income is below £50,099" do
+        setup do
+          @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(50098))
+          @presenter = OutcomePresenter.new(@outcome, @state)
+          @body = @presenter.body  
+        end
+
+        should "say no tax is owed" do
+          assert_match "There is no tax charge if your income is below £50,099.", @body
+        end
+      end
+
+      context "when income is above £50,100" do
+        setup do
+          @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(50101))
+          @presenter = OutcomePresenter.new(@outcome, @state)
+          @body = @presenter.body  
+        end
+
+        should "say the amount of tax owed" do
+          assert_match "The estimated tax charge to pay is £32.00", @body
+        end
+      end
+    end
+
+    context "when the tax year is 2012" do
+      setup do
+        @outcome = @flow.node(:results)
+        @calculator = Calculators::ChildBenefitTaxCalculator.new(
+          tax_year: "2012",
+          children_count: 4,
+        )
+
+        @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(60000))
+        @state = SmartAnswer::State.new(@outcome)
+        @state.calculator = @calculator
+        @presenter = OutcomePresenter.new(@outcome, @state)
+        @body = @presenter.body  
+        end
+
+      should "give the dates the benefit is received for" do
+        assert_match "Received between 7 January and 5 April 2013.", @body
+      end
+
+      should "give the dates the tax is applied to" do
+        assert_match "The tax charge only applies to the Child Benefit received between 7 January and 5 April 2013", @body
+      end
+      
+      should "state that this is only for part of the tax year" do
+        assert_match "Your result for the next tax year may be higher because the tax charge will apply to the whole tax year", @body
+      end
+    end
+
   private
 
     def values_vs_labels(options)
