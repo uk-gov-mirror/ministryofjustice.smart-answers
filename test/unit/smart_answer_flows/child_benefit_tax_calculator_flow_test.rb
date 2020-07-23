@@ -128,7 +128,7 @@ module SmartAnswer
         end
 
         should "store parsed response on calculator as income_details" do
-          assert_equal 60000, @calculator.income_details
+          assert_equal 60_000, @calculator.income_details
         end
 
         should "go to add_allowable_deductions? question" do
@@ -172,8 +172,8 @@ module SmartAnswer
           end
 
           should "go to outcome" do
-            assert_equal :outcome_1, @new_state.current_node
-            assert_node_exists :outcome_1
+            assert_equal :results, @new_state.current_node
+            assert_node_exists :results
           end
         end
       end
@@ -193,7 +193,7 @@ module SmartAnswer
         end
 
         should "store parsed response on calculator as allowable_deductions" do
-          assert_equal "8000", @calculator.allowable_deductions
+          assert_equal SmartAnswer::Money.new(8000), @calculator.allowable_deductions
         end
 
         should "go to add_other_allowable_deductions? question" do
@@ -237,8 +237,8 @@ module SmartAnswer
           end
 
           should "go to outcome" do
-            assert_equal :outcome_1, @new_state.current_node
-            assert_node_exists :outcome_1
+            assert_equal :results, @new_state.current_node
+            assert_node_exists :results
           end
         end
       end
@@ -258,12 +258,12 @@ module SmartAnswer
         end
 
         should "store parsed response on calculator as other_allowable_deductions" do
-          assert_equal "1000", @calculator.other_allowable_deductions
+          assert_equal SmartAnswer::Money.new(1000), @calculator.other_allowable_deductions
         end
 
-        should "go to outcome_1" do
-          assert_equal :outcome_1, @new_state.current_node
-          assert_node_exists :outcome_1
+        should "go to results page" do
+          assert_equal :results, @new_state.current_node
+          assert_node_exists :results
         end
       end
     end
