@@ -7,11 +7,9 @@ module SmartAnswer::Calculators
                   :income_details,
                   :allowable_deductions,
                   :other_allowable_deductions,
-                  :child_benefit_start_dates,
-                  :child_index,
-                  # :adjusted_net_income,
-                  :add_child_benefit_stop
-
+                  :part_year_claim_dates,
+                  :child_index
+                  
     NET_INCOME_THRESHOLD = 50_000
     TAX_COMMENCEMENT_DATE = Date.parse("7 Jan 2013") # special case for 2012-13, only weeks from 7th Jan 2013 are taxable
 
@@ -32,7 +30,7 @@ module SmartAnswer::Calculators
       @other_allowable_deductions = other_allowable_deductions
 
       @child_benefit_data = self.class.child_benefit_data
-      @child_benefit_start_dates = HashWithIndifferentAccess.new
+      @part_year_claim_dates = HashWithIndifferentAccess.new
       @tax_years = tax_year_dates
       @child_index = 0
     end
@@ -62,10 +60,10 @@ module SmartAnswer::Calculators
       else
         first_child_calculated = false
       end
-      if @child_benefit_start_dates.count.positive?
+      if @part_year_claim_dates.count.positive?
         first_child = 0
 
-        @child_benefit_start_dates.values.each_with_index do |child, index|
+        @part_year_claim_dates.values.each_with_index do |child, index|
           start_date = if (child[:start_date] < child_benefit_start_date) || ((@tax_year == 2012) && (child[:start_date] < TAX_COMMENCEMENT_DATE))
                          child_benefit_start_date
                        else
@@ -107,11 +105,11 @@ module SmartAnswer::Calculators
     end
 
     def valid_within_tax_year?(date_type)
-      @child_benefit_start_dates[@child_index][date_type] >= child_benefit_start_date && @child_benefit_start_dates[@child_index][date_type] <= child_benefit_end_date
+      @part_year_claim_dates[@child_index][date_type] >= child_benefit_start_date && @part_year_claim_dates[@child_index][date_type] <= child_benefit_end_date
     end
 
     def valid_end_date?
-      @child_benefit_start_dates[@child_index][:end_date] > @child_benefit_start_dates[@child_index][:start_date]
+      @part_year_claim_dates[@child_index][:end_date] > @part_year_claim_dates[@child_index][:start_date]
     end
 
     def percent_tax_charge
@@ -172,10 +170,10 @@ module SmartAnswer::Calculators
     end
 
     def store_date(date_type, response)
-      if @child_benefit_start_dates[child_index].nil?
-        @child_benefit_start_dates[child_index] = {date_type => response}
+      if @part_year_claim_dates[child_index].nil?
+        @part_year_claim_dates[child_index] = {date_type => response}
       else
-        @child_benefit_start_dates[child_index] = @child_benefit_start_dates[child_index].merge!({date_type => response})
+        @part_year_claim_dates[child_index] = @part_year_claim_dates[child_index].merge!({date_type => response})
       end
     end
   end
