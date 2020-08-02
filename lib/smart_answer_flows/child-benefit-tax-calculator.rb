@@ -86,6 +86,12 @@ module SmartAnswer
       date_question :child_benefit_stop? do
         from { Date.new(2011, 1, 1) }
         to { Date.new(2021, 4, 5) }
+        next_node do
+            question :income_details?
+        end
+
+      # Q4
+      money_question :income_details? do
       end
 
       outcome :outcome_1
