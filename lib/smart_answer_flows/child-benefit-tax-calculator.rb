@@ -57,6 +57,16 @@ module SmartAnswer
         on_response do |response|
           calculator.part_year_children_count = response
         end
+        next_node do
+          question :child_benefit_start?
+        end
+      end
+
+      # Q3b
+      date_question :child_benefit_start? do
+        from { Date.new(2011, 1, 1) }
+        to { Date.new(2021, 4, 5) }
+
       end
 
       outcome :outcome_1
