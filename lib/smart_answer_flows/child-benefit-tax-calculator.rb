@@ -28,6 +28,9 @@ module SmartAnswer
         option :"2018"
         option :"2019"
         option :"2020"
+        Calculators::ChildBenefitTaxCalculator.tax_years.each do |tax_year|
+          option :"#{tax_year}"
+        end
 
         on_response do |response|
           calculator.tax_year = response
@@ -67,6 +70,10 @@ module SmartAnswer
         from { Date.new(2011, 1, 1) }
         to { Date.new(2021, 4, 5) }
 
+        on_response do |response|
+          calculator.store_date(:start_date, response)
+        end
+
         next_node do
           question :add_child_benefit_stop?
         end
@@ -86,12 +93,20 @@ module SmartAnswer
       date_question :child_benefit_stop? do
         from { Date.new(2011, 1, 1) }
         to { Date.new(2021, 4, 5) }
+
+        on_response do |response|
+          calculator.store_date(:end_date, response)
+        end
         next_node do
             question :income_details?
         end
 
       # Q4
       money_question :income_details? do
+        on_response do |response|
+          calculator.income_details = response
+        end
+
         next_node do |_response|
           question :add_allowable_deductions?
         end
@@ -104,11 +119,20 @@ module SmartAnswer
         option :no
 
         next_node do |response|
+          if response == "yes"
             question :allowable_deductions?
+          else
+            outcome :results
+          end
         end
+      end
 
       # Q5a
       money_question :allowable_deductions? do
+        on_response do |response|
+          calculator.allowable_deductions = response
+        end
+
         next_node do |_response|
           question :add_other_allowable_deductions?
         end
@@ -130,6 +154,9 @@ module SmartAnswer
 
       # Q6a
       money_question :other_allowable_deductions? do
+        on_response do |response|
+          calculator.other_allowable_deductions = response
+        end
         next_node do |_response|
           outcome :results
         end
