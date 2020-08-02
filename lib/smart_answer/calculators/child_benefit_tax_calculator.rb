@@ -92,6 +92,10 @@ module SmartAnswer::Calculators
       @income_details - (@allowable_deductions * 1.25) - @other_allowable_deductions
     end
 
+    def nothing_owed?
+      calculate_adjusted_net_income < NET_INCOME_THRESHOLD || tax_estimate.abs.zero?
+    end
+
     def valid_number_of_children?
       @children_count <= 30
     end
