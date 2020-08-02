@@ -43,6 +43,19 @@ module SmartAnswer
         option :yes
         option :no
 
+        next_node do |response|
+          if response == "yes"
+            question :how_many_children_part_year?
+          else
+            question :income_details?
+          end
+        end
+      end
+
+      # Q3a
+      value_question :how_many_children_part_year?, parse: Integer do
+        on_response do |response|
+          calculator.part_year_children_count = response
         end
       end
 
