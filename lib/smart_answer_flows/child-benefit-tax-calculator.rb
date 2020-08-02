@@ -92,9 +92,16 @@ module SmartAnswer
 
       # Q4
       money_question :income_details? do
+        next_node do |_response|
+          question :add_allowable_deductions?
+        end
       end
 
       outcome :outcome_1
+      # Q5
+      multiple_choice :add_allowable_deductions? do
+        option :yes
+        option :no
     end
   end
 end
