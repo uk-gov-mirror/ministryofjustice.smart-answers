@@ -67,6 +67,15 @@ module SmartAnswer
         from { Date.new(2011, 1, 1) }
         to { Date.new(2021, 4, 5) }
 
+        next_node do
+          question :add_child_benefit_stop?
+        end
+      end
+
+      # Q3c
+      multiple_choice :add_child_benefit_stop? do
+        option :yes
+        option :no
       end
 
       outcome :outcome_1
