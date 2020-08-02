@@ -12,6 +12,11 @@ module SmartAnswer
           self.calculator = Calculators::ChildBenefitTaxCalculator.new
           calculator.children_count = response.to_i
         end
+
+        validate(:valid_number_of_children) do
+          calculator.valid_number_of_children?
+        end
+
         next_node do
           question :which_tax_year?
         end
@@ -19,15 +24,6 @@ module SmartAnswer
 
       # Q2
       multiple_choice :which_tax_year? do
-        option :"2012"
-        option :"2013"
-        option :"2014"
-        option :"2015"
-        option :"2016"
-        option :"2017"
-        option :"2018"
-        option :"2019"
-        option :"2020"
         Calculators::ChildBenefitTaxCalculator.tax_years.each do |tax_year|
           option :"#{tax_year}"
         end
@@ -60,6 +56,11 @@ module SmartAnswer
         on_response do |response|
           calculator.part_year_children_count = response
         end
+
+        validate(:valid_number_of_part_year_children) do
+          calculator.valid_number_of_part_year_children?
+        end
+
         next_node do
           question :child_benefit_start?
         end
@@ -72,6 +73,10 @@ module SmartAnswer
 
         on_response do |response|
           calculator.store_date(:start_date, response)
+        end
+
+        validate(:valid_within_tax_year) do
+          calculator.valid_within_tax_year?(:start_date)
         end
 
         next_node do
@@ -97,9 +102,20 @@ module SmartAnswer
         on_response do |response|
           calculator.store_date(:end_date, response)
         end
+
+        validate(:valid_within_tax_year) do
+          calculator.valid_within_tax_year?(:end_date)
+        end
+
+        validate(:valid_end_date) do
+          calculator.valid_end_date?
+        end
+
         next_node do
             question :income_details?
+          end
         end
+      end
 
       # Q4
       money_question :income_details? do
@@ -112,7 +128,6 @@ module SmartAnswer
         end
       end
 
-      outcome :outcome_1
       # Q5
       multiple_choice :add_allowable_deductions? do
         option :yes
