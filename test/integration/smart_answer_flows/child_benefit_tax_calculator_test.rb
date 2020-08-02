@@ -12,7 +12,7 @@ class ChildBenefitTaxCalculatorTest < ActiveSupport::TestCase
 
   context "Child Benefit tax calculator" do
     context "When claiming for one full year child, no deductions" do
-      should "go to outcome X" do
+      should "should go though basic flow and to results page" do
         # Q1
         assert_current_node :how_many_children?
         add_response "1"
@@ -34,7 +34,7 @@ class ChildBenefitTaxCalculatorTest < ActiveSupport::TestCase
     end
 
     context "When claiming for one full year child, two part year children" do
-      should "go to outcome X" do
+      should "should iterate part time questions and to results page" do
         # Q1
         assert_current_node :how_many_children?
         add_response "2"
