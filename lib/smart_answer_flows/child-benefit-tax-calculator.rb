@@ -109,6 +109,15 @@ module SmartAnswer
 
       # Q5a
       money_question :allowable_deductions? do
+        next_node do |_response|
+          question :add_other_allowable_deductions?
+        end
+      end
+
+      # Q6
+      multiple_choice :add_other_allowable_deductions? do
+        option :yes
+        option :no
       end
     end
   end
