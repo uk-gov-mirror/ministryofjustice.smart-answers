@@ -34,7 +34,15 @@ module SmartAnswer
         end
 
         next_node do
-          outcome :outcome_1
+          question :is_part_year_claim?
+        end
+      end
+
+      # Q3
+      multiple_choice :is_part_year_claim? do
+        option :yes
+        option :no
+
         end
       end
 
