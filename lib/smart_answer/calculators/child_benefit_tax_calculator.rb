@@ -127,11 +127,11 @@ module SmartAnswer::Calculators
     end
 
     def first_child_rate_total(no_of_weeks)
-      @child_benefit_data.fetch(@tax_year)["first_child"] * no_of_weeks
+      selected_tax_year["first_child"] * no_of_weeks
     end
 
     def additional_child_rate_total(no_of_weeks, no_of_children)
-      @child_benefit_data.fetch(@tax_year)["additional_child"] * no_of_children * no_of_weeks
+      selected_tax_year["additional_child"] * no_of_children * no_of_weeks
     end
 
     def total_number_of_mondays(child_benefit_start_date, child_benefit_end_date)

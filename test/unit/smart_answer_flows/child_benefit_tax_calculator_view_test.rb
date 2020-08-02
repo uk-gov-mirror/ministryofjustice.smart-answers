@@ -3,6 +3,8 @@ require "smart_answer_flows/child-benefit-tax-calculator"
 
 module SmartAnswer
   class ChildBenefitTaxCalculatorViewTest < ActiveSupport::TestCase
+    include ERB::Util
+
     setup do
       @flow = ChildBenefitTaxCalculatorFlow.build
     end
@@ -17,9 +19,7 @@ module SmartAnswer
 
       should "display a useful error message when the number entered is bigger than 30" do
         @state.error = "valid_number_of_children"
-        # TODO The method CGI::escapeHTML might be deprecated. Trying to look
-        # for a better solution
-        assert_match CGI.escapeHTML("Please enter number of children you're claiming for"), @presenter.error
+        assert_match html_escape("Please enter number of children you're claiming for"), @presenter.error
       end
 
       should "display hint text" do
@@ -99,11 +99,9 @@ module SmartAnswer
         assert_equal "Please enter a number", @presenter.error
       end
 
-      should "display a useful error message when the number entered is bigger than the total number of children entered" do 
+      should "display a useful error message when the number entered is bigger than the total number of children entered" do
         @state.error = "valid_number_of_part_year_children"
-        # TODO The method CGI::escapeHTML might be deprecated. Trying to look
-        # for a better solution
-        assert_equal CGI::escapeHTML("The number of children you're claiming a part year for can't be more than the total number of children you're claiming for"), @presenter.error
+        assert_equal html_escape("The number of children you're claiming a part year for can't be more than the total number of children you're claiming for"), @presenter.error
       end
     end
 
