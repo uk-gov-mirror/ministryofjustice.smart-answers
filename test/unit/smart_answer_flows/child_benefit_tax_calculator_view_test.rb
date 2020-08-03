@@ -49,8 +49,7 @@ module SmartAnswer
                        "2017" => "2017 to 2018",
                        "2018" => "2018 to 2019",
                        "2019" => "2019 to 2020",
-                       "2020" => "2020 to 2021",
-                      }, values_vs_labels(@presenter.options))
+                       "2020" => "2020 to 2021" }, values_vs_labels(@presenter.options))
       end
 
       should "display hint text" do
@@ -175,10 +174,6 @@ module SmartAnswer
         @presenter = MoneyQuestionPresenter.new(question, @state)
       end
 
-      # should "display hint text" do
-      #   assert_equal "Number of children", @presenter.hint
-      # end
-
       should "have a default error message" do
         @state.error = "error-message"
         assert_equal "Please enter a number", @presenter.error
@@ -255,7 +250,7 @@ module SmartAnswer
         @outcome = @flow.node(:results)
         @calculator = Calculators::ChildBenefitTaxCalculator.new(
           tax_year: "2019",
-          children_count: 4
+          children_count: 4,
         )
         @state = SmartAnswer::State.new(@outcome)
         @state.calculator = @calculator
@@ -263,10 +258,10 @@ module SmartAnswer
 
       context "when tax year is incomplete" do
         setup do
-          TimeCop.freeze("2019-07-02")
-          @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(60000))
+          Timecop.freeze("2019-07-02")
+          @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(60_000))
           @presenter = OutcomePresenter.new(@outcome, @state)
-          @body = @presenter.body  
+          @body = @presenter.body
         end
 
         should "say that it is an estimate" do
@@ -276,9 +271,9 @@ module SmartAnswer
 
       context "when income is below £50,099" do
         setup do
-          @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(50098))
+          @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(50_098))
           @presenter = OutcomePresenter.new(@outcome, @state)
-          @body = @presenter.body  
+          @body = @presenter.body
         end
 
         should "say no tax is owed" do
@@ -288,9 +283,9 @@ module SmartAnswer
 
       context "when income is above £50,100" do
         setup do
-          @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(50101))
+          @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(50_101))
           @presenter = OutcomePresenter.new(@outcome, @state)
-          @body = @presenter.body  
+          @body = @presenter.body
         end
 
         should "say the amount of tax owed" do
@@ -307,12 +302,12 @@ module SmartAnswer
           children_count: 4,
         )
 
-        @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(60000))
+        @calculator.stubs(calculate_adjusted_net_income: SmartAnswer::Money.new(60_000))
         @state = SmartAnswer::State.new(@outcome)
         @state.calculator = @calculator
         @presenter = OutcomePresenter.new(@outcome, @state)
-        @body = @presenter.body  
-        end
+        @body = @presenter.body
+      end
 
       should "give the dates the benefit is received for" do
         assert_match "Received between 7 January and 5 April 2013.", @body
@@ -321,7 +316,7 @@ module SmartAnswer
       should "give the dates the tax is applied to" do
         assert_match "The tax charge only applies to the Child Benefit received between 7 January and 5 April 2013", @body
       end
-      
+
       should "state that this is only for part of the tax year" do
         assert_match "Your result for the next tax year may be higher because the tax charge will apply to the whole tax year", @body
       end

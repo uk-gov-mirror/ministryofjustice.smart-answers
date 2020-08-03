@@ -9,17 +9,17 @@ module SmartAnswer::Calculators
                   :other_allowable_deductions,
                   :part_year_claim_dates,
                   :child_index
-                  
+
     NET_INCOME_THRESHOLD = 50_000
     TAX_COMMENCEMENT_DATE = Date.parse("7 Jan 2013") # special case for 2012-13, only weeks from 7th Jan 2013 are taxable
 
     def initialize(children_count: 0,
-                  tax_year: nil,
-                  is_part_year_claim: nil,
-                  part_year_children_count: 0,
-                  income_details: 0,
-                  allowable_deductions: 0,
-                  other_allowable_deductions: 0)
+                   tax_year: nil,
+                   is_part_year_claim: nil,
+                   part_year_children_count: 0,
+                   income_details: 0,
+                   allowable_deductions: 0,
+                   other_allowable_deductions: 0)
 
       @children_count = children_count
       @tax_year = tax_year
@@ -36,15 +36,15 @@ module SmartAnswer::Calculators
     end
 
     def self.tax_years
-      self.child_benefit_data.each_with_object(Array.new) do |(key), tax_year|
+      child_benefit_data.each_with_object([]) do |(key), tax_year|
         tax_year << key
       end
     end
 
     def tax_year_dates
-      @child_benefit_data.each_with_object(Array.new) { |(key), tax_year|
+      @child_benefit_data.each_with_object([]) do |(key), tax_year|
         tax_year << [@child_benefit_data.fetch(key)["start_date"], @child_benefit_data.fetch(key)["end_date"]]
-      }
+      end
     end
 
     def benefits_claimed_amount
@@ -170,11 +170,11 @@ module SmartAnswer::Calculators
     end
 
     def store_date(date_type, response)
-      if @part_year_claim_dates[child_index].nil?
-        @part_year_claim_dates[child_index] = {date_type => response}
-      else
-        @part_year_claim_dates[child_index] = @part_year_claim_dates[child_index].merge!({date_type => response})
-      end
+      @part_year_claim_dates[child_index] = if @part_year_claim_dates[child_index].nil?
+                                              { date_type => response }
+                                            else
+                                              @part_year_claim_dates[child_index].merge!({ date_type => response })
+                                            end
     end
   end
 end

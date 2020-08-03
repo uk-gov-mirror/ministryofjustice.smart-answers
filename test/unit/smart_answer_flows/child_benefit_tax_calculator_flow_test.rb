@@ -112,8 +112,8 @@ module SmartAnswer
           end
         end
       end
-      
-      # Q3a 
+
+      # Q3a
       context "when answering how_many_children_part_year? question" do
         context "when the number is valid" do
           setup do

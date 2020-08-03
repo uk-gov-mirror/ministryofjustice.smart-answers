@@ -7,7 +7,7 @@ module SmartAnswer::Calculators
         context "#valid_number_of_children?" do
           should "be valid when there are less than 30 children" do
             calculator = ChildBenefitTaxCalculator.new(
-              children_count: 2
+              children_count: 2,
             )
 
             assert calculator.valid_number_of_children?
@@ -15,7 +15,7 @@ module SmartAnswer::Calculators
 
           should "not be valid when there are more than 30 children" do
             calculator = ChildBenefitTaxCalculator.new(
-              children_count: 31
+              children_count: 31,
             )
 
             assert_not calculator.valid_number_of_children?
@@ -26,30 +26,30 @@ module SmartAnswer::Calculators
           should "be valid when the part_year_child_count is less than the children_count" do
             calculator = ChildBenefitTaxCalculator.new(
               children_count: 4,
-              part_year_children_count:2
+              part_year_children_count: 2,
             )
 
             assert calculator.valid_number_of_part_year_children?
           end
-          
+
           should "not be valid when the part_year_child_count is more than the children_count" do
             calculator = ChildBenefitTaxCalculator.new(
               children_count: 2,
-              part_year_children_count: 4
+              part_year_children_count: 4,
             )
             assert_not calculator.valid_number_of_part_year_children?
           end
         end
 
-        context "#valid_within_tax_year" do 
+        context "#valid_within_tax_year" do
           should "not be valid when before the beginning of the tax year" do
             calculator = ChildBenefitTaxCalculator.new(
-              tax_year: "2014"
+              tax_year: "2014",
             )
             calculator.part_year_claim_dates = {
               0 => {
                 start_date: Date.parse("14-01-2013"),
-              }
+              },
             }
 
             assert_not calculator.valid_within_tax_year?(:start_date)
@@ -57,12 +57,12 @@ module SmartAnswer::Calculators
 
           should "not be valid when after the end of the tax year" do
             calculator = ChildBenefitTaxCalculator.new(
-              tax_year: "2014"
+              tax_year: "2014",
             )
             calculator.part_year_claim_dates = {
               0 => {
                 start_date: Date.parse("14-05-2015"),
-              }
+              },
             }
 
             assert_not calculator.valid_within_tax_year?(:start_date)
@@ -70,12 +70,12 @@ module SmartAnswer::Calculators
 
           should "be valid when within the tax year" do
             calculator = ChildBenefitTaxCalculator.new(
-              tax_year: "2014"
+              tax_year: "2014",
             )
             calculator.part_year_claim_dates = {
               0 => {
                 start_date: Date.parse("14-05-2014"),
-              }
+              },
             }
 
             assert calculator.valid_within_tax_year?(:start_date)
@@ -85,13 +85,13 @@ module SmartAnswer::Calculators
         context "#valid_end_date?" do
           should "be valid if after start date" do
             calculator = ChildBenefitTaxCalculator.new(
-              tax_year: "2014"
+              tax_year: "2014",
             )
             calculator.part_year_claim_dates = {
               0 => {
                 start_date: Date.parse("14-05-2014"),
-                end_date: Date.parse("15-05-2014")
-              }
+                end_date: Date.parse("15-05-2014"),
+              },
             }
 
             assert calculator.valid_end_date?
@@ -99,13 +99,13 @@ module SmartAnswer::Calculators
 
           should "not be valid if before start date" do
             calculator = ChildBenefitTaxCalculator.new(
-              tax_year: "2014"
+              tax_year: "2014",
             )
             calculator.part_year_claim_dates = {
               0 => {
                 start_date: Date.parse("14-05-2014"),
-                end_date: Date.parse("13-05-2014")
-              }
+                end_date: Date.parse("13-05-2014"),
+              },
             }
 
             assert_not calculator.valid_end_date?
@@ -247,14 +247,14 @@ module SmartAnswer::Calculators
               tax_year: "2012",
               children_count: 1,
               is_part_year_claim: "yes",
-              part_year_children_count: 1
+              part_year_children_count: 1,
             )
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("2012-06-01"),
-                end_date: Date.parse("2013-06-01")
-                }
-              }
+                end_date: Date.parse("2013-06-01"),
+              },
+            }
             assert_equal 263.9, calculator.benefits_claimed_amount.round(2)
           end
         end
@@ -291,33 +291,34 @@ module SmartAnswer::Calculators
               tax_year: "2019",
               children_count: 1,
               is_part_year_claim: "yes",
-              part_year_children_count: 1
+              part_year_children_count: 1,
             )
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("2020-01-06"),
-                end_date: Date.parse("2020-04-05")
-              }
+                end_date: Date.parse("2020-04-05"),
+              },
             }
             assert_equal 269.1, calculator.benefits_claimed_amount.round(2)
           end
 
           should "give the total amount for a partial tax year for more than one child" do
             calculator = ChildBenefitTaxCalculator.new(
-                          tax_year: "2019",
-                          children_count: 2,
-                          is_part_year_claim: "yes",
-                          part_year_children_count: 2)
+              tax_year: "2019",
+              children_count: 2,
+              is_part_year_claim: "yes",
+              part_year_children_count: 2,
+            )
 
             calculator.part_year_claim_dates = {
               "0" => { # 18 weeks/Mondays
                 start_date: Date.parse("2019-12-2"),
-                end_date: Date.parse("2020-04-05")
+                end_date: Date.parse("2020-04-05"),
               },
               "1" => { # 13 weeks/Mondays
                 start_date: Date.parse("2020-01-06"),
-                end_date: Date.parse("2020-04-05")
-              }
+                end_date: Date.parse("2020-04-05"),
+              },
             }
             assert_equal 550.7, calculator.benefits_claimed_amount.round(2)
           end
@@ -327,16 +328,17 @@ module SmartAnswer::Calculators
               tax_year: "2019",
               children_count: 3,
               is_part_year_claim: "yes",
-              part_year_children_count: 2)
+              part_year_children_count: 2,
+            )
             calculator.part_year_claim_dates = {
               "0" => { # 18 weeks/Mondays
                 start_date: Date.parse("2019-12-2"),
-                end_date: Date.parse("2020-04-05")
+                end_date: Date.parse("2020-04-05"),
               },
               "1" => { # 13 weeks/Mondays
                 start_date: Date.parse("2020-01-06"),
-                end_date: Date.parse("2020-04-05")
-              }
+                end_date: Date.parse("2020-04-05"),
+              },
             }
             assert_equal 1501.1, calculator.benefits_claimed_amount.round(2)
           end
@@ -344,19 +346,9 @@ module SmartAnswer::Calculators
       end
 
       context "calculating adjusted net income" do
-        # should "use the adjusted_net_income parameter when none of the calculation params are used" do
-        #   assert_equal 50_099, ChildBenefitTaxCalculator.new(
-        #     adjusted_net_income: 50099,
-        #     other_allowable_deductions: "0",
-        #     tax_year: "2012",
-        #     children_count: 2,
-        #     is_part_year_claim: "no",
-        #   ).adjusted_net_income
-        # end
-
         should "calculate the adjusted net income with the relevant params" do
           assert_equal 69_950, ChildBenefitTaxCalculator.new(
-            income_details: 75500,
+            income_details: 75_500,
             allowable_deductions: 3000,
             other_allowable_deductions: 1800,
             tax_year: "2012",
@@ -364,23 +356,12 @@ module SmartAnswer::Calculators
             is_part_year_claim: "no",
           ).calculate_adjusted_net_income
         end
-
-        # should "ignore the adjusted_net_income parameter when using the calculation form params" do
-        #   assert_equal 69_950, ChildBenefitTaxCalculator.new(
-        #     income_details: 75500,
-        #     allowable_deductions: 3000,
-        #     other_allowable_deductions: 1800,
-        #     tax_year: "2012",
-        #     children_count: 2,
-        #     is_part_year_claim: "no",
-        #   ).calculate_adjusted_net_income
-        # end
       end # context "calculating adjusted net income"
 
       context "calculating percentage tax charge" do
         should "be 0.0 for an income of 50099" do
           assert_equal 0.0, ChildBenefitTaxCalculator.new(
-            income_details: 50099,
+            income_details: 50_099,
             tax_year: "2012",
             children_count: 2,
             is_part_year_claim: "no",
@@ -389,7 +370,7 @@ module SmartAnswer::Calculators
 
         should "be 1.0 for an income of 50199" do
           assert_equal 1.0, ChildBenefitTaxCalculator.new(
-            income_details: 50199,
+            income_details: 50_199,
             tax_year: "2012",
             children_count: 2,
             is_part_year_claim: "no",
@@ -398,7 +379,7 @@ module SmartAnswer::Calculators
 
         should "be 2.0 for an income of 50200" do
           assert_equal 2.0, ChildBenefitTaxCalculator.new(
-            income_details: 50200,
+            income_details: 50_200,
             tax_year: "2012",
             children_count: 2,
             is_part_year_claim: "no",
@@ -407,7 +388,7 @@ module SmartAnswer::Calculators
 
         should "be 40.0 for an income of 54013" do
           assert_equal 40.0, ChildBenefitTaxCalculator.new(
-            income_details: 54013,
+            income_details: 54_013,
             tax_year: "2012",
             children_count: 2,
             is_part_year_claim: "no",
@@ -416,7 +397,7 @@ module SmartAnswer::Calculators
 
         should "be 40.0 for an income of 54089" do
           assert_equal 40.0, ChildBenefitTaxCalculator.new(
-            income_details: 54089,
+            income_details: 54_089,
             tax_year: "2012",
             children_count: 2,
             is_part_year_claim: "no",
@@ -425,7 +406,7 @@ module SmartAnswer::Calculators
 
         should "be 99.0 for an income of 59999" do
           assert_equal 99.0, ChildBenefitTaxCalculator.new(
-            income_details: 59999,
+            income_details: 59_999,
             tax_year: "2012",
             is_part_year_claim: "no",
             children_count: 2,
@@ -434,7 +415,7 @@ module SmartAnswer::Calculators
 
         should "be 100.0 for an income of 60000" do
           assert_equal 100.0, ChildBenefitTaxCalculator.new(
-            income_details: 60000,
+            income_details: 60_000,
             tax_year: "2012",
             children_count: 2,
             is_part_year_claim: "no",
@@ -443,7 +424,7 @@ module SmartAnswer::Calculators
 
         should "be 100.0 for an income of 60001" do
           assert_equal 100.0, ChildBenefitTaxCalculator.new(
-            income_details: 60001,
+            income_details: 60_001,
             tax_year: "2012",
             children_count: 2,
             is_part_year_claim: "no",
@@ -455,7 +436,7 @@ module SmartAnswer::Calculators
         context "below the income threshold" do
           should "be true for incomes under the threshold" do
             calculator = ChildBenefitTaxCalculator.new(
-              income_details: 49999,
+              income_details: 49_999,
               is_part_year_claim: "yes",
               tax_year: "2019",
               children_count: 1,
@@ -465,14 +446,14 @@ module SmartAnswer::Calculators
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("2018-01-01"),
-              }
+              },
             }
             assert calculator.nothing_owed?
           end
 
           should "be true for incomes over the threshold" do
             calculator = ChildBenefitTaxCalculator.new(
-              income_details: 50100,
+              income_details: 50_100,
               is_part_year_claim: "yes",
               tax_year: "2019",
               children_count: 1,
@@ -482,7 +463,7 @@ module SmartAnswer::Calculators
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("2018-01-01"),
-              }
+              },
             }
             assert_not calculator.nothing_owed?
           end
@@ -494,14 +475,15 @@ module SmartAnswer::Calculators
           should "calculate correctly with starting children" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2012",
-              income_details: 61000,
+              income_details: 61_000,
               children_count: 1,
               is_part_year_claim: "yes",
-              part_year_children_count: 1)
+              part_year_children_count: 1,
+            )
 
             calculator.part_year_claim_dates = {
               "0" => {
-                start_date: Date.parse("2013-03-01")
+                start_date: Date.parse("2013-03-01"),
               },
             }
             assert_equal 101, calculator.tax_estimate.round(1)
@@ -509,16 +491,16 @@ module SmartAnswer::Calculators
 
           should "not tax before Jan 7th 2013" do
             calculator = ChildBenefitTaxCalculator.new(
-              income_details: 61000,
+              income_details: 61_000,
               children_count: 1,
               is_part_year_claim: "yes",
               part_year_children_count: 1,
-              tax_year: "2012"
+              tax_year: "2012",
             )
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("2012-05-01"),
-              }
+              },
             }
             assert_equal 263, calculator.tax_estimate.round(1)
           end
@@ -527,16 +509,16 @@ module SmartAnswer::Calculators
         context "for the tax year 2013-2014" do
           should "calculate correctly for 60k income" do
             calculator = ChildBenefitTaxCalculator.new(
-              income_details: 61000,
+              income_details: 61_000,
               children_count: 1,
               is_part_year_claim: "yes",
               part_year_children_count: 1,
-              tax_year: "2013"
+              tax_year: "2013",
             )
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("2014-02-22"),
-              }
+              },
             }
 
             # starting child for 6 weeks
@@ -547,16 +529,16 @@ module SmartAnswer::Calculators
         context "for the tax year 2016-2017" do
           should "calculate correctly with starting children" do
             calculator = ChildBenefitTaxCalculator.new(
-              income_details: 61000,
+              income_details: 61_000,
               children_count: 1,
               is_part_year_claim: "yes",
               part_year_children_count: 1,
-              tax_year: "2016"
+              tax_year: "2016",
             )
             calculator.part_year_claim_dates = {
               "0" => {
-                start_date: Date.parse("2017-03-01")
-              }
+                start_date: Date.parse("2017-03-01"),
+              },
             }
 
             # child from 01/03 to 01/04 => 5 weeks * 20.7
@@ -565,17 +547,17 @@ module SmartAnswer::Calculators
 
           should "correctly calculate weeks for a child who started & stopped in tax year" do
             calculator = ChildBenefitTaxCalculator.new(
-              income_details: 61000,
+              income_details: 61_000,
               children_count: 1,
               is_part_year_claim: "yes",
               part_year_children_count: 1,
-              tax_year: "2016"
+              tax_year: "2016",
             )
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("2017-02-01"),
                 end_date: Date.parse("2017-03-01"),
-              }
+              },
             }
             # child from 01/02 to 01/03 => 4 weeks * 20.7
             assert_equal 82, calculator.tax_estimate.round(1)
@@ -589,7 +571,7 @@ module SmartAnswer::Calculators
             tax_year: "2012",
             children_count: 3,
             is_part_year_claim: "yes",
-            part_year_children_count: 3
+            part_year_children_count: 3,
           )
 
           calculator.part_year_claim_dates = {
@@ -612,11 +594,11 @@ module SmartAnswer::Calculators
 
         should "should calculate 3 children for 2012/2013 one child starting on 7 Jan 2013" do
           calculator = ChildBenefitTaxCalculator.new(
-            income_details: 56000,
+            income_details: 56_000,
             tax_year: "2012",
             children_count: 3,
             is_part_year_claim: "yes",
-            part_year_children_count: 3
+            part_year_children_count: 3,
           )
           calculator.part_year_claim_dates = {
             "0" => {
@@ -642,13 +624,13 @@ module SmartAnswer::Calculators
             tax_year: "2012",
             children_count: 1,
             is_part_year_claim: "yes",
-            part_year_children_count: 1
+            part_year_children_count: 1,
           )
           calculator.part_year_claim_dates = {
             "0" => {
               start_date: Date.parse("14-01-2013"),
-              end_date: Date.parse("21-01-2013")
-            }
+              end_date: Date.parse("21-01-2013"),
+            },
           }
 
           assert_equal 40.60, calculator.benefits_claimed_amount.round(2)
@@ -656,7 +638,7 @@ module SmartAnswer::Calculators
 
         should "should calculate 3 children already in the household for 2013/2014" do
           calculator = ChildBenefitTaxCalculator.new(
-            income_details: 52000,
+            income_details: 52_000,
             tax_year: "2013",
             children_count: 3,
             is_part_year_claim: "no",
@@ -667,18 +649,18 @@ module SmartAnswer::Calculators
 
         should "calculate 3 children already in the household for 2013/2014 one stops on 14 June 2013" do
           calculator = ChildBenefitTaxCalculator.new(
-            income_details: 53000,
+            income_details: 53_000,
             tax_year: "2013",
             children_count: 3,
             is_part_year_claim: "yes",
-            part_year_children_count: 1
+            part_year_children_count: 1,
           )
 
           calculator.part_year_claim_dates = {
             "0" => {
               start_date: Date.parse("06-04-2013"),
-              end_date: Date.parse("14-06-2013")
-            }
+              end_date: Date.parse("14-06-2013"),
+            },
           }
           assert_equal 1886.40, calculator.benefits_claimed_amount.round(2)
           assert_equal 565.0, calculator.tax_estimate.round(2)
@@ -686,17 +668,17 @@ module SmartAnswer::Calculators
 
         should "give an accurate figure for 40 weeks at £20.30" do
           calculator = ChildBenefitTaxCalculator.new(
-            income_details: 61000,
+            income_details: 61_000,
             tax_year: "2013",
             children_count: 1,
             is_part_year_claim: "yes",
-            part_year_children_count: 1
+            part_year_children_count: 1,
           )
 
           calculator.part_year_claim_dates = {
             "0" => {
-              start_date: Date.parse("01-07-2013")
-            }
+              start_date: Date.parse("01-07-2013"),
+            },
           }
 
           assert_equal 812.0, calculator.benefits_claimed_amount
@@ -727,14 +709,14 @@ module SmartAnswer::Calculators
               tax_year: "2014",
               children_count: 2,
               is_part_year_claim: "yes",
-              part_year_children_count: 1
+              part_year_children_count: 1,
             )
 
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("06-04-2014"),
-                end_date: Date.parse("06-11-2014")
-              }
+                end_date: Date.parse("06-11-2014"),
+              },
             }
             assert_equal 1486.05, calculator.benefits_claimed_amount.round(2)
           end
@@ -744,17 +726,17 @@ module SmartAnswer::Calculators
               tax_year: "2014",
               children_count: 1,
               is_part_year_claim: "yes",
-              part_year_children_count: 1
+              part_year_children_count: 1,
             )
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("06-04-2014"),
-                end_date: Date.parse("06-11-2014")
+                end_date: Date.parse("06-11-2014"),
               },
             }
             assert_equal 635.5, calculator.benefits_claimed_amount.round(2)
           end
-        end #tests for 2014 rates
+        end # tests for 2014 rates
 
         context "tests for 2015 rates" do
           should "calculate 3 children already in the household for all of 2015/16" do
@@ -780,14 +762,14 @@ module SmartAnswer::Calculators
               tax_year: "2015",
               children_count: 2,
               is_part_year_claim: "yes",
-              part_year_children_count: 1
+              part_year_children_count: 1,
             )
             calculator.part_year_claim_dates = {
-                "0" => {
-                  start_date: Date.parse("06-04-2015"),
-                  end_date: Date.parse("06-11-2016")
-                }
-              }
+              "0" => {
+                start_date: Date.parse("06-04-2015"),
+                end_date: Date.parse("06-11-2016"),
+              },
+            }
             assert_equal 1823.2, calculator.benefits_claimed_amount.round(2)
           end
 
@@ -796,20 +778,18 @@ module SmartAnswer::Calculators
               tax_year: "2015",
               children_count: 1,
               is_part_year_claim: "yes",
-              part_year_children_count: 1
+              part_year_children_count: 1,
             )
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("06-04-2015"),
-                end_date: Date.parse("06-11-2015")
-              }
+                end_date: Date.parse("06-11-2015"),
+              },
             }
 
             assert_equal 641.7, calculator.benefits_claimed_amount.round(2)
           end
         end # tests for 2015 rates
-
-
 
         context "tests for 2016 rates" do
           should "calculate 3 children already in the household for all of 2016/17" do
@@ -835,13 +815,13 @@ module SmartAnswer::Calculators
               tax_year: "2016",
               children_count: 2,
               is_part_year_claim: "yes",
-              part_year_children_count: 1
+              part_year_children_count: 1,
             )
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("06-04-2016"),
                 end_date: Date.parse("06-10-2016"),
-              }
+              },
             }
             assert_equal 1432.6, calculator.benefits_claimed_amount.round(2)
           end
@@ -851,13 +831,13 @@ module SmartAnswer::Calculators
               tax_year: "2016",
               children_count: 1,
               is_part_year_claim: "yes",
-              part_year_children_count: 1
+              part_year_children_count: 1,
             )
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("06-04-2016"),
-                end_date: Date.parse("06-11-2016")
-              }
+                end_date: Date.parse("06-11-2016"),
+              },
             }
 
             assert_equal 621.0, calculator.benefits_claimed_amount.round(2)
@@ -879,12 +859,12 @@ module SmartAnswer::Calculators
               tax_year: "2016",
               children_count: 1,
               is_part_year_claim: "yes",
-              part_year_children_count: 1
+              part_year_children_count: 1,
             )
             calculator.part_year_claim_dates = {
               "0" => {
-                start_date: Date.parse("06-04-2016")
-              }
+                start_date: Date.parse("06-04-2016"),
+              },
             }
 
             assert_equal Date.parse("05 April 2017"), calculator.child_benefit_end_date
@@ -895,17 +875,17 @@ module SmartAnswer::Calculators
               tax_year: "2016",
               children_count: 4,
               is_part_year_claim: "yes",
-              part_year_children_count: 2
+              part_year_children_count: 2,
             )
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("01-06-2016"),
-                end_date: Date.parse("01-09-2016")
+                end_date: Date.parse("01-09-2016"),
               },
               "1" => {
                 start_date: Date.parse("01-01-2017"),
-                end_date: Date.parse("01-04-2017")
-              }
+                end_date: Date.parse("01-04-2017"),
+              },
             }
 
             assert_equal 2145, calculator.benefits_claimed_amount.round(2)

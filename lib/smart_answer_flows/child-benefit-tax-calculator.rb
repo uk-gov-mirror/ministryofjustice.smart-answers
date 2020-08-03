@@ -1,7 +1,7 @@
 module SmartAnswer
   class ChildBenefitTaxCalculatorFlow < Flow
     def define
-      name 'child-benefit-tax-calculator'
+      name "child-benefit-tax-calculator"
       start_page_content_id "201fff60-1cad-4d91-a5bf-d7754b866b87"
       flow_content_id "26f5df1d-2d73-4abc-85f7-c09c73332693"
       status :draft
@@ -25,7 +25,7 @@ module SmartAnswer
 
       # Q2
       multiple_choice :which_tax_year? do
-        Calculators::ChildBenefitTaxCalculator.tax_years.each do | tax_year |
+        Calculators::ChildBenefitTaxCalculator.tax_years.each do |tax_year|
           option :"#{tax_year}"
         end
 
@@ -40,8 +40,8 @@ module SmartAnswer
 
       # Q3
       multiple_choice :is_part_year_claim? do
-        option :"yes"
-        option :"no"
+        option :yes
+        option :no
 
         save_input_as :is_part_year_claim
 
@@ -89,8 +89,8 @@ module SmartAnswer
 
       # Q3c
       multiple_choice :add_child_benefit_stop? do
-        option :"yes"
-        option :"no"
+        option :yes
+        option :no
 
         next_node do |response|
           if response == "yes"
@@ -139,15 +139,15 @@ module SmartAnswer
           calculator.income_details = response
         end
 
-        next_node do |response|
+        next_node do |_response|
           question :add_allowable_deductions?
         end
       end
 
       # Q5
       multiple_choice :add_allowable_deductions? do
-        option :"yes"
-        option :"no"
+        option :yes
+        option :no
 
         next_node do |response|
           if response == "yes"
@@ -158,22 +158,21 @@ module SmartAnswer
         end
       end
 
-
       # Q5a
       money_question :allowable_deductions? do
         on_response do |response|
           calculator.allowable_deductions = response
         end
 
-        next_node do |response|
+        next_node do |_response|
           question :add_other_allowable_deductions?
         end
       end
 
       # Q6
       multiple_choice :add_other_allowable_deductions? do
-        option :"yes"
-        option :"no"
+        option :yes
+        option :no
 
         next_node do |response|
           if response == "yes"
@@ -189,7 +188,7 @@ module SmartAnswer
         on_response do |response|
           calculator.other_allowable_deductions = response
         end
-        next_node do |response|
+        next_node do |_response|
           outcome :results
         end
       end
