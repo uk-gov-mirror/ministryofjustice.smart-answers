@@ -6,7 +6,6 @@ module SmartAnswer
       flow_content_id "26f5df1d-2d73-4abc-85f7-c09c73332693"
       status :draft
 
-      # calculator = Calculators::ChildBenefitTaxCalculator.new
       # Q1
       value_question :how_many_children?, parse: Integer do
         on_response do |response|
@@ -42,8 +41,6 @@ module SmartAnswer
       multiple_choice :is_part_year_claim? do
         option :yes
         option :no
-
-        save_input_as :is_part_year_claim
 
         next_node do |response|
           if response == "yes"
@@ -139,7 +136,7 @@ module SmartAnswer
           calculator.income_details = response
         end
 
-        next_node do |_response|
+        next_node do
           question :add_allowable_deductions?
         end
       end
@@ -164,7 +161,7 @@ module SmartAnswer
           calculator.allowable_deductions = response
         end
 
-        next_node do |_response|
+        next_node do
           question :add_other_allowable_deductions?
         end
       end
@@ -188,7 +185,7 @@ module SmartAnswer
         on_response do |response|
           calculator.other_allowable_deductions = response
         end
-        next_node do |_response|
+        next_node do
           outcome :results
         end
       end
