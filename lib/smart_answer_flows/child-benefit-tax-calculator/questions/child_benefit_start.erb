@@ -3,16 +3,13 @@
 <% end %>
 
 <% govspeak_for :body do %>
+  ### Child <%= "#{calculator.child_index+1}" %>
+<% end %>
+
+<% text_for :hint do %>
   You can find the start date on your Child Benefit award notice.
-
-### Child <%= "#{calculator.child_index+1}" %>
-
 <% end %>
 
 <% text_for :valid_within_tax_year do %>
   Child Benefit start date must be within the tax year selected
-<% end %>
-
-<% text_for :hint do %>
-  Start date
 <% end %>
