@@ -275,7 +275,7 @@ module SmartAnswer::Calculators
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("2012-06-01"),
-                end_date: Date.parse("2013-06-01"),
+                end_date: Date.parse("2013-04-01"),
               },
             }
             assert_equal 263.9, calculator.benefits_claimed_amount.round(2)
@@ -755,10 +755,10 @@ module SmartAnswer::Calculators
             calculator.part_year_claim_dates = {
               "0" => {
                 start_date: Date.parse("06-04-2015"),
-                end_date: Date.parse("06-11-2016"),
+                end_date: Date.parse("06-10-2015"),
               },
             }
-            assert_equal 1823.2, calculator.benefits_claimed_amount.round(2)
+            assert_equal 1467.0, calculator.benefits_claimed_amount.round(2)
           end
 
           should "give total amount of benefits for one child for half a year" do

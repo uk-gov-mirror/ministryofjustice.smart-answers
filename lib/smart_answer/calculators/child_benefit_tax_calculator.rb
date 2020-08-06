@@ -54,8 +54,6 @@ module SmartAnswer::Calculators
         no_of_additional_children = no_of_full_year_children - 1
         total_benefit_amount = first_child_rate_total(no_of_weeks) + additional_child_rate_total(no_of_weeks, no_of_additional_children)
         first_child_calculated = true
-      else
-        first_child_calculated = false
       end
 
       if @part_year_claim_dates.count.positive?
@@ -68,7 +66,7 @@ module SmartAnswer::Calculators
                          child[:start_date]
                        end
 
-          end_date = if child[:end_date].nil? || (child[:end_date] > child_benefit_end_date)
+          end_date = if child[:end_date].nil?
                        child_benefit_end_date
                      else
                        child[:end_date]
