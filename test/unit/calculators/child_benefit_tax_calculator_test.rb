@@ -13,6 +13,22 @@ module SmartAnswer::Calculators
             assert calculator.valid_number_of_children?
           end
 
+          should "not be valid if the number of children entered is 0" do
+            calculator = ChildBenefitTaxCalculator.new(
+              children_count: 0,
+            )
+
+            assert_not calculator.valid_number_of_children?
+          end
+
+          should "not be valid if the number of children entered is negative" do
+            calculator = ChildBenefitTaxCalculator.new(
+              children_count: -1,
+            )
+
+            assert_not calculator.valid_number_of_children?
+          end
+
           should "not be valid when there are more than 30 children" do
             calculator = ChildBenefitTaxCalculator.new(
               children_count: 31,
@@ -37,6 +53,24 @@ module SmartAnswer::Calculators
               children_count: 2,
               part_year_children_count: 4,
             )
+            assert_not calculator.valid_number_of_part_year_children?
+          end
+
+          should "not be valid if the part_year_child_count entered is 0" do
+            calculator = ChildBenefitTaxCalculator.new(
+              children_count: 2,
+              part_year_children_count: 0,
+            )
+
+            assert_not calculator.valid_number_of_part_year_children?
+          end
+
+          should "not be valid if the part_year_child_count entered is negative" do
+            calculator = ChildBenefitTaxCalculator.new(
+              children_count: 2,
+              part_year_children_count: -1,
+            )
+
             assert_not calculator.valid_number_of_part_year_children?
           end
         end

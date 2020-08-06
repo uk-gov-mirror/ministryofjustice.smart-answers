@@ -83,10 +83,9 @@ module SmartAnswer
     # Q3a
     context "when rendering how_many_children_part_year? question" do
       setup do
-        question = @flow.node(:how_many_children_part_year?)
-        @state = SmartAnswer::State.new(question)
-        @state.children_count = 3
-        @presenter = ValueQuestionPresenter.new(question, @state)
+        @question = @flow.node(:how_many_children_part_year?)
+        @state = SmartAnswer::State.new(@question)
+        @presenter = ValueQuestionPresenter.new(@question, @state)
       end
 
       should "display hint text" do
@@ -98,9 +97,9 @@ module SmartAnswer
         assert_equal "Please enter a number", @presenter.error
       end
 
-      should "display a useful error message when the number entered is bigger than the total number of children entered" do
+      should "display a useful error message when the number entered is negative, or bigger than the total number of children entered" do
         @state.error = "valid_number_of_part_year_children"
-        assert_equal html_escape("The number of children you're claiming a part year for can't be more than the total number of children you're claiming for"), @presenter.error
+        assert_equal html_escape("Please enter a valid number. The number of children you're claiming a part year for can't be more than the total number of children you're claiming for"), @presenter.error
       end
     end
 
