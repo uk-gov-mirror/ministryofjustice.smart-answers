@@ -144,11 +144,11 @@ module SmartAnswer::Calculators
     end
 
     def valid_number_of_children?
-     @children_count > 0 && @children_count <= 30
+      @children_count.positive? && @children_count <= 30
     end
 
     def valid_number_of_part_year_children?
-      @part_year_children_count > 0 && @part_year_children_count <= @children_count
+      @part_year_children_count.positive? && @part_year_children_count <= @children_count
     end
 
     def valid_within_tax_year?(date_type)
