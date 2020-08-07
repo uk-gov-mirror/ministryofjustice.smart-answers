@@ -103,7 +103,7 @@ module SmartAnswer::Calculators
     end
 
     def calculate_adjusted_net_income
-      @income_details - (@allowable_deductions * 1.25) - @other_allowable_deductions
+      (@income_details.to_f - (@allowable_deductions.to_f * 1.25) - @other_allowable_deductions.to_f)
     end
 
     def first_child_rate_total(no_of_weeks)

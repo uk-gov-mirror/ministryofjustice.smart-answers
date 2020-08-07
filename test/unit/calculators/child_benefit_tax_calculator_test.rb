@@ -149,7 +149,7 @@ module SmartAnswer::Calculators
 
       context "calculating the number of weeks/Mondays" do
         context "for the full tax year 2012/2013" do
-           should "calculate there are 13 Mondays" do
+          should "calculate there are 13 Mondays" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2012",
               children_count: "1",
