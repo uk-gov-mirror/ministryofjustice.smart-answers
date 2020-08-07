@@ -149,7 +149,7 @@ module SmartAnswer::Calculators
 
       context "calculating the number of weeks/Mondays" do
         context "for the full tax year 2012/2013" do
-          should "calculate there are 13 Mondays" do
+           should "calculate there are 13 Mondays" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2012",
               children_count: "1",
@@ -567,118 +567,122 @@ module SmartAnswer::Calculators
       end # starting & stopping children
 
       context "HMRC test scenarios" do
-        should "calculate 3 children already in the household for 2012/2013" do
-          calculator = ChildBenefitTaxCalculator.new(
-            tax_year: "2012",
-            children_count: 3,
-            part_year_children_count: 3,
-          )
+        context "tests for 2012 rates" do
+          should "calculate 3 children already in the household for 2012/2013" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2012",
+              children_count: 3,
+              part_year_children_count: 3,
+            )
 
-          calculator.part_year_claim_dates = {
-            "0" => {
-              start_date: Date.parse("06-01-2013"),
-              end_date: Date.parse("05-04-2013"),
-            },
-            "1" => {
-              start_date: Date.parse("06-01-2013"),
-              end_date: Date.parse("05-04-2013"),
-            },
-            "2" => {
-              start_date: Date.parse("06-01-2013"),
-              end_date: Date.parse("05-04-2013"),
-            },
-          }
+            calculator.part_year_claim_dates = {
+              "0" => {
+                start_date: Date.parse("06-01-2013"),
+                end_date: Date.parse("05-04-2013"),
+              },
+              "1" => {
+                start_date: Date.parse("06-01-2013"),
+                end_date: Date.parse("05-04-2013"),
+              },
+              "2" => {
+                start_date: Date.parse("06-01-2013"),
+                end_date: Date.parse("05-04-2013"),
+              },
+            }
 
-          assert_equal 612.30, calculator.benefits_claimed_amount.round(2)
-        end
+            assert_equal 612.30, calculator.benefits_claimed_amount.round(2)
+          end
 
-        should "should calculate 3 children for 2012/2013 one child starting on 7 Jan 2013" do
-          calculator = ChildBenefitTaxCalculator.new(
-            income_details: 56_000,
-            tax_year: "2012",
-            children_count: 3,
-            part_year_children_count: 3,
-          )
-          calculator.part_year_claim_dates = {
-            "0" => {
-              start_date: Date.parse("06-01-2013"),
-              end_date: Date.parse("05-04-2013"),
-            },
-            "1" => {
-              start_date: Date.parse("06-01-2013"),
-              end_date: Date.parse("05-04-2013"),
-            },
-            "2" => {
-              start_date: Date.parse("07-01-2013"),
-              end_date: Date.parse("05-04-2013"),
-            },
-          }
+          should "should calculate 3 children for 2012/2013, one child starting on 7 Jan 2013" do
+            calculator = ChildBenefitTaxCalculator.new(
+              income_details: 56_000,
+              tax_year: "2012",
+              children_count: 3,
+              part_year_children_count: 3,
+            )
+            calculator.part_year_claim_dates = {
+              "0" => {
+                start_date: Date.parse("06-01-2013"),
+                end_date: Date.parse("05-04-2013"),
+              },
+              "1" => {
+                start_date: Date.parse("06-01-2013"),
+                end_date: Date.parse("05-04-2013"),
+              },
+              "2" => {
+                start_date: Date.parse("07-01-2013"),
+                end_date: Date.parse("05-04-2013"),
+              },
+            }
 
-          assert_equal 612.30, calculator.benefits_claimed_amount.round(2)
-          assert_equal 367, calculator.tax_estimate
-        end
+            assert_equal 612.30, calculator.benefits_claimed_amount.round(2)
+            assert_equal 367, calculator.tax_estimate
+          end
 
-        should "calculate two weeks for one child observing the 'Monday' rules." do
-          calculator = ChildBenefitTaxCalculator.new(
-            tax_year: "2012",
-            children_count: 1,
-            part_year_children_count: 1,
-          )
-          calculator.part_year_claim_dates = {
-            "0" => {
-              start_date: Date.parse("14-01-2013"),
-              end_date: Date.parse("21-01-2013"),
-            },
-          }
+          should "calculate two weeks for one child observing the 'Monday' rules for 2012/2013" do
+            calculator = ChildBenefitTaxCalculator.new(
+              tax_year: "2012",
+              children_count: 1,
+              part_year_children_count: 1,
+            )
+            calculator.part_year_claim_dates = {
+              "0" => {
+                start_date: Date.parse("14-01-2013"),
+                end_date: Date.parse("21-01-2013"),
+              },
+            }
 
-          assert_equal 40.60, calculator.benefits_claimed_amount.round(2)
-        end
+            assert_equal 40.60, calculator.benefits_claimed_amount.round(2)
+          end
+        end # tests for 2012 rates
 
-        should "should calculate 3 children already in the household for 2013/2014" do
-          calculator = ChildBenefitTaxCalculator.new(
-            income_details: 52_000,
-            tax_year: "2013",
-            children_count: 3,
-          )
-          assert_equal 2449.20, calculator.benefits_claimed_amount.round(2)
-          assert_equal 489, calculator.tax_estimate.round(2)
-        end
+        context "tests for 2013 rates" do
+          should "should calculate 3 children already in the household for 2013/2014" do
+            calculator = ChildBenefitTaxCalculator.new(
+              income_details: 52_000,
+              tax_year: "2013",
+              children_count: 3,
+            )
+            assert_equal 2449.20, calculator.benefits_claimed_amount.round(2)
+            assert_equal 489, calculator.tax_estimate.round(2)
+          end
 
-        should "calculate 3 children already in the household for 2013/2014 one stops on 14 June 2013" do
-          calculator = ChildBenefitTaxCalculator.new(
-            income_details: 53_000,
-            tax_year: "2013",
-            children_count: 3,
-            part_year_children_count: 1,
-          )
+          should "calculate 3 children already in the household for 2013/2014, one child stopping on 14 June 2013" do
+            calculator = ChildBenefitTaxCalculator.new(
+              income_details: 53_000,
+              tax_year: "2013",
+              children_count: 3,
+              part_year_children_count: 1,
+            )
 
-          calculator.part_year_claim_dates = {
-            "0" => {
-              start_date: Date.parse("06-04-2013"),
-              end_date: Date.parse("14-06-2013"),
-            },
-          }
-          assert_equal 1886.40, calculator.benefits_claimed_amount.round(2)
-          assert_equal 565.0, calculator.tax_estimate.round(2)
-        end
+            calculator.part_year_claim_dates = {
+              "0" => {
+                start_date: Date.parse("06-04-2013"),
+                end_date: Date.parse("14-06-2013"),
+              },
+            }
+            assert_equal 1886.40, calculator.benefits_claimed_amount.round(2)
+            assert_equal 565.0, calculator.tax_estimate.round(2)
+          end
 
-        should "give an accurate figure for 40 weeks at £20.30" do
-          calculator = ChildBenefitTaxCalculator.new(
-            income_details: 61_000,
-            tax_year: "2013",
-            children_count: 1,
-            part_year_children_count: 1,
-          )
+          should "give an accurate figure for 40 weeks at £20.30 for 2013/2014" do
+            calculator = ChildBenefitTaxCalculator.new(
+              income_details: 61_000,
+              tax_year: "2013",
+              children_count: 1,
+              part_year_children_count: 1,
+            )
 
-          calculator.part_year_claim_dates = {
-            "0" => {
-              start_date: Date.parse("01-07-2013"),
-            },
-          }
+            calculator.part_year_claim_dates = {
+              "0" => {
+                start_date: Date.parse("01-07-2013"),
+              },
+            }
 
-          assert_equal 812.0, calculator.benefits_claimed_amount
-          assert_equal 812, calculator.tax_estimate
-        end
+            assert_equal 812.0, calculator.benefits_claimed_amount
+            assert_equal 812, calculator.tax_estimate
+          end
+        end # tests for 2013 rates
 
         context "tests for 2014 rates" do
           should "calculate 3 children already in the household for all of 2014/15" do
@@ -697,7 +701,7 @@ module SmartAnswer::Calculators
             assert_equal 1066.0, calculator.benefits_claimed_amount.round(2)
           end
 
-          should "give total amount of benefits one child full year one child half a year" do
+          should "give total amount of benefits one child full year and one child half a year" do
             calculator = ChildBenefitTaxCalculator.new(
               tax_year: "2014",
               children_count: 2,
