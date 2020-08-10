@@ -152,7 +152,7 @@ module SmartAnswer::Calculators
     end
 
     def valid_within_tax_year?(date_type)
-      @part_year_claim_dates[@child_index][date_type] >= child_benefit_start_date && @part_year_claim_dates[@child_index][date_type] <= child_benefit_end_date
+      @part_year_claim_dates[@child_index][date_type] >= selected_tax_year["start_date"] && @part_year_claim_dates[@child_index][date_type] <= child_benefit_end_date
     end
 
     def valid_end_date?
