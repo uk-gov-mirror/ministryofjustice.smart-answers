@@ -8,7 +8,7 @@ class StartPageContentItem
   def payload
     {
       base_path: base_path,
-      title: flow_presenter.title,
+      title: flow_presenter.title.html_safe,
       description: flow_presenter.description,
       update_type: "minor",
       details: {

@@ -13,7 +13,7 @@ module SmartAnswer
       stub(
         "flow-registration-presenter",
         slug: "flow-slug",
-        title: "flow-title",
+        title: "flow title's",
         flows_content: ["question title"],
         description: "",
         start_page_body: "",
@@ -59,7 +59,14 @@ module SmartAnswer
       presenter = stub_flow_registration_presenter
       content_item = StartPageContentItem.new(presenter)
 
-      assert_equal "flow-title", content_item.payload[:title]
+      assert_equal "flow title's", content_item.payload[:title]
+    end
+
+    test "#payload title is html safe of the presenter" do
+      presenter = stub_flow_registration_presenter
+      content_item = StartPageContentItem.new(presenter)
+
+      assert content_item.payload[:title].html_safe?
     end
 
     test "#payload description is the description of the presenter" do

@@ -13,6 +13,7 @@ module SmartAnswer
       content = capture_content(&block)
       content = strip_leading_spaces(content)
       content = normalize_blank_lines(content)
+      content = content.html_safe
       content_for(name, content.strip)
     end
 
