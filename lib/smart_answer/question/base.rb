@@ -39,6 +39,7 @@ module SmartAnswer
           responses_and_input = current_state.responses + [input]
           message = "Next node undefined. Node: #{current_state.current_node}."
           message << " Responses: #{responses_and_input}."
+          return nil
           raise NextNodeUndefined, message
         end
         unless NextNodeBlock.permitted?(next_node)

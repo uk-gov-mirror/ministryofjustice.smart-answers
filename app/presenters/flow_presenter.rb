@@ -5,7 +5,7 @@ class FlowPresenter
 
   attr_reader :request, :params, :flow
 
-  delegate :need_it, :button_text, to: :flow
+  delegate :need_it, :button_text, :response_store, to: :flow
   delegate :title, to: :start_node
 
   def initialize(request, flow)
@@ -24,7 +24,11 @@ class FlowPresenter
   end
 
   def current_state
-    @current_state ||= @flow.process(all_responses)
+    @current_state ||= if response_store == :session
+                         @flow.build_state(query_responses)
+                       else
+                         @flow.process(all_responses)
+                       end
   end
 
   def name
@@ -104,5 +108,10 @@ class FlowPresenter
     normalize_responses_param.dup.tap do |responses|
       responses << params[:response] if params[:next]
     end
+  end
+
+  def query_responses
+    node_names = @flow.nodes.map(&:name)
+    request.params.select { |k, _| node_names.include? k.to_sym }
   end
 end

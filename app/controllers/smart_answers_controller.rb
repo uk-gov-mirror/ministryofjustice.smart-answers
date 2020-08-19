@@ -31,6 +31,30 @@ class SmartAnswersController < ApplicationController
     set_expiry
   end
 
+  def session_show
+    node_name = params[:node_name]
+    @presenter.params[node_name] = params[:response]
+
+    if params[:next] && !@presenter.current_state.error
+      set_expiry
+
+      redirect_params = {
+        action: :session_show,
+        id: @name,
+        node_name: @presenter.current_state.current_node,
+        protocol: request.ssl? || Rails.env.production? ? "https" : "http",
+      }
+      redirect_params.merge(@presenter.query_responses)
+      redirect_to redirect_params
+    else
+      @title = @presenter.title
+
+      render session_page_type, formats: [:html]
+
+      set_expiry
+    end
+  end
+
   def visualise
     respond_to do |format|
       format.html do
@@ -77,6 +101,14 @@ private
       end
     else
       :landing
+    end
+  end
+
+  def session_page_type
+    if @presenter.finished?
+      :result
+    else
+      :session_question
     end
   end
 

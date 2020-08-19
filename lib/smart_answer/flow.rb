@@ -44,6 +44,10 @@ module SmartAnswer
       @button_text ||= text
     end
 
+    def response_store(store = :path)
+      @response_store ||= store
+    end
+
     def satisfies_need(need_content_id)
       self.need_content_id = need_content_id
     end
@@ -137,6 +141,33 @@ module SmartAnswer
           end
         end
       end
+    end
+
+    def build_state(responses_hash)
+      state = start_state
+
+      until state.current_node.nil?
+        return state if state.error
+
+        begin
+          response = responses_hash[state.current_node]
+          break if response.nil?
+
+          state = node(state.current_node).transition(state, response)
+          node(state.current_node).evaluate_precalculations(state)
+        rescue BaseStateTransitionError => e
+          if e.is_a?(LoggedError)
+            GovukError.notify e
+          end
+
+          state.dup.tap do |new_state|
+            new_state.error = e.message
+            new_state.freeze
+          end
+        end
+      end
+
+      state
     end
 
     def path(responses)

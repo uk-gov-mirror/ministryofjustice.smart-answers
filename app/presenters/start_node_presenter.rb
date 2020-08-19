@@ -40,6 +40,15 @@ class StartNodePresenter < NodePresenter
     custom_button_text.presence || "Start now"
   end
 
+  def start_button_link(name)
+    if @node.flow.response_store == :session
+      first_node_name = @node.flow.questions.first.name
+      session_flow_path(id: name, node_name: first_node_name)
+    else
+      smart_answer_path(name, started: "y")
+    end
+  end
+
   def relative_erb_template_path
     @renderer.relative_erb_template_path
   end

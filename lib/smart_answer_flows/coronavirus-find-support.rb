@@ -6,6 +6,7 @@ module SmartAnswer
       flow_content_id "31d81949-aa15-48cf-a7f1-f0d0a670e8db"
       status :draft
       button_text "Continue"
+      response_store :session
 
       # ======================================================================
       # What do you need help with because of coronavirus?
