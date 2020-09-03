@@ -7,18 +7,14 @@ class SessionAnswersController < ApplicationController
 
   def update
     add_new_response_to_session
-    if presenter.current_state.error
-      remove_response_from_session
-      render "smart_answers/#{page_type}", formats: [:html]
-    else
-      redirect_to session_flow_path(id: params[:id], node_name: next_node_name)
-    end
+    redirect_to session_flow_path(id: params[:id], node_name: next_node_name)
   end
 
 private
 
   def presenter
-    @presenter ||= FlowPresenter.new(session, smart_answer)
+    params_with_responses = params.merge({ responses: session.to_h || {} })
+    @presenter ||= FlowPresenter.new(params_with_responses, smart_answer)
   end
 
   def name
@@ -34,12 +30,7 @@ private
   end
 
   def add_new_response_to_session
-    session[:responses] ||= []
-    session[:responses] << params[:response]
-  end
-
-  def remove_response_from_session
-    session[:responses].pop
+    session[params[:node_name]] = params[:response]
   end
 
   def page_type
@@ -50,9 +41,7 @@ private
   end
 
   def next_node_name
-    node_name = presenter.current_state.current_node.to_s
-    node_name.delete_suffix!("?")
-    node_name
+    presenter.current_state.current_node.to_s
   end
 
   def debug?

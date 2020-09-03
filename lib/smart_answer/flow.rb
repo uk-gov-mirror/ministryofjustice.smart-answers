@@ -147,6 +147,30 @@ module SmartAnswer
       end
     end
 
+    def resolve_state(responses, requested_node)
+      state = start_state
+
+      until state.nil?
+        return state if state.error
+        return state if state.current_node.to_s == requested_node
+        return state if node(state.current_node).outcome?
+
+        response = responses[state.current_node.to_s]
+        begin
+          state = node(state.current_node).transition(state, response)
+        rescue BaseStateTransitionError => e
+          if e.is_a?(LoggedError)
+            GovukError.notify e
+          end
+
+          state.dup.tap do |new_state|
+            new_state.error = e.message
+            return new_state.freeze
+          end
+        end
+      end
+    end
+
     def path(responses)
       process(responses).path
     end

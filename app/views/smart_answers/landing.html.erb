@@ -1,4 +1,11 @@
 <% start_node = @presenter.start_node %>
+<%
+  start_href = if @presenter.use_session?
+                 session_flow_path(@presenter.name, node_name: @presenter.flow.questions.first.name)
+               else
+                 smart_answer_path(@preseneter.name, started: "y")
+               end
+%>
 
 <% if start_node.meta_description.present? %>
   <% content_for :head do %>
@@ -18,7 +25,7 @@
 
         <%= render "govuk_publishing_components/components/button", {
           text: start_node.start_button_text,
-          href: smart_answer_path(@name.to_s, started: "y"),
+          href: start_href,
           rel: "nofollow",
           start: true,
           margin_bottom: true,

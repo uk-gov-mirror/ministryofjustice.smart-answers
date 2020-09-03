@@ -15,7 +15,6 @@ module CurrentQuestionHelper
 
   def session_answers_question_path(presenter)
     node_name = presenter.current_state.current_node.to_s
-    node_name.delete_suffix!("?")
     update_session_flow_path(id: params[:id], node_name: node_name)
   end
 
