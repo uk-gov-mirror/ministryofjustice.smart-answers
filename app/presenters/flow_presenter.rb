@@ -143,4 +143,15 @@ class FlowPresenter
       smart_answer_path(name, started: "y")
     end
   end
+
+  def routes
+    if use_session?
+      routes = @flow.nodes.map do |node|
+        { type: "prefix", path: session_flow_path(name, node_name: node.name) }
+      end
+      routes + [{ type: "exact", path: destroy_session_flow_path(name) }]
+    else
+      [{ type: "prefix", path: start_page_link }]
+    end
+  end
 end

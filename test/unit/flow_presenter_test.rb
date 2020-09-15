@@ -197,4 +197,21 @@ class FlowPresenterTest < ActiveSupport::TestCase
       assert_equal "/flow-name/first_question_key", flow_presenter.start_page_link
     end
   end
+
+  context "#routes" do
+    should "return single prefix route for non-session based flows" do
+      assert_equal [{ type: "prefix", path: "/flow-name/y" }], @flow_presenter.routes
+    end
+
+    should "return path to first page in session flow using sessions" do
+      @flow.use_session(true)
+      flow_presenter = FlowPresenter.new({}, @flow)
+
+      expected_routes = [
+        { type: "prefix", path: "/flow-name/first_question_key" },
+        { type: "exact", path: "/flow-name/destroy_session" },
+      ]
+      assert_equal expected_routes, flow_presenter.routes
+    end
+  end
 end

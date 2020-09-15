@@ -16,6 +16,7 @@ module SmartAnswer
         title: "flow-title",
         external_related_links: [],
         start_page_link: "/flow-name/y",
+        routes: [{ type: "prefix", path: "/flow-name/y" }],
       )
     end
 
@@ -111,11 +112,11 @@ module SmartAnswer
       assert_equal now.iso8601, content_item.payload[:public_updated_at]
     end
 
-    test "#payload registers a prefix route using the name of the smart answer with / appended" do
+    test "#payload registers a prefix route of /y for non-session based smart answers" do
       presenter = stub_flow_registration_presenter
       content_item = FlowContentItem.new(presenter)
 
-      expected_route = { type: "prefix", path: "/flow-name/" }
+      expected_route = { type: "prefix", path: "/flow-name/y" }
       assert content_item.payload[:routes].include?(expected_route)
     end
   end
