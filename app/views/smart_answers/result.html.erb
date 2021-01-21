@@ -54,7 +54,17 @@
       });
     </script>
 
-    <%= render 'smart_answers/previous_answers', hide_previous_answers: @presenter.hide_previous_answers_on_results_page? %>
+    <p class="govuk-body">
+    <%= link_to "Start again",
+      restart_flow_path(@presenter),
+      :class => "govuk-link",
+      :data => {
+        module: "track-click",
+        "track-action": "Start again",
+        "track-category": "StartAgain",
+        "track-label": @presenter.current_node.title
+      } %>
+    </p>
   </div>
 
   <% if defined?(@presenter.finished?) and @presenter.finished? %>
