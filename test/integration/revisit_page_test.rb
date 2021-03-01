@@ -10,22 +10,6 @@ class RevisitPageTest < ActionDispatch::SystemTestCase
     Capybara.use_default_driver
   end
 
-  test "Change link returns previously visited page" do
-    visit "find-coronavirus-support/s"
-    within "legend" do
-      assert_page_has_content "What do you need help with because of coronavirus?"
-    end
-    check("None of these", visible: false)
-    click_on "Continue"
-    within "legend" do
-      assert_page_has_content "Where do you want to find information about?"
-    end
-    click_on "Change"
-    within "legend" do
-      assert_page_has_content "What do you need help with because of coronavirus?"
-    end
-  end
-
   test "Returning to start of flow resets session" do
     visit "find-coronavirus-support/s"
     within "legend" do
