@@ -1,13 +1,14 @@
 class FlowContentItem
   attr_reader :flow_presenter
 
-  def initialize(flow_presenter)
+  def initialize(flow_presenter, prefix_path = nil)
     @flow_presenter = flow_presenter
+    @prefix_path = prefix_path || flow_presenter.start_page_link
   end
 
   def payload
     {
-      base_path: flow_presenter.start_page_link,
+      base_path: @prefix_path,
       title: flow_presenter.title,
       update_type: "minor",
       details: {
@@ -19,10 +20,7 @@ class FlowContentItem
       rendering_app: "smartanswers",
       locale: "en",
       public_updated_at: Time.zone.now.iso8601,
-      routes: [
-        { type: "prefix", path: flow_presenter.start_page_link },
-        { type: "prefix", path: "/#{flow_presenter.name}/flow" },
-      ],
+      routes: [{ type: "prefix", path: @prefix_path }],
     }
   end
 
