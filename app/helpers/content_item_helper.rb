@@ -12,6 +12,14 @@ module ContentItemHelper
       object = MethodMissingObject.new(method, blank_to_s: true, overrides: OVERRIDES)
       OVERRIDES.fetch(object.description) { object }
     end
+
+    def format_money(*_args)
+      "0.00"
+    end
+
+    def config
+      method_missing("config")
+    end
     # rubocop:enable Style/MissingRespondToMissing
   end
 
