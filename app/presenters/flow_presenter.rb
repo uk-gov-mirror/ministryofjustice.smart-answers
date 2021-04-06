@@ -8,7 +8,7 @@ class FlowPresenter
 
   delegate :name,
            :need_content_id,
-           :start_page_content_id,
+           :content_id,
            :flow_content_id,
            :need_it,
            :response_store,
