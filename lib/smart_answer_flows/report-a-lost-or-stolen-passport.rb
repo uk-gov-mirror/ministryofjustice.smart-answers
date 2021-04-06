@@ -2,7 +2,6 @@ module SmartAnswer
   class ReportALostOrStolenPassportFlow < Flow
     def define
       content_id "f02fc2c9-f5ff-4ea2-acc4-730bbda957bb"
-      flow_content_id "ba17a50d-611e-4df5-aa35-9339c4e20162"
       name "report-a-lost-or-stolen-passport"
       status :published
       satisfies_need "1de5292b-6696-4149-94b9-1e0b6f8b7119"

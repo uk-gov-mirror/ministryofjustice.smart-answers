@@ -2,7 +2,6 @@ module SmartAnswer
   class LandlordImmigrationCheckFlow < Flow
     def define
       content_id "a6c2dbbb-a26e-4cc5-a244-48ef45523269"
-      flow_content_id "61334174-53a3-4112-b6ea-1608d875ced8"
       name "landlord-immigration-check"
       status :published
       satisfies_need "02c8d20b-6742-4494-8e17-e2c34bc8c21f"
