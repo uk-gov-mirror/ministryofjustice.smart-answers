@@ -134,7 +134,7 @@ class FlowPresenter
   end
 
   def flows_content
-    extract_flow_content(@flow)
+    extract_flow_content(@flow, start_node)
   end
 
   def start_page_link
