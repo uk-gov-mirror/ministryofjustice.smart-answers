@@ -130,10 +130,6 @@ class FlowPresenter
     end
   end
 
-  def external_related_links
-    @flow.external_related_links || []
-  end
-
   def flows_content
     extract_flow_content(@flow)
   end

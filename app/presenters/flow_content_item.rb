@@ -10,9 +10,7 @@ class FlowContentItem
       base_path: flow_presenter.start_page_link,
       title: flow_presenter.title,
       update_type: "minor",
-      details: {
-        external_related_links: flow_presenter.external_related_links,
-      },
+      details: {},
       schema_name: "generic_with_external_related_links",
       document_type: "smart_answer",
       publishing_app: "smartanswers",
