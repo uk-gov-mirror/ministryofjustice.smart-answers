@@ -1317,6 +1317,12 @@ class UKBenefitsAbroadTest < ActiveSupport::TestCase
             assert_current_node :db_going_abroad_other_outcome
           end
         end
+        context "answer Gibraltar" do
+          should "go to DB Gibraltar outcome" do
+            add_response :gibraltar
+            assert_current_node :db_going_abroad_other_outcome
+          end
+        end
       end
     end
 
@@ -2577,6 +2583,16 @@ class UKBenefitsAbroadTest < ActiveSupport::TestCase
       end
       should "take you to other country outcome" do
         assert_current_node :db_already_abroad_other_outcome
+      end
+    end
+    context "answer going abroad permanently, Gibraltar" do
+      setup do
+        add_response "disability_benefits"
+        add_response "permanent"
+        add_response "gibraltar"
+      end
+      should "take you to Gibraltar outcome" do
+        assert_current_node :db_already_abroad_gibraltar_outcome
       end
     end
 

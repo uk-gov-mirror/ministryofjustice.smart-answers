@@ -148,10 +148,12 @@ module SmartAnswer
               end
             end
           when "disability_benefits"
-            if calculator.eea_country?
+            if calculator.eea_country? && calculator.country != "gibraltar"
               question :db_claiming_benefits? # Q30 going_abroad and Q29 already_abroad
             elsif calculator.going_abroad
               outcome :db_going_abroad_other_outcome # A36 going_abroad
+            elsif calculator.country == "gibraltar"
+              outcome :db_already_abroad_gibraltar_outcome
             else
               outcome :db_already_abroad_other_outcome # A35 already_abroad
             end
@@ -739,6 +741,7 @@ module SmartAnswer
       outcome :db_already_abroad_temporary_outcome # A34 already_abroad
       outcome :db_already_abroad_other_outcome # A35 already_abroad
       outcome :db_already_abroad_eea_outcome # A36 already_abroad
+      outcome :db_already_abroad_gibraltar_outcome
       outcome :bb_already_abroad_eea_outcome # A37 already_abroad
       outcome :bb_already_abroad_ss_outcome  # A38 already_abroad
       outcome :bb_already_abroad_other_outcome # A39 already_abroad
