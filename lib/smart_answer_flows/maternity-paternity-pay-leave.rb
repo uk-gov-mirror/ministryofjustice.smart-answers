@@ -169,14 +169,18 @@ module SmartAnswer
             elsif calculator.employment_status_of_mother == "self-employed"
               outcome :outcome_single_birth_nothing
             end
-          elsif !calculator.two_carers?
-            if calculator.mother_worked_at_least_26_weeks == "no"
-              outcome :outcome_single_birth_nothing
-            elsif calculator.mother_worked_at_least_26_weeks == "yes" && calculator.employment_status_of_mother == "self-employed"
-              outcome :outcome_mat_allowance
+          elsif calculator.employment_status_of_mother == "self-employed"
+            if calculator.two_carers?
+              if %w[employee worker].include?(calculator.employment_status_of_partner)
+                question :partner_started_working_before_continuity_start_date
+              else
+                outcome :outcome_mat_allowance
+              end
             else
-              question :mother_earned_at_least_390
+              outcome :outcome_mat_allowance
             end
+          elsif calculator.mother_worked_at_least_26_weeks == "no" && !calculator.two_carers?
+            outcome :outcome_single_birth_nothing
           else
             question :mother_earned_at_least_390
           end

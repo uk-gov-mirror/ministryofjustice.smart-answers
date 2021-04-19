@@ -138,7 +138,6 @@ class MaternityPaternityPayLeaveTest < ActiveSupport::TestCase
       add_response "self-employed" # employment_status_of_mother
       add_response "self-employed" # employment_status_of_partner
       add_response "yes" # mother_worked_at_least_26_weeks
-      add_response "yes" # mother_earned_at_least_390
       assert_current_node :outcome_mat_allowance
     end
 
@@ -391,7 +390,6 @@ class MaternityPaternityPayLeaveTest < ActiveSupport::TestCase
       add_response "self-employed" # employment_status_of_mother
       add_response "self-employed" # employment_status_of_partner
       add_response "yes" # mother_worked_at_least_26_weeks
-      add_response "yes" # mother_earned_at_least_390
       assert_current_node :outcome_mat_allowance
     end
 
@@ -548,7 +546,6 @@ class MaternityPaternityPayLeaveTest < ActiveSupport::TestCase
       add_response "self-employed" # employment_status_of_mother
       add_response "employee" # employment_status_of_partner
       add_response "yes" # mother_worked_at_least_26_weeks
-      add_response "yes" # mother_earned_at_least_390
       add_response "yes" # partner_started_working_before_continuity_start_date
       add_response "yes" # partner_still_working_on_continuity_end_date
       add_response "yes" # partner_earned_more_than_lower_earnings_limit
@@ -561,7 +558,6 @@ class MaternityPaternityPayLeaveTest < ActiveSupport::TestCase
       add_response "self-employed" # employment_status_of_mother
       add_response "worker" # employment_status_of_partner
       add_response "yes" # mother_worked_at_least_26_weeks
-      add_response "yes" # mother_earned_at_least_390
       add_response "yes" # partner_started_working_before_continuity_start_date
       add_response "yes" # partner_still_working_on_continuity_end_date
       add_response "yes" # partner_earned_more_than_lower_earnings_limit

@@ -121,7 +121,11 @@ module SmartAnswer::Calculators
 
     # Earnings and employment test
     def earnings_employment(earnings_employment, work_employment)
-      earnings_employment == "yes" && work_employment == "yes"
+      if employment_status_of_mother == "self-employed"
+        work_employment == "yes"
+      else
+        earnings_employment == "yes" && work_employment == "yes"
+      end
     end
 
     def paid_leave_is_in_year?(year)
