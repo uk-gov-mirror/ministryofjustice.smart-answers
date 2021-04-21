@@ -10,7 +10,15 @@ describe('Quick escape banner component', function () {
 
   beforeEach(function () {
     container = document.createElement('div')
-    container.innerHTML = '<a class="app-c-quick-escape-banner govuk-link" rel="nofollow noreferrer noopener" target="_blank" data-module="app-quick-escape-banner" data-track-label="need-help-with" href="https://www.gov.uk/">Leave this site</a>'
+    container.innerHTML = '<div class="app-c-quick-escape-banner" data-module="app-quick-escape-banner">' +
+                            '<div class="govuk-width-container">' +
+                              '<div class="govuk-grid-row">' +
+                                '<div class="govuk-grid-column-one-quarter app-c-quick-escape-banner__link">' +
+                                  '<a class="gem-c-button govuk-button govuk-button--warning" role="button" rel="nofollow noreferrer noopener" data-id="app-quick-escape-banner-link" target="_blank" href="https://www.gov.uk/">Hide this page</a>' +
+                                '</div>' +
+                              '</div>' +
+                            '</div>' +
+                          '</div>'
     document.body.appendChild(container)
     quickEscapeBannerElement = document.querySelector('[data-module="app-quick-escape-banner"]')
     quickEscapeBannerModule = new QuickEscapeBanner(quickEscapeBannerElement)
@@ -24,13 +32,13 @@ describe('Quick escape banner component', function () {
 
   it('opens a new page', function () {
     spyOn(quickEscapeBannerModule, 'openNewPage')
-    quickEscapeBannerElement.click()
+    quickEscapeBannerElement.querySelector('[data-id="app-quick-escape-banner-link"]').click()
     expect(quickEscapeBannerModule.openNewPage).toHaveBeenCalledWith('https://www.gov.uk/', 'nofollow noreferrer noopener')
   })
 
   it('replaces the original page', function () {
     spyOn(quickEscapeBannerModule, 'replaceCurrentPage')
-    quickEscapeBannerElement.click()
+    quickEscapeBannerElement.querySelector('[data-id="app-quick-escape-banner-link"]').click()
     expect(quickEscapeBannerModule.replaceCurrentPage).toHaveBeenCalledWith('https://www.gov.uk/')
   })
 })
