@@ -4,9 +4,9 @@
   <meta name="robots" content="noindex">
 <% end %>
 
-<% content_for :escape_link do %>
-  <% if @presenter.show_escape_link? %>
-    <%= render "components/escape-link", {
+<% content_for :quick_escape_banner do %>
+  <% if @presenter.show_quick_escape_banner? %>
+    <%= render "components/quick-escape-banner", {
       link_url: destroy_flow_path(ext_r: "true")
     } %>
   <% end %>

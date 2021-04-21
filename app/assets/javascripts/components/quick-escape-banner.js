@@ -1,8 +1,8 @@
-function EscapeLink ($module) {
+function QuickEscapeBanner ($module) {
   this.$module = $module
 }
 
-EscapeLink.prototype.init = function () {
+QuickEscapeBanner.prototype.init = function () {
   var $module = this.$module
 
   if (!$module) {
@@ -11,7 +11,7 @@ EscapeLink.prototype.init = function () {
   $module.addEventListener('click', this.handleClick.bind(this))
 }
 
-EscapeLink.prototype.handleClick = function (event) {
+QuickEscapeBanner.prototype.handleClick = function (event) {
   event.preventDefault()
 
   var url = event.target.getAttribute('href')
@@ -21,14 +21,14 @@ EscapeLink.prototype.handleClick = function (event) {
   this.replaceCurrentPage(url)
 }
 
-EscapeLink.prototype.openNewPage = function (url, rel) {
+QuickEscapeBanner.prototype.openNewPage = function (url, rel) {
   var newWindow = window.open(url, rel)
   newWindow.opener = null
 }
 
-EscapeLink.prototype.replaceCurrentPage = function (url) {
+QuickEscapeBanner.prototype.replaceCurrentPage = function (url) {
   window.location.replace(url)
 }
 
-var $escapeLink = document.querySelector('[data-module="app-escape-link"]')
-new EscapeLink($escapeLink).init()
+var $quickEscapeBanner = document.querySelector('[data-module="app-quick-escape-banner"]')
+new QuickEscapeBanner($quickEscapeBanner).init()
