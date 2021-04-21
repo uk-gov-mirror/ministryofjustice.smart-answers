@@ -3,6 +3,12 @@
   aria_label ||= "Hide this page. Quick exit button, it opens BBC Weather in a new tab"
   data_attributes ||= {}
   data_attributes[:id] = "app-quick-escape-banner-link"
+
+  onboarding_title ||= "What the ‘hide this page’ button does"
+  onboarding_information ||= sanitize("
+    <p class=\"govuk-body\">Use this button to quickly hide this page. For example, to stop someone seeing you're using this service. The button opens BBC Weather in a new tab.</p>
+    <p class=\"govuk-body\">This tab will stay open and also go to BBC Weather to hide the page you are using, but when you go back in your browser you will go to the start page of this service. Your answers will not be stored.</p>
+  ")
 %>
 <div class="app-c-quick-escape-banner" data-module="app-quick-escape-banner">
   <div class="govuk-width-container">
@@ -19,6 +25,13 @@
           },
           destructive: true,
         } %>
+      </div>
+      <div class="govuk-grid-column-three-quarters app-c-quick-escape-banner__info">
+        <%= render "govuk_publishing_components/components/details", {
+          title: onboarding_title
+        } do %>
+          <%= onboarding_information %>
+        <% end %>
       </div>
     </div>
   </div>
